@@ -1,78 +1,105 @@
-/* General Body Styling */
+/* General Styles */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f9f9f9;
     color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
 }
 
 /* Chat Container */
 #chat-container {
-    max-width: 800px;
-    margin: 20px auto;
+    width: 90%;
+    max-width: 600px;
     background-color: #fff;
+    border: 1px solid #ddd;
     border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Chat Header */
 #chat-header {
     background-color: #007BFF;
     color: white;
+    padding: 10px 20px;
+    font-size: 1.2rem;
     text-align: center;
-    padding: 15px;
-    font-size: 20px;
     font-weight: bold;
 }
 
 /* Chat History */
 #chat-history {
-    padding: 15px;
-    height: 400px;
+    flex: 1;
+    padding: 20px;
     overflow-y: auto;
-    border-bottom: 1px solid #ddd;
+    background-color: #f1f1f1;
 }
 
-/* Chat Message Styling */
-.chat-message {
-    margin-bottom: 15px;
+#chat-history p {
+    margin: 5px 0;
 }
 
-.chat-message.user {
-    text-align: right;
-    color: #007BFF;
+#chat-history p strong {
+    display: block;
     font-weight: bold;
+    margin-bottom: 3px;
 }
 
-.chat-message.bot {
-    text-align: left;
+#chat-history .user-message {
+    text-align: right;
     color: #333;
 }
 
-/* Chat Footer */
-#chat-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 15px;
-    background-color: #f9f9f9;
-    border-top: 1px solid #ddd;
+#chat-history .bot-message {
+    text-align: left;
+    color: #007BFF;
 }
 
-/* Microphone Button */
+/* Input Area */
+#chat-input-area {
+    display: flex;
+    align-items: center;
+    border-top: 1px solid #ddd;
+    padding: 10px;
+    background-color: #fff;
+}
+
+#chat-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    font-size: 1rem;
+    margin-right: 10px;
+}
+
+#chat-input:focus {
+    outline: none;
+    border-color: #007BFF;
+}
+
 #mic-button {
     width: 50px;
     height: 50px;
-    background-color: #007BFF;
-    border: none;
     border-radius: 50%;
-    cursor: pointer;
+    background-color: #007BFF;
+    color: white;
+    border: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    font-size: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
 }
 
 #mic-button:hover {
@@ -80,46 +107,13 @@ body {
 }
 
 #mic-button:active {
-    background-color: #003f8a;
+    background-color: #003f7f;
 }
 
-#mic-button svg {
-    fill: white;
-    width: 24px;
-    height: 24px;
-}
-
-/* Input Field for Text */
-#chat-input {
-    flex: 1;
-    height: 40px;
-    padding: 10px;
-    margin-right: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-    display: none; /* Hidden because we're only using the mic button */
-}
-
-/* Responsive Adjustments */
+/* Mobile Responsiveness */
 @media (max-width: 600px) {
     #chat-container {
         width: 100%;
-        border-radius: 0;
-    }
-
-    #chat-footer {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    #mic-button {
-        width: 40px;
-        height: 40px;
-    }
-
-    #mic-button svg {
-        width: 20px;
-        height: 20px;
+        height: 100%;
     }
 }
