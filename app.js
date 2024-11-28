@@ -1,114 +1,114 @@
-// Define constants for API URL and select DOM elements
-const BACKEND_URL = "https://462d2d49-1f98-4257-a721-46da919d929b-00-3hhfbf6wdvr1l.kirk.replit.dev/chat";
-
-const chatForm = document.getElementById("chat-form");
-const chatInput = document.getElementById("chat-input");
-const chatHistory = document.getElementById("chat-history");
-const startRecordBtn = document.getElementById("start-record-btn");
-const stopRecordBtn = document.getElementById("stop-record-btn");
-const status = document.getElementById("status");
+// Select DOM elements
+const micButton = document.getElementById('mic-button');
+const chatHistory = document.getElementById('chat-history');
+const chatInput = document.getElementById('chat-input'); // Not visible but functional if needed
 
 let recognition;
 
-// Check for browser support for Speech Recognition
-if ("webkitSpeechRecognition" in window) {
-  recognition = new webkitSpeechRecognition();
-} else if ("SpeechRecognition" in window) {
-  recognition = new SpeechRecognition();
+// Initialize Speech Recognition
+if ('webkitSpeechRecognition' in window) {
+    recognition = new webkitSpeechRecognition();
+} else if ('SpeechRecognition' in window) {
+    recognition = new SpeechRecognition();
 } else {
-  alert("Your browser does not support speech recognition.");
+    alert('Your browser does not support speech recognition.');
 }
 
-// Configure Speech Recognition if supported
+// Configure recognition if supported
 if (recognition) {
-  recognition.continuous = false; // Stop after each utterance
-  recognition.interimResults = false; // Don't show interim results
-  recognition.lang = "en-US"; // Set language to English
+    recognition.continuous = false; // Stop after one utterance
+    recognition.interimResults = false; // Do not show interim results
+    recognition.lang = 'en-US'; // Set language to English
 
-  recognition.onstart = () => {
-    status.textContent = "Listening...";
-    startRecordBtn.disabled = true;
-    stopRecordBtn.disabled = false;
-  };
+    recognition.onstart = () => {
+        micButton.disabled = true;
+        micButton.title = "Listening...";
+    };
 
-  recognition.onresult = async (event) => {
-    const transcript = event.results[0][0].transcript.trim();
-    status.textContent = `You said: ${transcript}`;
-    if (transcript) {
-      await sendMessage(transcript);
-    } else {
-      chatHistory.innerHTML += `<p><strong>Bot:</strong> No input detected. Please try again.</p>`;
-    }
-  };
+    recognition.onresult = async (event) => {
+        const transcript = event.results[0][0].transcript.trim();
+        addMessageToChat("You", transcript);
+        await sendMessage(transcript);
+    };
 
-  recognition.onerror = (event) => {
-    status.textContent = `Error occurred: ${event.error}`;
-  };
+    recognition.onerror = (event) => {
+        addMessageToChat("Error", `Speech recognition error: ${event.error}`);
+    };
 
-  recognition.onend = () => {
-    startRecordBtn.disabled = false;
-    stopRecordBtn.disabled = true;
-  };
+    recognition.onend = () => {
+        micButton.disabled = false;
+        micButton.title = "Start Speaking";
+    };
 
-  startRecordBtn.addEventListener("click", () => {
-    recognition.start();
-  });
-
-  stopRecordBtn.addEventListener("click", () => {
-    recognition.stop();
-  });
+    micButton.addEventListener('click', () => {
+        recognition.start();
+    });
 }
 
-// Handle form submission for text-based chat
-chatForm.addEventListener("submit", async (event) => {
-  event.preventDefault(); // Prevent form from reloading the page
-  const message = chatInput.value.trim();
-  if (message) {
-    await sendMessage(message);
-    chatInput.value = ""; // Clear input field after sending
-  } else {
-    chatHistory.innerHTML += `<p><strong>Bot:</strong> Please enter a message.</p>`;
-  }
-});
+// Function to handle form submission (if text input is required in the future)
+if (chatInput) {
+    chatInput.addEventListener('keydown', async (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault(); // Prevent form submission
+            const message = chatInput.value.trim();
+            if (message) {
+                addMessageToChat("You", message);
+                chatInput.value = ''; // Clear input field
+                await sendMessage(message);
+            } else {
+                addMessageToChat("Error", "Please enter a message.");
+            }
+        }
+    });
+}
 
 // Function to send a message to the chatbot API
 async function sendMessage(message) {
-  // Display the user's message in the chat history
-  chatHistory.innerHTML += `<p><strong>You:</strong> ${message}</p>`;
+    try {
+        const response = await fetch('/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message })
+        });
 
-  try {
-    const response = await fetch(`${BACKEND_URL}/chat`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ message }),
-    });
+        const data = await response.json();
+        if (data.response) {
+            addMessageToChat("Amie", data.response);
 
-    const data = await response.json();
-    if (data.response) {
-      chatHistory.innerHTML += `<p><strong>Bot:</strong> ${data.response}</p>`;
-      speakText(data.response); // Use text-to-speech for the bot's response
-    } else if (data.error) {
-      chatHistory.innerHTML += `<p><strong>Bot:</strong> Error: ${data.error}</p>`;
-    } else {
-      chatHistory.innerHTML += `<p><strong>Bot:</strong> Error: No response received.</p>`;
+            // If audio is included in the response (base64 encoded)
+            if (data.audio) {
+                playAudio(data.audio);
+            }
+        } else {
+            addMessageToChat("Error", "No response received from the chatbot.");
+        }
+    } catch (error) {
+        addMessageToChat("Error", `Failed to communicate with the server: ${error.message}`);
     }
-  } catch (error) {
-    chatHistory.innerHTML += `<p><strong>Bot:</strong> Error: ${error.message}</p>`;
-    console.error("Error in sendMessage:", error);
-  }
-
-  // Scroll to the bottom of the chat history
-  chatHistory.scrollTop = chatHistory.scrollHeight;
 }
 
-// Function to use browser's text-to-speech API
+// Function to add messages to the chat history
+function addMessageToChat(sender, message) {
+    chatHistory.innerHTML += `<p><strong>${sender}:</strong> ${message}</p>`;
+    chatHistory.scrollTop = chatHistory.scrollHeight; // Auto-scroll to the bottom
+}
+
+// Function to play audio if provided as base64 data
+function playAudio(audioBase64) {
+    const audioData = Uint8Array.from(atob(audioBase64), c => c.charCodeAt(0));
+    const audioBlob = new Blob([audioData], { type: 'audio/wav' });
+    const audioUrl = URL.createObjectURL(audioBlob);
+    const audio = new Audio(audioUrl);
+
+    audio.play().catch((error) => console.error("Error playing audio:", error));
+}
+
+// Browser-based fallback for text-to-speech (if needed)
 function speakText(text) {
-  const synth = window.speechSynthesis;
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.onerror = () => {
-    console.error("Error occurred during speech synthesis.");
-  };
-  synth.speak(utterance);
+    const synth = window.speechSynthesis;
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.onerror = () => {
+        console.error("Error occurred during speech synthesis.");
+    };
+    synth.speak(utterance);
 }
