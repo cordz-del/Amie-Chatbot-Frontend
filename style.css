@@ -1,119 +1,147 @@
-/* General Styles */
+/* General Body Styles */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f9f9f9;
+    background-color: #f4f4f9;
     color: #333;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
+}
+
+/* Header Styles */
+header {
+    background-color: #4caf50;
+    color: white;
+    padding: 1em;
+    text-align: center;
+    font-size: 1.5em;
 }
 
 /* Chat Container */
 #chat-container {
-    width: 90%;
     max-width: 600px;
-    background-color: #fff;
+    margin: 2em auto;
+    background: white;
     border: 1px solid #ddd;
-    border-radius: 10px;
+    border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
+    padding: 1em;
     display: flex;
     flex-direction: column;
-}
-
-/* Chat Header */
-#chat-header {
-    background-color: #007BFF;
-    color: white;
-    padding: 10px 20px;
-    font-size: 1.2rem;
-    text-align: center;
-    font-weight: bold;
+    gap: 1em;
 }
 
 /* Chat History */
 #chat-history {
-    flex: 1;
-    padding: 20px;
+    height: 300px;
     overflow-y: auto;
-    background-color: #f1f1f1;
+    padding: 1em;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
 }
 
-#chat-history p {
-    margin: 5px 0;
+/* Chat Messages */
+.message {
+    margin: 0.5em 0;
+    padding: 0.5em;
+    border-radius: 4px;
+    background: #e0f7fa;
+    color: #004d40;
+    font-size: 0.9em;
 }
 
-#chat-history p strong {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 3px;
+.message.you {
+    align-self: flex-end;
+    background: #c8e6c9;
+    color: #1b5e20;
 }
 
-#chat-history .user-message {
-    text-align: right;
-    color: #333;
+.message.bot {
+    align-self: flex-start;
+    background: #fce4ec;
+    color: #880e4f;
 }
 
-#chat-history .bot-message {
-    text-align: left;
-    color: #007BFF;
-}
-
-/* Input Area */
-#chat-input-area {
+/* Chat Controls */
+#controls {
     display: flex;
     align-items: center;
-    border-top: 1px solid #ddd;
-    padding: 10px;
-    background-color: #fff;
+    gap: 1em;
+}
+
+/* Microphone Button */
+#mic-button {
+    background: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#mic-button img {
+    width: 24px;
+    height: 24px;
+}
+
+#mic-button.recording {
+    background: red;
+}
+
+/* Chat Form */
+#chat-form {
+    display: flex;
+    gap: 0.5em;
+    flex: 1;
 }
 
 #chat-input {
     flex: 1;
-    padding: 10px;
+    padding: 0.5em;
     border: 1px solid #ddd;
-    border-radius: 20px;
-    font-size: 1rem;
-    margin-right: 10px;
+    border-radius: 4px;
+    font-size: 1em;
 }
 
-#chat-input:focus {
-    outline: none;
-    border-color: #007BFF;
-}
-
-#mic-button {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background-color: #007BFF;
+button[type="submit"] {
+    padding: 0.5em 1em;
+    background-color: #4caf50;
     color: white;
     border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    border-radius: 4px;
     cursor: pointer;
-    font-size: 1.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s;
+    font-size: 1em;
 }
 
-#mic-button:hover {
-    background-color: #0056b3;
-}
-
-#mic-button:active {
-    background-color: #003f7f;
-}
-
-/* Mobile Responsiveness */
-@media (max-width: 600px) {
+/* Responsiveness */
+@media screen and (max-width: 768px) {
     #chat-container {
-        width: 100%;
-        height: 100%;
+        width: 90%;
+    }
+
+    #chat-input {
+        font-size: 0.9em;
+    }
+
+    button[type="submit"] {
+        font-size: 0.9em;
+    }
+
+    #mic-button {
+        width: 40px;
+        height: 40px;
+    }
+
+    #mic-button img {
+        width: 20px;
+        height: 20px;
     }
 }
