@@ -3,18 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Replit Backend Chatbot</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Amie Chatbot</title>
+    <link rel="stylesheet" href="/static/styles.css"> <!-- Link to external stylesheet -->
 </head>
 <body>
-    <h1>Welcome to the Chatbot</h1>
-    <div id="chat-history"></div>
-    <form id="chat-form">
-        <input type="text" id="chat-input" placeholder="Type your message here..." />
-        <button type="submit">Send</button>
-    </form>
-    <script src="app.js"></script>
-    <script src="app.js"></script>
+    <div id="chat-container">
+        <!-- Chat Header -->
+        <div id="chat-header">
+            Amie Chatbot
+        </div>
 
+        <!-- Chat History -->
+        <div id="chat-history">
+            <!-- Chat messages will dynamically appear here -->
+        </div>
+
+        <!-- Chat Footer -->
+        <div id="chat-footer">
+            <!-- Hidden text input field for potential future use -->
+            <input type="text" id="chat-input" placeholder="Enter your message" autocomplete="off" />
+            
+            <!-- Microphone Button -->
+            <button id="mic-button" title="Start Speaking">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M12 14c1.657 0 3-1.343 3-3V5c0-1.657-1.343-3-3-3s-3 1.343-3 3v6c0 1.657 1.343 3 3 3zm5-3c0 2.761-2.239 5-5 5s-5-2.239-5-5H5c0 3.309 2.691 6 6 6v3h2v-3c3.309 0 6-2.691 6-6h-2z"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <script src="/static/app.js"></script> <!-- Link to the JavaScript file -->
+    <script>
+        // Script for handling speech recognition and sending messages
+        const micButton = document.getElementById('mic-button');
+        const chatHistory = document.getElementById('chat-history');
+        const chatInput = document.getElementById('chat-input'); // Not visible but functional if needed
+        
+        let recognition;
+
+        // Initialize Speech Recognition
+        if ('webkitSpeechRecognition' in window) {
+            recognition = new webkitSpeechRecognition();
+        } else if ('SpeechRecognition' in window) {
+            recognition = new SpeechRecognition();
+        } else {
+            alert('Your browser does not support speech recognition.');
+        }
+
+        if (recognition) {
+            recognition.continuous = false; // Stop after one utterance
+            recognition.interimResults = false; // Do not show interim results
+            recognition.lang = 'en-US';
+
+            recognition.onstart = () => {
+                micButton.disabled = true;
+                micButton.title = "Listening...";
+            };
+
+            recognition.onresult = async (event) => {
+                const transcript = event.results[0][0].transcript.trim();
+                addMessageToChat("You", transcript);
+                await sendMessage(transcript);
+            };
+
+            recognition.onerror = (event) => {
+                addMessageToChat("Error", `Speech recognition error: ${event.error}`);
+            };
+
+            recognition.onend = () => {
+                micButton.disabled = false;
+                micButton.title = "Start Speaking";
+            };
+
+            micButton.addEventListener('click', () => {
+                recognition.start();
+            });
+        }
+
+        async function sendMessage(message) {
+            try {
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message })
+                });
+                const data = await response.json();
+
+                if (data.response) {
+                    addMessageToChat("Amie", data.response);
+
+                    // If audio is included in the response (base64 encoded)
+                    if (data.audio) {
+                        playAudio(data.audio);
+                    }
+                } else {
+                    addMessageToChat("Error", "No response received from the chatbot.");
+                }
+            } catch (error) {
+                addMessageToChat("Error", `Failed to communicate with the server: ${error.message}`);
+            }
+        }
+
+        function addMessageToChat(sender, message) {
+            chatHistory.innerHTML += `<p><strong>${sender}:</strong> ${message}</p>`;
+            chatHistory.scrollTop = chatHistory.scrollHeight; // Auto-scroll to the bottom
+        }
+
+        function playAudio(audioData) {
+            const audioBlob = new Blob([new Uint8Array(audioData)], { type: 'audio/wav' });
+            const audioUrl = URL.createObjectURL(audioBlob);
+            const audio = new Audio(audioUrl);
+            audio.play().catch((error) => console.error("Error playing audio:", error));
+        }
+    </script>
 </body>
 </html>
