@@ -1,147 +1,109 @@
-/* General Body Styles */
+/* General styling */
 body {
     font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f9;
-    color: #333;
-}
-
-/* Header Styles */
-header {
-    background-color: #4caf50;
-    color: white;
-    padding: 1em;
-    text-align: center;
-    font-size: 1.5em;
-}
-
-/* Chat Container */
-#chat-container {
-    max-width: 600px;
-    margin: 2em auto;
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 1em;
     display: flex;
-    flex-direction: column;
-    gap: 1em;
-}
-
-/* Chat History */
-#chat-history {
-    height: 300px;
-    overflow-y: auto;
-    padding: 1em;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background: #f9f9f9;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5em;
-}
-
-/* Chat Messages */
-.message {
-    margin: 0.5em 0;
-    padding: 0.5em;
-    border-radius: 4px;
-    background: #e0f7fa;
-    color: #004d40;
-    font-size: 0.9em;
-}
-
-.message.you {
-    align-self: flex-end;
-    background: #c8e6c9;
-    color: #1b5e20;
-}
-
-.message.bot {
-    align-self: flex-start;
-    background: #fce4ec;
-    color: #880e4f;
-}
-
-/* Chat Controls */
-#controls {
-    display: flex;
+    justify-content: center;
     align-items: center;
-    gap: 1em;
+    height: 100vh;
 }
 
-/* Microphone Button */
-#mic-button {
-    background: #4caf50;
+/* Chat container styling */
+#chat-container {
+    width: 400px;
+    background: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Chat history */
+#chat-history {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    border-bottom: 1px solid #ddd;
+    background: #fff;
+    height: 300px;
+}
+
+#chat-history p {
+    margin: 5px 0;
+}
+
+/* User and Bot messages */
+#chat-history .user {
+    text-align: right;
+    color: blue;
+}
+
+#chat-history .bot {
+    text-align: left;
+    color: green;
+}
+
+/* Chat input container */
+#chat-input-container {
+    display: flex;
+    padding: 10px;
+    background-color: #f9f9f9;
+    align-items: center;
+}
+
+/* Input field */
+#chat-input {
+    flex: 1;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+/* Send button */
+#send-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+#send-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Microphone button */
+#mic-btn {
+    background-color: #007bff;
     color: white;
     border: none;
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
     display: flex;
-    align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-#mic-button img {
-    width: 24px;
-    height: 24px;
-}
-
-#mic-button.recording {
-    background: red;
-}
-
-/* Chat Form */
-#chat-form {
-    display: flex;
-    gap: 0.5em;
-    flex: 1;
-}
-
-#chat-input {
-    flex: 1;
-    padding: 0.5em;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 1em;
-}
-
-button[type="submit"] {
-    padding: 0.5em 1em;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    border-radius: 4px;
+    align-items: center;
     cursor: pointer;
-    font-size: 1em;
+    margin-left: 10px;
 }
 
-/* Responsiveness */
-@media screen and (max-width: 768px) {
-    #chat-container {
-        width: 90%;
-    }
+#mic-btn:hover {
+    background-color: #0056b3;
+}
 
-    #chat-input {
-        font-size: 0.9em;
-    }
-
-    button[type="submit"] {
-        font-size: 0.9em;
-    }
-
-    #mic-button {
-        width: 40px;
-        height: 40px;
-    }
-
-    #mic-button img {
-        width: 20px;
-        height: 20px;
-    }
+/* Status */
+#status {
+    font-size: 12px;
+    text-align: center;
+    color: #666;
+    margin-top: 5px;
+    font-style: italic;
 }
