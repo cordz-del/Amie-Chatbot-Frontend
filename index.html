@@ -4,39 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Amie Chatbot</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link to updated styles.css -->
+    <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-    <header>Amie Chatbot</header>
-    <main id="chat-container">
-        <!-- Chat History -->
-        <div id="chat-history" aria-live="polite">
-            <!-- Messages will be dynamically added here -->
+    <div id="chat-container">
+        <div id="chat-history"></div>
+        <div id="chat-input-container">
+            <input type="text" id="chat-input" placeholder="Enter your message">
+            <button id="send-btn">Send</button>
+            <button id="mic-btn">&#127908;</button>
         </div>
-
-        <!-- Chat Controls -->
-        <div id="controls">
-            <!-- Microphone Button -->
-            <button id="mic-button" aria-label="Start Recording">
-                <img src="mic-icon.png" alt="Microphone">
-            </button>
-            <!-- Chat Form -->
-            <form id="chat-form">
-                <input 
-                    type="text" 
-                    id="chat-input" 
-                    placeholder="Enter your message" 
-                    autocomplete="off" 
-                    aria-label="Enter your message"
-                >
-                <button type="submit">Send</button>
-            </form>
-        </div>
-
-        <!-- Status Display -->
         <p id="status"></p>
-    </main>
-
-    <script src="app.js"></script> <!-- Link to updated app.js -->
+    </div>
+    <script src="./app.js"></script>
 </body>
 </html>
