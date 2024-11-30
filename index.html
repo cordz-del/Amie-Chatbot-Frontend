@@ -3,19 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amie Chatbot</title>
-    <link rel="stylesheet" href="./style.css">
+    <title>Amie Chatbot Project</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="chat-container">
-        <div id="chat-history"></div>
-        <div id="chat-input-container">
-            <input type="text" id="chat-input" placeholder="Enter your message">
-            <button id="send-btn">Send</button>
-            <button id="mic-btn">&#127908;</button>
+    <header>
+        <h1>Amie Project Chatbot</h1>
+    </header>
+
+    <main>
+        <!-- Chat History Section -->
+        <div id="chat-container">
+            <div id="chat-history"></div>
         </div>
-        <p id="status"></p>
-    </div>
-    <script src="./app.js"></script>
+
+        <!-- Input Section -->
+        <section id="input-container">
+            <form id="chat-form">
+                <input type="number" id="age-input" placeholder="Enter your age" min="3" max="18" required />
+                <input type="text" id="chat-input" placeholder="Type your message here..." autocomplete="off" />
+                <button type="submit">Send</button>
+            </form>
+        </section>
+
+        <!-- Voice Interaction Controls -->
+        <section id="voice-controls">
+            <button id="start-record-btn">Start Recording</button>
+            <button id="stop-record-btn" disabled>Stop Recording</button>
+            <p id="status"></p>
+        </section>
+    </main>
+
+    <footer>
+        <p>Powered by the Amie Chatbot Project - AI for Social and Emotional Learning</p>
+    </footer>
+
+    <script src="app.js"></script>
 </body>
 </html>
