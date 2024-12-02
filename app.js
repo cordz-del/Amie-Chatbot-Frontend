@@ -9,9 +9,11 @@ const stopRecordBtn = document.getElementById("stop-record-btn");
 const status = document.getElementById("status");
 const ageInput = document.getElementById("age-input");
 
-let recognition;
+// Initialize conversation log
+let conversationLog = [];
 
 // Check for browser support for Speech Recognition
+let recognition;
 if ("webkitSpeechRecognition" in window) {
   recognition = new webkitSpeechRecognition();
 } else if ("SpeechRecognition" in window) {
@@ -64,7 +66,7 @@ if (recognition) {
 chatForm.addEventListener("submit", async (event) => {
   event.preventDefault(); // Prevent form from reloading the page
   const message = chatInput.value.trim();
-  const age = parseInt(ageInput.value, 10) || 10; // Default to 10 if no age is provided
+  const age = parseInt(ageInput.value, 10) || 10; // Default age to 10 if not provided
   if (message) {
     await sendMessage(message, age);
     chatInput.value = ""; // Clear input field after sending
@@ -75,8 +77,9 @@ chatForm.addEventListener("submit", async (event) => {
 
 // Function to send a message to the chatbot API
 async function sendMessage(message, age) {
-  // Display the user's message in the chat history
+  // Add the user's message to the chat history
   chatHistory.innerHTML += `<p><strong>You:</strong> ${message}</p>`;
+  conversationLog.push({ role: "user", content: message }); // Add to log
 
   try {
     const response = await fetch(`${BACKEND_URL}/chat`, {
@@ -84,15 +87,13 @@ async function sendMessage(message, age) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ message, age }), // Include age in the POST request body
+      body: JSON.stringify({ message, age, conversation_log: conversationLog }), // Include conversation log
     });
 
     const data = await response.json();
     if (data.response) {
       chatHistory.innerHTML += `<p><strong>Bot:</strong> ${data.response}</p>`;
-
-      // Removed browser's TTS to avoid default male voice
-      // speakText(data.response);
+      conversationLog.push({ role: "assistant", content: data.response }); // Add bot's response to log
 
       if (data.audio) {
         playAudio(data.audio); // Play audio response if available
