@@ -90,7 +90,10 @@ async function sendMessage(message, age) {
     const data = await response.json();
     if (data.response) {
       chatHistory.innerHTML += `<p><strong>Bot:</strong> ${data.response}</p>`;
-      speakText(data.response); // Use text-to-speech for the bot's response
+
+      // Removed browser's TTS to avoid default male voice
+      // speakText(data.response);
+
       if (data.audio) {
         playAudio(data.audio); // Play audio response if available
       }
@@ -108,16 +111,6 @@ async function sendMessage(message, age) {
   chatHistory.scrollTop = chatHistory.scrollHeight;
 }
 
-// Function to use browser's text-to-speech API
-function speakText(text) {
-  const synth = window.speechSynthesis;
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.onerror = () => {
-    console.error("Error occurred during speech synthesis.");
-  };
-  synth.speak(utterance);
-}
-
 // Function to play audio from base64-encoded data
 function playAudio(base64Audio) {
   const audioData = Uint8Array.from(atob(base64Audio), (c) => c.charCodeAt(0));
@@ -128,3 +121,8 @@ function playAudio(base64Audio) {
     console.error("Error playing audio:", error);
   });
 }
+
+// Debugging helper: Log when the frontend loads
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("Frontend loaded successfully.");
+});
