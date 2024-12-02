@@ -134,6 +134,49 @@ button:disabled {
     color: #555;
 }
 
+/* Volume control styling */
+#volume-control-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+#volume-label {
+    font-size: 1rem;
+    color: #333;
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+#volume-slider {
+    width: 150px;
+    -webkit-appearance: none; /* Remove default slider styling */
+    background: #ccc;
+    height: 5px;
+    border-radius: 5px;
+    outline: none;
+    transition: background-color 0.3s;
+}
+
+#volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #007BFF;
+    cursor: pointer;
+}
+
+#volume-slider::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #007BFF;
+    cursor: pointer;
+}
+
 /* Footer styling */
 footer {
     text-align: center;
