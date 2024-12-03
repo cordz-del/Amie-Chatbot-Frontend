@@ -20,8 +20,12 @@
         <!-- Input Section -->
         <section id="input-container">
             <form id="chat-form">
+                <label for="age-input">Age:</label>
                 <input type="number" id="age-input" placeholder="Enter your age" min="3" max="18" required />
+                
+                <label for="chat-input">Message:</label>
                 <input type="text" id="chat-input" placeholder="Type your message here..." autocomplete="off" />
+                
                 <button type="submit">Send</button>
             </form>
         </section>
@@ -31,6 +35,12 @@
             <button id="start-record-btn">Start Recording</button>
             <button id="stop-record-btn" disabled>Stop Recording</button>
             <p id="status"></p>
+        </section>
+
+        <!-- Volume Control Section -->
+        <section id="volume-control-section">
+            <label for="volume-control">Volume:</label>
+            <input type="range" id="volume-control" min="0.5" max="2.0" step="0.1" value="1.0">
         </section>
     </main>
 
