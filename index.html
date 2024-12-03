@@ -3,38 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amie Chatbot</title>
+    <title>Amie</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <h1>Amie Chatbot</h1>
-    </header>
+    <div class="chat-container">
+        <!-- Centered Title -->
+        <header class="chat-header">Amie</header>
 
-    <main>
-        <!-- Chat History Section -->
-        <div id="chat-container">
-            <div id="chat-history"></div>
+        <!-- Speech-to-Text and Text-to-Speech Box -->
+        <div class="speech-box" id="speech-box">
+            <p>Speech responses will appear here...</p>
         </div>
 
         <!-- Input Section -->
-        <section id="input-container">
-            <form id="chat-form">
-                <label for="age-input">Age:</label>
-                <input type="number" id="age-input" placeholder="Enter your age" min="3" max="18" required />
-                
-                <label for="chat-input">Message:</label>
-                <input type="text" id="chat-input" placeholder="Type your message here..." autocomplete="off" required />
-                
-                <button type="submit">Send</button>
-            </form>
-        </section>
+        <div class="input-area">
+            <label for="age">Age:</label>
+            <input type="number" id="age" placeholder="Age" min="3" max="18" />
+
+            <label for="message">Message:</label>
+            <input type="text" id="message" placeholder="Type your message..." />
+
+            <button id="send">Send</button>
+        </div>
 
         <!-- Voice Interaction Controls -->
         <section id="voice-controls">
             <button id="start-record-btn">Start Recording</button>
             <button id="stop-record-btn" disabled>Stop Recording</button>
-            <p id="status"></p>
+            <p id="status">Click "Start Recording" to speak.</p>
         </section>
 
         <!-- Volume Control Section -->
@@ -45,11 +42,11 @@
 
         <!-- Hidden Audio Player -->
         <audio id="audio-player" controls hidden></audio>
-    </main>
 
-    <footer>
-        <p>Powered by Amie Chatbot Project - AI for Social and Emotional Learning</p>
-    </footer>
+        <footer>
+            Powered by Amie Chatbot Project - AI for Social and Emotional Learning
+        </footer>
+    </div>
 
     <!-- JavaScript -->
     <script defer src="script.js"></script>
