@@ -135,21 +135,21 @@ button:disabled {
 }
 
 /* Volume control styling */
-#volume-control-container {
+#volume-control-section {
     display: flex;
     align-items: center;
     justify-content: center;
     margin-top: 10px;
 }
 
-#volume-label {
+#volume-control-section label {
     font-size: 1rem;
     color: #333;
     margin-right: 10px;
     font-weight: bold;
 }
 
-#volume-slider {
+#volume-control {
     width: 150px;
     -webkit-appearance: none; /* Remove default slider styling */
     background: #ccc;
@@ -159,7 +159,7 @@ button:disabled {
     transition: background-color 0.3s;
 }
 
-#volume-slider::-webkit-slider-thumb {
+#volume-control::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
     width: 15px;
@@ -169,7 +169,7 @@ button:disabled {
     cursor: pointer;
 }
 
-#volume-slider::-moz-range-thumb {
+#volume-control::-moz-range-thumb {
     width: 15px;
     height: 15px;
     border-radius: 50%;
@@ -198,5 +198,9 @@ footer {
     button {
         font-size: 0.9rem;
         padding: 8px 16px;
+    }
+
+    #volume-control {
+        width: 120px; /* Adjust slider size for smaller screens */
     }
 }
