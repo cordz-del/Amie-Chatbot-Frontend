@@ -10,7 +10,8 @@ const status = document.getElementById("status");
 const ageInput = document.getElementById("age-input");
 const volumeControl = document.getElementById("volume-control"); // Volume slider or input
 
-let recognition;
+let recognition; // For speech recognition
+let conversationLog = []; // To maintain conversation history
 
 // Check for browser support for Speech Recognition
 if ("webkitSpeechRecognition" in window) {
@@ -80,6 +81,7 @@ chatForm.addEventListener("submit", async (event) => {
 async function sendMessage(message, age, volume) {
   // Display the user's message in the chat history
   chatHistory.innerHTML += `<p><strong>You:</strong> ${message}</p>`;
+  conversationLog.push({ role: "user", content: message }); // Add user's message to the log
 
   try {
     const response = await fetch(`${BACKEND_URL}/chat`, {
@@ -87,12 +89,14 @@ async function sendMessage(message, age, volume) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ message, age, volume }), // Include age and volume in the POST request body
+      body: JSON.stringify({ message, age, volume, conversation_log: conversationLog }), // Include log
     });
 
     const data = await response.json();
     if (data.response) {
       chatHistory.innerHTML += `<p><strong>Bot:</strong> ${data.response}</p>`;
+      conversationLog.push({ role: "assistant", content: data.response }); // Add bot's response to the log
+
       if (data.audio) {
         playAudio(data.audio); // Play audio response if available
       }
@@ -112,13 +116,17 @@ async function sendMessage(message, age, volume) {
 
 // Function to play audio from base64-encoded data
 function playAudio(base64Audio) {
-  const audioData = Uint8Array.from(atob(base64Audio), (c) => c.charCodeAt(0));
-  const audioBlob = new Blob([audioData], { type: "audio/wav" });
-  const audioUrl = URL.createObjectURL(audioBlob);
-  const audio = new Audio(audioUrl);
-  audio.play().catch((error) => {
-    console.error("Error playing audio:", error);
-  });
+  try {
+    const audioData = Uint8Array.from(atob(base64Audio), (c) => c.charCodeAt(0));
+    const audioBlob = new Blob([audioData], { type: "audio/wav" });
+    const audioUrl = URL.createObjectURL(audioBlob);
+    const audio = new Audio(audioUrl);
+    audio.play().catch((error) => {
+      console.error("Error playing audio:", error);
+    });
+  } catch (error) {
+    console.error("Error decoding or playing audio:", error);
+  }
 }
 
 // Debugging helper: Log when the frontend loads
