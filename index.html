@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amie Chatbot Project</title>
+    <title>Amie Chatbot</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
-        <h1>Amie Project Chatbot</h1>
+        <h1>Amie Chatbot</h1>
     </header>
 
     <main>
@@ -40,14 +40,101 @@
         <!-- Volume Control Section -->
         <section id="volume-control-section">
             <label for="volume-control">Volume:</label>
-            <input type="range" id="volume-control" min="0.5" max="2.0" step="0.1" value="1.0">
+            <input type="range" id="volume-control" min="0" max="2" step="0.1" value="1.0">
         </section>
+
+        <!-- Hidden Audio Player -->
+        <audio id="audio-player" controls hidden></audio>
     </main>
 
     <footer>
-        <p>Powered by the Amie Chatbot Project - AI for Social and Emotional Learning</p>
+        <p>Powered by Amie Chatbot Project - AI for Social and Emotional Learning</p>
     </footer>
 
-    <script src="app.js"></script>
+    <script>
+        const chatHistory = document.getElementById('chat-history');
+        const chatInput = document.getElementById('chat-input');
+        const chatForm = document.getElementById('chat-form');
+        const startRecordBtn = document.getElementById('start-record-btn');
+        const stopRecordBtn = document.getElementById('stop-record-btn');
+        const status = document.getElementById('status');
+        const volumeControl = document.getElementById('volume-control');
+        const audioPlayer = document.getElementById('audio-player');
+
+        // Function to append messages to chat history
+        function appendMessage(sender, message) {
+            const messageElement = document.createElement('div');
+            messageElement.className = sender === 'User' ? 'user-message' : 'bot-message';
+            messageElement.textContent = `${sender}: ${message}`;
+            chatHistory.appendChild(messageElement);
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+        }
+
+        // Handle text chat
+        async function handleChat(event) {
+            event.preventDefault();
+            const userMessage = chatInput.value.trim();
+            const age = document.getElementById('age-input').value;
+            const volume = parseFloat(volumeControl.value);
+
+            if (!userMessage || !age) return;
+
+            appendMessage('User', userMessage);
+            chatInput.value = '';
+
+            try {
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: userMessage, age, volume }),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch response from server');
+                }
+
+                const data = await response.json();
+                appendMessage('Bot', data.response);
+
+                if (data.audio) {
+                    const audioData = `data:audio/wav;base64,${data.audio}`;
+                    audioPlayer.src = audioData;
+                    audioPlayer.volume = volume; // Adjust playback volume
+                    audioPlayer.hidden = false;
+                    audioPlayer.play();
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                appendMessage('Error', 'Something went wrong!');
+            }
+        }
+
+        // Add event listener to the form
+        chatForm.addEventListener('submit', handleChat);
+
+        // Voice recording logic
+        startRecordBtn.addEventListener('click', () => {
+            status.textContent = 'Recording...';
+            startRecordBtn.disabled = true;
+            stopRecordBtn.disabled = false;
+
+            // Add logic to start voice recording
+        });
+
+        stopRecordBtn.addEventListener('click', () => {
+            status.textContent = 'Processing...';
+            startRecordBtn.disabled = false;
+            stopRecordBtn.disabled = true;
+
+            // Add logic to stop voice recording and send audio to the server
+        });
+
+        // Adjust audio playback volume
+        volumeControl.addEventListener('input', () => {
+            audioPlayer.volume = parseFloat(volumeControl.value);
+        });
+    </script>
 </body>
 </html>
