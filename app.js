@@ -8,12 +8,11 @@ const startRecordBtn = document.getElementById("start-record-btn");
 const stopRecordBtn = document.getElementById("stop-record-btn");
 const status = document.getElementById("status");
 const ageInput = document.getElementById("age-input");
+const volumeControl = document.getElementById("volume-control"); // Volume slider or input
 
-// Initialize conversation log
-let conversationLog = [];
+let recognition;
 
 // Check for browser support for Speech Recognition
-let recognition;
 if ("webkitSpeechRecognition" in window) {
   recognition = new webkitSpeechRecognition();
 } else if ("SpeechRecognition" in window) {
@@ -38,7 +37,7 @@ if (recognition) {
     const transcript = event.results[0][0].transcript.trim();
     status.textContent = `You said: ${transcript}`;
     if (transcript) {
-      await sendMessage(transcript, parseInt(ageInput.value, 10) || 10);
+      await sendMessage(transcript, parseInt(ageInput.value, 10) || 10, parseFloat(volumeControl.value) || 1.0);
     } else {
       chatHistory.innerHTML += `<p><strong>Bot:</strong> No input detected. Please try again.</p>`;
     }
@@ -66,9 +65,11 @@ if (recognition) {
 chatForm.addEventListener("submit", async (event) => {
   event.preventDefault(); // Prevent form from reloading the page
   const message = chatInput.value.trim();
-  const age = parseInt(ageInput.value, 10) || 10; // Default age to 10 if not provided
+  const age = parseInt(ageInput.value, 10) || 10; // Default to age 10 if not provided
+  const volume = parseFloat(volumeControl.value) || 1.0; // Default volume to 1.0 if not provided
+
   if (message) {
-    await sendMessage(message, age);
+    await sendMessage(message, age, volume);
     chatInput.value = ""; // Clear input field after sending
   } else {
     chatHistory.innerHTML += `<p><strong>Bot:</strong> Please enter a message.</p>`;
@@ -76,10 +77,9 @@ chatForm.addEventListener("submit", async (event) => {
 });
 
 // Function to send a message to the chatbot API
-async function sendMessage(message, age) {
-  // Add the user's message to the chat history
+async function sendMessage(message, age, volume) {
+  // Display the user's message in the chat history
   chatHistory.innerHTML += `<p><strong>You:</strong> ${message}</p>`;
-  conversationLog.push({ role: "user", content: message }); // Add to log
 
   try {
     const response = await fetch(`${BACKEND_URL}/chat`, {
@@ -87,14 +87,12 @@ async function sendMessage(message, age) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ message, age, conversation_log: conversationLog }), // Include conversation log
+      body: JSON.stringify({ message, age, volume }), // Include age and volume in the POST request body
     });
 
     const data = await response.json();
     if (data.response) {
       chatHistory.innerHTML += `<p><strong>Bot:</strong> ${data.response}</p>`;
-      conversationLog.push({ role: "assistant", content: data.response }); // Add bot's response to log
-
       if (data.audio) {
         playAudio(data.audio); // Play audio response if available
       }
