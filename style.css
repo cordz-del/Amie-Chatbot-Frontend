@@ -1,138 +1,222 @@
-/* General Reset */
-* {
+/* General body styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f4f8; /* Light gray/blue background for a clean look */
+    color: #333; /* Neutral dark text for readability */
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    font-family: 'Arial', sans-serif;
-}
-
-/* Body Styling */
-body {
-    background-color: #f9f9f9;
-    color: #333;
-    font-size: 16px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-}
-
-/* Chat Container */
-.chat-container {
-    width: 100%;
-    max-width: 800px;
-    background: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    height: 90vh;
-    overflow: hidden;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
 }
 
-/* Centered Title */
-.chat-header {
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: #333;
+/* Header styling */
+header h1 {
+    font-size: 3rem; /* Larger font size for "Amie" */
     text-align: center;
+    background: linear-gradient(90deg, #007BFF, #89CFF0); /* Gradient blue for Amie */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 20px 0;
+}
+
+/* Chat container */
+#chat-container {
+    background-color: white;
+    width: 90%;
+    max-width: 800px;
+    min-width: 300px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
     margin-bottom: 20px;
 }
 
-/* Speech-to-Text and Text-to-Speech Box */
-.speech-box {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #f5f5f5;
-    padding: 15px;
+/* Box for image or placeholder */
+#image-box {
+    width: 100%;
     height: 150px;
-    overflow-y: auto;
-    font-size: 1rem;
-    color: #333;
-    margin-bottom: 20px;
-    line-height: 1.5;
-}
-
-.speech-box::-webkit-scrollbar {
-    width: 8px;
-}
-
-.speech-box::-webkit-scrollbar-thumb {
-    background-color: #007bff;
-    border-radius: 4px;
-}
-
-/* Input Area */
-.input-area {
+    background-color: #e0e0e0;
+    border-radius: 8px;
+    margin-bottom: 10px;
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 15px;
+    justify-content: center;
+    font-size: 1rem;
+    color: #555;
 }
 
-.input-area label {
+/* Chat history box */
+#chat-history {
+    border: 1px solid #ccc;
+    padding: 15px;
+    height: 300px;
+    overflow-y: scroll;
+    background-color: #fff;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    font-size: 1rem;
+    color: #333;
+}
+
+/* Chat history messages */
+.chat-message {
+    margin-bottom: 10px;
+    line-height: 1.4;
+}
+
+.chat-message.user {
+    text-align: right;
+    color: #007BFF;
     font-weight: bold;
-    margin-right: 5px;
 }
 
-.input-area input[type="text"],
-.input-area input[type="number"] {
+.chat-message.bot {
+    text-align: left;
+    color: #333;
+}
+
+/* Input container styling */
+#input-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+#age-input {
+    width: 80px;
     padding: 10px;
     font-size: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 10px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-.input-area input[type="number"]::placeholder {
-    color: #999;
-    font-style: italic;
+#age-input::placeholder {
+    text-transform: capitalize; /* Capitalize "Age" placeholder */
 }
 
-.input-area button {
-    background-color: #007bff;
-    color: #fff;
+/* Chat input field */
+#chat-input {
+    flex: 1;
+    padding: 10px;
     font-size: 1rem;
-    border: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 10px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Buttons */
+button {
     padding: 10px 20px;
-    border-radius: 5px;
+    font-size: 1rem;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-.input-area button:hover {
-    background-color: #0056b3;
+button:hover {
+    background-color: #0056b3; /* Darker blue for hover effect */
 }
 
-/* Footer Styling */
-footer {
-    text-align: center;
+button:disabled {
+    background-color: #ccc; /* Gray for disabled buttons */
+    cursor: not-allowed;
+}
+
+/* Voice controls */
+#voice-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    width: 100%;
+}
+
+#status {
     font-size: 0.9rem;
-    color: #666;
+    color: #555;
+}
+
+/* Volume control styling */
+#volume-control-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin-top: 10px;
 }
 
-/* Scrollbar Customization */
-.speech-box::-webkit-scrollbar {
-    width: 8px;
+#volume-control-section label {
+    font-size: 1rem;
+    color: #333;
+    margin-right: 10px;
+    font-weight: bold;
 }
 
-.speech-box::-webkit-scrollbar-thumb {
-    background-color: #007bff;
-    border-radius: 4px;
+#volume-control {
+    width: 150px;
+    -webkit-appearance: none; /* Remove default slider styling */
+    background: #ccc;
+    height: 5px;
+    border-radius: 5px;
+    outline: none;
+    transition: background-color 0.3s;
 }
 
-.speech-box::-webkit-scrollbar-thumb:hover {
-    background-color: #0056b3;
+#volume-control::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #007BFF;
+    cursor: pointer;
 }
 
-/* Mobile Responsiveness */
-@media (max-width: 768px) {
-    .chat-container {
-        height: 100vh;
-        border-radius: 0;
+#volume-control::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #007BFF;
+    cursor: pointer;
+}
+
+/* Footer styling */
+footer {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    #chat-container {
+        width: 95%;
+    }
+
+    header h1 {
+        font-size: 2.5rem; /* Slightly smaller for mobile */
+    }
+
+    button {
+        font-size: 0.9rem;
+        padding: 8px 16px;
+    }
+
+    #volume-control {
+        width: 120px; /* Adjust slider size for smaller screens */
     }
 }
