@@ -1,207 +1,138 @@
 /* General Reset */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
 }
 
 /* Body Styling */
 body {
-  background-color: #f9f9f9;
-  color: #333;
-  font-size: 16px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
+    background-color: #f9f9f9;
+    color: #333;
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
 }
 
 /* Chat Container */
 .chat-container {
-  width: 100%;
-  max-width: 800px;
-  background: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 90vh;
-  overflow: hidden;
+    width: 100%;
+    max-width: 800px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 90vh;
+    overflow: hidden;
 }
 
-/* Chat Header */
+/* Centered Title */
 .chat-header {
-  font-size: 2rem;
-  font-weight: bold;
-  color: #333;
-  text-align: center;
-  padding: 10px 0;
-  border-bottom: 1px solid #ddd;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
-/* Chat Area */
-.chat-area {
-  flex: 1;
-  overflow-y: auto;
-  margin: 20px 0;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background-color: #f5f5f5;
+/* Speech-to-Text and Text-to-Speech Box */
+.speech-box {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f5f5f5;
+    padding: 15px;
+    height: 150px;
+    overflow-y: auto;
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 20px;
+    line-height: 1.5;
 }
 
-/* Individual Message */
-.message {
-  margin-bottom: 15px;
+.speech-box::-webkit-scrollbar {
+    width: 8px;
 }
 
-.message.user {
-  text-align: right;
-}
-
-.message.bot {
-  text-align: left;
-}
-
-.message p {
-  display: inline-block;
-  padding: 10px 15px;
-  border-radius: 20px;
-  max-width: 70%;
-  line-height: 1.5;
-}
-
-.message.user p {
-  background-color: #007bff;
-  color: #fff;
-}
-
-.message.bot p {
-  background-color: #eaeaea;
-  color: #333;
+.speech-box::-webkit-scrollbar-thumb {
+    background-color: #007bff;
+    border-radius: 4px;
 }
 
 /* Input Area */
 .input-area {
-  display: flex;
-  align-items: center;
-  border-top: 1px solid #ddd;
-  padding-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
 }
 
 .input-area label {
-  font-weight: bold;
-  margin-right: 5px;
+    font-weight: bold;
+    margin-right: 5px;
 }
 
 .input-area input[type="text"],
 .input-area input[type="number"] {
-  flex: 1;
-  padding: 10px;
-  font-size: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 20px;
-  outline: none;
-  margin-right: 10px;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 200px;
+}
+
+.input-area input[type="number"]::placeholder {
+    color: #999;
+    font-style: italic;
 }
 
 .input-area button {
-  background-color: #007bff;
-  color: #fff;
-  font-size: 1rem;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 1rem;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .input-area button:hover {
-  background-color: #0056b3;
+    background-color: #0056b3;
 }
 
-/* Speech-to-Text and Text-to-Speech Box */
-.speech-text-box {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background-color: #f9f9f9;
-  padding: 10px;
-  margin: 15px 0;
-  height: 150px;
-  overflow-y: auto;
-  font-size: 1rem;
-  line-height: 1.5;
-  color: #333;
-}
-
-.speech-text-box::-webkit-scrollbar {
-  width: 8px;
-}
-
-.speech-text-box::-webkit-scrollbar-thumb {
-  background-color: #007bff;
-  border-radius: 4px;
-}
-
-.speech-text-box::-webkit-scrollbar-thumb:hover {
-  background-color: #0056b3;
-}
-
-/* Audio Controls */
-.audio-controls {
-  margin-top: 10px;
-  text-align: center;
-}
-
-.audio-controls audio {
-  width: 100%;
-  max-width: 500px;
-  margin-top: 10px;
-  border: none;
-  outline: none;
-}
-
-.audio-controls button {
-  margin: 5px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 20px;
-  padding: 10px 15px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.audio-controls button:hover {
-  background-color: #0056b3;
+/* Footer Styling */
+footer {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 10px;
 }
 
 /* Scrollbar Customization */
-.chat-area::-webkit-scrollbar {
-  width: 8px;
+.speech-box::-webkit-scrollbar {
+    width: 8px;
 }
 
-.chat-area::-webkit-scrollbar-thumb {
-  background-color: #007bff;
-  border-radius: 4px;
+.speech-box::-webkit-scrollbar-thumb {
+    background-color: #007bff;
+    border-radius: 4px;
 }
 
-.chat-area::-webkit-scrollbar-thumb:hover {
-  background-color: #0056b3;
+.speech-box::-webkit-scrollbar-thumb:hover {
+    background-color: #0056b3;
 }
 
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
-  .chat-container {
-    height: 100vh;
-    border-radius: 0;
-  }
-
-  .chat-area {
-    margin: 10px 0;
-  }
+    .chat-container {
+        height: 100vh;
+        border-radius: 0;
+    }
 }
