@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+    const BACKEND_URL = "https://462d2d49-1f98-4257-a721-46da919d929b-00-3hhfbf6wdvr1l.kirk.replit.dev";
     const chatHistory = document.getElementById("chat-history");
     const chatForm = document.getElementById("chat-form");
     const chatInput = document.getElementById("chat-input");
@@ -60,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         try {
             // Send the message to the backend
-            const response = await fetch("/chat", {
+            const response = await fetch(`${BACKEND_URL}/chat`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -116,7 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 formData.append("volume", volumeControl.value);
 
                 try {
-                    const response = await fetch("/voice", {
+                    const response = await fetch(`${BACKEND_URL}/voice`, {
                         method: "POST",
                         body: formData,
                     });
