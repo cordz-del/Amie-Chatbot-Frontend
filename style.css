@@ -16,16 +16,40 @@ body {
 header h1 {
     font-size: 3rem; /* Larger font size for "Amie" */
     text-align: center;
-    background: linear-gradient(90deg, #007BFF, #89CFF0); /* Gradient blue for Amie */
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: #007BFF; /* Bright blue for a professional look */
     margin: 20px 0;
+}
+
+/* Container for image and chatbox */
+#main-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px; /* Space between image and chatbox */
+    width: 100%;
+    max-width: 1200px;
+}
+
+/* Image styling */
+#image-box {
+    flex: 1;
+    max-width: 400px; /* Set a maximum width for the image */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#image-box img {
+    width: 100%; /* Ensure the image fits within the container */
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add subtle shadow for depth */
 }
 
 /* Chat container */
 #chat-container {
+    flex: 2; /* Make chat container wider than the image */
     background-color: white;
-    width: 90%;
     max-width: 800px;
     min-width: 300px;
     border-radius: 12px;
@@ -33,21 +57,6 @@ header h1 {
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    margin-bottom: 20px;
-}
-
-/* Box for image or placeholder */
-#image-box {
-    width: 100%;
-    height: 150px;
-    background-color: #e0e0e0;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1rem;
-    color: #555;
 }
 
 /* Chat history box */
@@ -64,29 +73,17 @@ header h1 {
     color: #333;
 }
 
-/* Chat history messages */
-.chat-message {
-    margin-bottom: 10px;
-    line-height: 1.4;
-}
-
-.chat-message.user {
-    text-align: right;
-    color: #007BFF;
-    font-weight: bold;
-}
-
-.chat-message.bot {
-    text-align: left;
-    color: #333;
-}
-
-/* Input container styling */
+/* Chat form styling */
 #input-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
+    width: 100%;
+}
+
+#chat-form {
+    display: flex;
     width: 100%;
 }
 
@@ -141,7 +138,7 @@ button:disabled {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 10px;
+    margin-top: 20px;
     width: 100%;
 }
 
@@ -203,20 +200,17 @@ footer {
 
 /* Responsive adjustments */
 @media (max-width: 600px) {
+    #main-container {
+        flex-direction: column; /* Stack image and chatbox vertically */
+        align-items: center;
+    }
+
+    #image-box,
     #chat-container {
-        width: 95%;
+        width: 90%; /* Adjust width for smaller screens */
     }
 
     header h1 {
         font-size: 2.5rem; /* Slightly smaller for mobile */
-    }
-
-    button {
-        font-size: 0.9rem;
-        padding: 8px 16px;
-    }
-
-    #volume-control {
-        width: 120px; /* Adjust slider size for smaller screens */
     }
 }
