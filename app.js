@@ -32,14 +32,15 @@ document.addEventListener("DOMContentLoaded", () => {
             const audioData = Uint8Array.from(atob(base64Audio), (c) => c.charCodeAt(0));
             const audioBlob = new Blob([audioData], { type: "audio/wav" });
             const audioUrl = URL.createObjectURL(audioBlob);
-            audioPlayer.src = audioUrl;
-            audioPlayer.volume = parseFloat(volumeControl.value) || 1.0;
-            audioPlayer.hidden = false;
-            audioPlayer.play().catch((error) => {
+            const audio = new Audio(audioUrl);
+            audio.volume = parseFloat(volumeControl.value) || 1.0;
+            audio.play().catch((error) => {
                 console.error("Error playing audio:", error);
+                appendMessage("Error", "Could not play audio response.");
             });
         } catch (error) {
             console.error("Error decoding or playing audio:", error);
+            appendMessage("Error", "Audio playback error.");
         }
     }
 
@@ -110,7 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
             mediaRecorder.onstop = async () => {
                 const audioBlob = new Blob(recordedChunks, { type: "audio/wav" });
                 const formData = new FormData();
-                formData.append("audio", audioBlob);
+                formData.append("audio", audioBlob, "recording.wav");
                 formData.append("age", ageInput.value);
                 formData.append("volume", volumeControl.value);
 
