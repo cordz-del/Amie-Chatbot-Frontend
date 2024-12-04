@@ -3,20 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amie Chatbot</title>
+    <title>Amie</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        header h1 {
+            text-align: center;
+            font-size: 3rem;
+            background: linear-gradient(to right, #0056b3, #007bff, #89cfff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 20px 0;
+        }
+    </style>
 </head>
 <body>
     <header>
-        <h1>Amie Chatbot</h1>
+        <h1>Amie</h1>
     </header>
 
-    <main id="main-container">
-        <!-- Image Section -->
-        <div id="image-box">
-            <img src="frontend/amie_avatar_v1_720.jpg" alt="Amie Avatar">
-        </div>
-
+    <main>
         <!-- Chat Section -->
         <div id="chat-container">
             <!-- Chat History Section -->
@@ -25,12 +30,8 @@
             <!-- Input Section -->
             <section id="input-container">
                 <form id="chat-form">
-                    <label for="age-input">Age:</label>
-                    <input type="number" id="age-input" placeholder="Enter your age" min="3" max="18" required>
-                    
-                    <label for="chat-input">Message:</label>
+                    <input type="number" id="age-input" placeholder="Age" min="3" max="18" required>
                     <input type="text" id="chat-input" placeholder="Type your message here..." autocomplete="off" required>
-                    
                     <button type="submit">Send</button>
                 </form>
             </section>
