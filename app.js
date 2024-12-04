@@ -24,8 +24,19 @@ document.addEventListener("DOMContentLoaded", () => {
         chatHistory.scrollTop = chatHistory.scrollHeight; // Auto-scroll to the latest message
     }
 
-    // Send a message to the chatbot API
-    async function sendMessage(message, age, volume = 1.0) {
+    // Handle chat submission
+    chatForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const message = chatInput.value.trim();
+        const age = parseInt(ageInput.value, 10) || 10;
+        const volume = parseFloat(volumeControl.value) || 1.0;
+
+        if (!message) return;
+
+        appendMessage("You", message);
+        chatInput.value = "";
+
         try {
             const response = await fetch(`${BACKEND_URL}/chat`, {
                 method: "POST",
@@ -37,47 +48,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (!response.ok) {
                 console.error(`HTTP error: ${response.status}`);
-                throw new Error("Failed to fetch from backend.");
+                throw new Error("Failed to fetch response from the server.");
             }
 
             const data = await response.json();
-            return data;
-        } catch (error) {
-            console.error("Error in sendMessage:", error);
-            return { error: error.message };
-        }
-    }
-
-    // Handle chat submission
-    chatForm.addEventListener("submit", async (event) => {
-        event.preventDefault();
-
-        const message = chatInput.value.trim();
-        const age = parseInt(ageInput.value, 10) || 10;
-        const volume = parseFloat(volumeControl.value) || 1.0;
-
-        if (!message) return;
-
-        // Append user message to chat
-        appendMessage("You", message);
-        chatInput.value = "";
-
-        // Fetch response from backend
-        const data = await sendMessage(message, age, volume);
-
-        if (data.error) {
-            appendMessage("Error", data.error);
-        } else {
             appendMessage("Amie", data.response);
 
-            // Play audio response if available
             if (data.audio) {
                 const audioData = `data:audio/wav;base64,${data.audio}`;
                 audioPlayer.src = audioData;
                 audioPlayer.volume = volume;
-                audioPlayer.hidden = false; // Show the audio player controls
+                audioPlayer.hidden = false;
                 audioPlayer.play();
             }
+        } catch (error) {
+            console.error("Error:", error);
+            appendMessage("Error", "Something went wrong while processing your message.");
         }
     });
 
@@ -87,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
         audioPlayer.volume = volume; // Adjust audio player volume in real-time
     });
 
-    // Handle voice recording
+    // Handle voice recording start
     startRecordBtn.addEventListener("click", async () => {
         if (isRecording) return;
 
@@ -110,6 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 formData.append("volume", volumeControl.value);
 
                 try {
+                    console.log("Sending audio to backend...");
                     const response = await fetch(`${BACKEND_URL}/voice`, {
                         method: "POST",
                         body: formData,
@@ -117,20 +104,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     if (!response.ok) {
                         console.error(`HTTP error: ${response.status}`);
-                        throw new Error("Failed to fetch from backend.");
+                        throw new Error("Failed to process voice input.");
                     }
 
                     const data = await response.json();
-
-                    // Append bot's response to chat
                     appendMessage("Amie", data.response);
 
-                    // Play audio response if available
                     if (data.audio) {
                         const audioData = `data:audio/wav;base64,${data.audio}`;
                         audioPlayer.src = audioData;
                         audioPlayer.volume = parseFloat(volumeControl.value) || 1.0;
-                        audioPlayer.hidden = false; // Show the audio player controls
+                        audioPlayer.hidden = false;
                         audioPlayer.play();
                     }
                 } catch (error) {
@@ -146,10 +130,11 @@ document.addEventListener("DOMContentLoaded", () => {
             statusMessage.textContent = "Recording...";
         } catch (error) {
             console.error("Error accessing microphone:", error);
-            appendMessage("Error", "Could not access microphone.");
+            appendMessage("Error", "Could not access microphone. Please check permissions.");
         }
     });
 
+    // Handle voice recording stop
     stopRecordBtn.addEventListener("click", () => {
         if (!isRecording || !mediaRecorder) return;
 
