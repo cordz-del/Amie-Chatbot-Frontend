@@ -91,20 +91,19 @@ document.addEventListener("DOMContentLoaded", () => {
             mediaRecorder.onstop = async () => {
                 const audioBlob = new Blob(recordedChunks, { type: "audio/wav" });
                 const formData = new FormData();
-                formData.append("audio", audioBlob);
-                formData.append("age", ageInput.value);
-                formData.append("volume", volumeControl.value);
+                formData.append("audio", audioBlob, "recording.wav");
+                formData.append("age", ageInput.value || "10");
+                formData.append("volume", volumeControl.value || "1.0");
+
+                console.log("Recorded chunks:", recordedChunks);
+                console.log("FormData:", formData);
 
                 try {
-                    console.log("Sending audio to backend...");
-                    const response = await fetch(`${BACKEND_URL}/voice`, {
-                        method: "POST",
-                        body: formData,
-                    });
+                    const response = await fetch(`${BACKEND_URL}/voice`, { method: "POST", body: formData });
 
                     if (!response.ok) {
                         console.error(`HTTP error: ${response.status}`);
-                        throw new Error("Failed to process voice input.");
+                        throw new Error("Failed to process voice input");
                     }
 
                     const data = await response.json();
