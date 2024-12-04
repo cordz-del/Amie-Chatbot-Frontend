@@ -18,10 +18,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // Append messages to the chat history
     function appendMessage(sender, message) {
         const messageElement = document.createElement("div");
-        messageElement.className = sender === "You" ? "user-message" : "bot-message";
         messageElement.textContent = `${sender}: ${message}`;
         chatHistory.appendChild(messageElement);
-        chatHistory.scrollTop = chatHistory.scrollHeight; // Auto-scroll to the latest message
+        chatHistory.scrollTop = chatHistory.scrollHeight;
     }
 
     // Handle chat submission
@@ -47,8 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             if (!response.ok) {
-                console.error(`HTTP error: ${response.status}`);
-                throw new Error("Failed to fetch response from the server.");
+                throw new Error("Failed to fetch response from server.");
             }
 
             const data = await response.json();
@@ -70,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Handle volume changes
     volumeControl.addEventListener("input", () => {
         const volume = parseFloat(volumeControl.value) || 1.0;
-        audioPlayer.volume = volume; // Adjust audio player volume in real-time
+        audioPlayer.volume = volume;
     });
 
     // Handle voice recording start
@@ -79,7 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            mediaRecorder = new MediaRecorder(stream);
+            mediaRecorder = new MediaRecorder(stream, { mimeType: "audio/webm" }); // Ensures compatibility
             recordedChunks = [];
 
             mediaRecorder.ondataavailable = (event) => {
@@ -95,15 +93,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 formData.append("age", ageInput.value || "10");
                 formData.append("volume", volumeControl.value || "1.0");
 
-                console.log("Recorded chunks:", recordedChunks);
-                console.log("FormData:", formData);
-
                 try {
-                    const response = await fetch(`${BACKEND_URL}/voice`, { method: "POST", body: formData });
+                    const response = await fetch(`${BACKEND_URL}/voice`, {
+                        method: "POST",
+                        body: formData,
+                    });
 
                     if (!response.ok) {
-                        console.error(`HTTP error: ${response.status}`);
-                        throw new Error("Failed to process voice input");
+                        throw new Error("Failed to process voice input.");
                     }
 
                     const data = await response.json();
