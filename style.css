@@ -8,7 +8,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     height: 100vh;
 }
 
@@ -16,52 +16,25 @@ body {
 header h1 {
     font-size: 3rem; /* Larger font size for "Amie" */
     text-align: center;
-    color: #007BFF; /* Bright blue for a professional look */
+    background: linear-gradient(90deg, #0056b3, #007BFF, #89CFF0); /* Gradient blue for "Amie" */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     margin: 20px 0;
-}
-
-/* Main container layout for image and chatbox */
-#main-container {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 30px; /* Space between image and chatbox */
-    width: 100%;
-    max-width: 1200px;
-    margin: 20px auto; /* Center the container */
-    padding: 20px;
-    box-sizing: border-box;
-}
-
-/* Image styling */
-#image-box {
-    flex: 1;
-    max-width: 350px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px;
-}
-
-#image-box img {
-    width: 100%; /* Scale image to fit the container */
-    height: auto; /* Maintain aspect ratio */
-    border-radius: 12px; /* Optional rounded corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add subtle shadow for depth */
-    object-fit: cover;
 }
 
 /* Chat container */
 #chat-container {
-    flex: 2;
     background-color: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    width: 90%;
     max-width: 800px;
-    min-width: 400px;
-    padding: 20px;
+    min-width: 300px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    overflow: hidden;
     display: flex;
     flex-direction: column;
+    padding: 20px;
+    margin: 0 auto; /* Center the container horizontally */
 }
 
 /* Chat history box */
@@ -69,12 +42,29 @@ header h1 {
     border: 1px solid #ccc;
     padding: 15px;
     height: 300px;
-    overflow-y: auto;
+    overflow-y: scroll;
     background-color: #fff;
-    margin-bottom: 10px;
+    margin-bottom: 20px; /* Add spacing below the chat history */
     border-radius: 8px;
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
     font-size: 1rem;
+    color: #333;
+}
+
+/* Chat history messages */
+.chat-message {
+    margin-bottom: 10px;
+    line-height: 1.4;
+}
+
+.chat-message.user {
+    text-align: right;
+    color: #007BFF;
+    font-weight: bold;
+}
+
+.chat-message.bot {
+    text-align: left;
     color: #333;
 }
 
@@ -88,6 +78,7 @@ header h1 {
 
 #chat-form {
     display: flex;
+    flex-wrap: wrap; /* Allow wrapping on small screens */
     width: 100%;
 }
 
@@ -100,6 +91,11 @@ header h1 {
     box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
+#age-input::placeholder {
+    text-transform: capitalize; /* Capitalize "Age" placeholder */
+}
+
+/* Chat input field */
 #chat-input {
     flex: 1; /* Allow the chat input to take remaining space */
     padding: 10px;
@@ -194,10 +190,6 @@ footer {
     #main-container {
         flex-direction: column; /* Stack image and chatbox vertically */
         align-items: center;
-    }
-
-    #image-box {
-        max-width: 90%; /* Allow image to shrink on smaller screens */
     }
 
     #chat-container {
