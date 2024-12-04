@@ -1,6 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const BACKEND_URL = "https://462d2d49-1f98-4257-a721-46da919d929b-00-3hhfbf6wdvr1l.kirk.replit.dev";
-
     const chatHistory = document.getElementById("chat-history");
     const chatForm = document.getElementById("chat-form");
     const chatInput = document.getElementById("chat-input");
@@ -23,6 +21,28 @@ document.addEventListener("DOMContentLoaded", () => {
         chatHistory.scrollTop = chatHistory.scrollHeight;
     }
 
+    // Play audio response from base64-encoded data
+    function playAudio(base64Audio) {
+        if (!base64Audio) {
+            console.error("No audio data received.");
+            appendMessage("Error", "Audio response not available.");
+            return;
+        }
+        try {
+            const audioData = Uint8Array.from(atob(base64Audio), (c) => c.charCodeAt(0));
+            const audioBlob = new Blob([audioData], { type: "audio/wav" });
+            const audioUrl = URL.createObjectURL(audioBlob);
+            audioPlayer.src = audioUrl;
+            audioPlayer.volume = parseFloat(volumeControl.value) || 1.0;
+            audioPlayer.hidden = false;
+            audioPlayer.play().catch((error) => {
+                console.error("Error playing audio:", error);
+            });
+        } catch (error) {
+            console.error("Error decoding or playing audio:", error);
+        }
+    }
+
     // Handle chat submission
     chatForm.addEventListener("submit", async (event) => {
         event.preventDefault();
@@ -33,11 +53,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!message) return;
 
+        // Append user message to chat
         appendMessage("You", message);
         chatInput.value = "";
 
         try {
-            const response = await fetch(`${BACKEND_URL}/chat`, {
+            // Send the message to the backend
+            const response = await fetch("/chat", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -46,38 +68,37 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             if (!response.ok) {
-                throw new Error("Failed to fetch response from server.");
+                throw new Error("Failed to fetch response from server");
             }
 
             const data = await response.json();
+
+            // Append bot's response to chat
             appendMessage("Amie", data.response);
 
+            // Play audio response if available
             if (data.audio) {
-                const audioData = `data:audio/wav;base64,${data.audio}`;
-                audioPlayer.src = audioData;
-                audioPlayer.volume = volume;
-                audioPlayer.hidden = false;
-                audioPlayer.play();
+                playAudio(data.audio);
             }
         } catch (error) {
             console.error("Error:", error);
-            appendMessage("Error", "Something went wrong while processing your message.");
+            appendMessage("Error", "Something went wrong!");
         }
     });
 
     // Handle volume changes
     volumeControl.addEventListener("input", () => {
         const volume = parseFloat(volumeControl.value) || 1.0;
-        audioPlayer.volume = volume;
+        audioPlayer.volume = volume; // Adjust audio player volume in real-time
     });
 
-    // Handle voice recording start
+    // Handle voice recording
     startRecordBtn.addEventListener("click", async () => {
         if (isRecording) return;
 
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            mediaRecorder = new MediaRecorder(stream, { mimeType: "audio/webm" }); // Ensures compatibility
+            mediaRecorder = new MediaRecorder(stream);
             recordedChunks = [];
 
             mediaRecorder.ondataavailable = (event) => {
@@ -89,33 +110,32 @@ document.addEventListener("DOMContentLoaded", () => {
             mediaRecorder.onstop = async () => {
                 const audioBlob = new Blob(recordedChunks, { type: "audio/wav" });
                 const formData = new FormData();
-                formData.append("audio", audioBlob, "recording.wav");
-                formData.append("age", ageInput.value || "10");
-                formData.append("volume", volumeControl.value || "1.0");
+                formData.append("audio", audioBlob);
+                formData.append("age", ageInput.value);
+                formData.append("volume", volumeControl.value);
 
                 try {
-                    const response = await fetch(`${BACKEND_URL}/voice`, {
+                    const response = await fetch("/voice", {
                         method: "POST",
                         body: formData,
                     });
 
                     if (!response.ok) {
-                        throw new Error("Failed to process voice input.");
+                        throw new Error("Failed to fetch response from server");
                     }
 
                     const data = await response.json();
+
+                    // Append bot's response to chat
                     appendMessage("Amie", data.response);
 
+                    // Play audio response if available
                     if (data.audio) {
-                        const audioData = `data:audio/wav;base64,${data.audio}`;
-                        audioPlayer.src = audioData;
-                        audioPlayer.volume = parseFloat(volumeControl.value) || 1.0;
-                        audioPlayer.hidden = false;
-                        audioPlayer.play();
+                        playAudio(data.audio);
                     }
                 } catch (error) {
-                    console.error("Error in voice processing:", error);
-                    appendMessage("Error", "Could not process your voice input.");
+                    console.error("Error:", error);
+                    appendMessage("Error", "Something went wrong!");
                 }
             };
 
@@ -126,11 +146,10 @@ document.addEventListener("DOMContentLoaded", () => {
             statusMessage.textContent = "Recording...";
         } catch (error) {
             console.error("Error accessing microphone:", error);
-            appendMessage("Error", "Could not access microphone. Please check permissions.");
+            appendMessage("Error", "Could not access microphone.");
         }
     });
 
-    // Handle voice recording stop
     stopRecordBtn.addEventListener("click", () => {
         if (!isRecording || !mediaRecorder) return;
 
