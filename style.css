@@ -8,7 +8,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     height: 100vh;
 }
 
@@ -20,41 +20,46 @@ header h1 {
     margin: 20px 0;
 }
 
-/* Container for image and chatbox */
+/* Main container layout for image and chatbox */
 #main-container {
     display: flex;
     justify-content: center;
-    align-items: center;
-    gap: 20px; /* Space between image and chatbox */
+    align-items: flex-start;
+    gap: 30px; /* Space between image and chatbox */
     width: 100%;
     max-width: 1200px;
+    margin: 20px auto; /* Center the container */
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 /* Image styling */
 #image-box {
     flex: 1;
-    max-width: 400px; /* Set a maximum width for the image */
+    max-width: 350px;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 10px;
 }
 
 #image-box img {
-    width: 100%; /* Ensure the image fits within the container */
-    height: auto;
-    border-radius: 12px;
+    width: 100%; /* Scale image to fit the container */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 12px; /* Optional rounded corners */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add subtle shadow for depth */
+    object-fit: cover;
 }
 
 /* Chat container */
 #chat-container {
-    flex: 2; /* Make chat container wider than the image */
+    flex: 2;
     background-color: white;
-    max-width: 800px;
-    min-width: 300px;
     border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    max-width: 800px;
+    min-width: 400px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
 }
@@ -64,7 +69,7 @@ header h1 {
     border: 1px solid #ccc;
     padding: 15px;
     height: 300px;
-    overflow-y: scroll;
+    overflow-y: auto;
     background-color: #fff;
     margin-bottom: 10px;
     border-radius: 8px;
@@ -76,10 +81,9 @@ header h1 {
 /* Chat form styling */
 #input-container {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-    width: 100%;
+    gap: 15px; /* Add space between input fields */
+    flex-wrap: wrap; /* Ensure inputs wrap properly on smaller screens */
+    margin-top: 10px;
 }
 
 #chat-form {
@@ -88,28 +92,20 @@ header h1 {
 }
 
 #age-input {
-    width: 80px;
+    width: 100px; /* Adjust width for age input */
     padding: 10px;
     font-size: 1rem;
     border: 1px solid #ccc;
     border-radius: 4px;
-    margin-right: 10px;
     box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-#age-input::placeholder {
-    text-transform: capitalize; /* Capitalize "Age" placeholder */
-}
-
-/* Chat input field */
 #chat-input {
-    flex: 1;
+    flex: 1; /* Allow the chat input to take remaining space */
     padding: 10px;
     font-size: 1rem;
     border: 1px solid #ccc;
     border-radius: 4px;
-    margin-right: 10px;
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 /* Buttons */
@@ -142,11 +138,6 @@ button:disabled {
     width: 100%;
 }
 
-#status {
-    font-size: 0.9rem;
-    color: #555;
-}
-
 /* Volume control styling */
 #volume-control-section {
     display: flex;
@@ -164,7 +155,7 @@ button:disabled {
 
 #volume-control {
     width: 150px;
-    -webkit-appearance: none; /* Remove default slider styling */
+    -webkit-appearance: none;
     background: #ccc;
     height: 5px;
     border-radius: 5px;
@@ -199,18 +190,21 @@ footer {
 }
 
 /* Responsive adjustments */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
     #main-container {
         flex-direction: column; /* Stack image and chatbox vertically */
         align-items: center;
     }
 
-    #image-box,
-    #chat-container {
-        width: 90%; /* Adjust width for smaller screens */
+    #image-box {
+        max-width: 90%; /* Allow image to shrink on smaller screens */
     }
 
-    header h1 {
-        font-size: 2.5rem; /* Slightly smaller for mobile */
+    #chat-container {
+        width: 95%; /* Adjust width of chatbox */
+    }
+
+    #input-container {
+        flex-direction: column; /* Stack input fields vertically */
     }
 }
