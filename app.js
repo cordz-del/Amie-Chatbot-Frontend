@@ -1,4 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // Ensure the page title is correct
+    document.title = "Amie"; // Set the title to "Amie" dynamically, in case of overwrites
+
     const BACKEND_URL = "https://462d2d49-1f98-4257-a721-46da919d929b-00-3hhfbf6wdvr1l.kirk.replit.dev";
     const chatHistory = document.getElementById("chat-history");
     const chatForm = document.getElementById("chat-form");
@@ -9,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const startRecordBtn = document.getElementById("start-record-btn");
     const stopRecordBtn = document.getElementById("stop-record-btn");
     const statusMessage = document.getElementById("status");
-    const resetButton = document.getElementById("reset-button"); // New reset button
+    const resetButton = document.getElementById("reset-chat-btn"); // Reset button ID updated for consistency
 
     let isRecording = false;
     let mediaRecorder;
