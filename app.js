@@ -22,6 +22,11 @@ document.addEventListener("DOMContentLoaded", () => {
         chatHistory.scrollTop = chatHistory.scrollHeight;
     }
 
+    // Clamp volume to the range [0.0, 1.0]
+    function clampVolume(value) {
+        return Math.min(Math.max(parseFloat(value), 0.0), 1.0);
+    }
+
     // Play audio response from base64-encoded data
     function playAudio(base64Audio) {
         if (!base64Audio) {
@@ -34,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const audioBlob = new Blob([audioData], { type: "audio/wav" });
             const audioUrl = URL.createObjectURL(audioBlob);
             const audio = new Audio(audioUrl);
-            audio.volume = parseFloat(volumeControl.value) || 1.0;
+            audio.volume = clampVolume(volumeControl.value); // Use clamped volume value
             audio.play().catch((error) => {
                 console.error("Error playing audio:", error);
                 appendMessage("Error", "Could not play audio response.");
@@ -51,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const message = chatInput.value.trim();
         const age = parseInt(ageInput.value, 10) || 10;
-        const volume = parseFloat(volumeControl.value) || 1.0;
+        const volume = clampVolume(volumeControl.value); // Clamp volume
 
         if (!message) return;
 
@@ -90,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Handle volume changes
     volumeControl.addEventListener("input", () => {
-        const volume = parseFloat(volumeControl.value) || 1.0;
+        const volume = clampVolume(volumeControl.value); // Clamp volume
         audioPlayer.volume = volume; // Adjust audio player volume in real-time
     });
 
