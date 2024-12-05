@@ -13,13 +13,13 @@ body {
 }
 
 /* Header styling */
-header h1 {
+header h1.title {
     font-size: 3rem; /* Larger font size for "Amie" */
     text-align: center;
     background: linear-gradient(to right, #0056b3, #007bff, #89cfff); /* Dark blue to light blue gradient */
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin: 40px 0; /* Moves the title lower */
+    margin: 50px 0; /* Moves the title down by ~half an inch */
 }
 
 /* Main container layout for chatbox */
@@ -29,7 +29,7 @@ header h1 {
     align-items: center;
     width: 100%;
     max-width: 1200px;
-    margin: 20px auto;
+    margin: 30px auto; /* Adds additional margin for spacing */
     padding: 20px;
     box-sizing: border-box;
 }
@@ -46,7 +46,7 @@ header h1 {
     display: flex;
     flex-direction: column;
     align-items: center; /* Keep elements centered */
-    margin-top: 50px; /* Moves the chat box lower */
+    margin-top: 50px; /* Moves the chatbox lower */
 }
 
 /* Chat history box */
@@ -122,79 +122,6 @@ header h1 {
 button[type="submit"] {
     flex-shrink: 0; /* Prevent the send button from shrinking */
     width: 80px; /* Fixed width for send button */
-}
-
-/* Buttons */
-button {
-    padding: 10px 15px; /* Adjusted padding for smaller screens */
-    font-size: 1rem;
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-button:hover {
-    background-color: #0056b3; /* Darker blue for hover effect */
-}
-
-button:disabled {
-    background-color: #ccc; /* Gray for disabled buttons */
-    cursor: not-allowed;
-}
-
-/* Voice controls */
-#voice-controls {
-    display: flex;
-    justify-content: center; /* Center the buttons */
-    gap: 10px; /* Adjusted spacing */
-    margin-top: 20px;
-    width: 100%;
-}
-
-/* Volume control styling */
-#volume-control-section {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 10px;
-}
-
-#volume-control-section label {
-    font-size: 1rem;
-    color: #333;
-    margin-right: 10px;
-    font-weight: bold;
-}
-
-#volume-control {
-    width: 120px; /* Reduced width for smaller screens */
-    -webkit-appearance: none; /* Remove default slider styling */
-    background: #ccc;
-    height: 5px;
-    border-radius: 5px;
-    outline: none;
-    transition: background-color 0.3s;
-}
-
-#volume-control::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    background: #007BFF;
-    cursor: pointer;
-}
-
-#volume-control::-moz-range-thumb {
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    background: #007BFF;
-    cursor: pointer;
 }
 
 /* Footer styling */
