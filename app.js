@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     // Ensure the page title is correct
-    document.title = "Amie"; // Set the title to "Amie" dynamically, in case of overwrites
+    document.title = "Amie"; // Set the title dynamically
 
     const BACKEND_URL = "https://462d2d49-1f98-4257-a721-46da919d929b-00-3hhfbf6wdvr1l.kirk.replit.dev";
     const chatHistory = document.getElementById("chat-history");
@@ -12,18 +12,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const startRecordBtn = document.getElementById("start-record-btn");
     const stopRecordBtn = document.getElementById("stop-record-btn");
     const statusMessage = document.getElementById("status");
-    const resetButton = document.getElementById("reset-chat-btn"); // Reset button ID updated for consistency
+    const resetButton = document.getElementById("reset-chat-btn");
 
     let isRecording = false;
     let mediaRecorder;
     let recordedChunks = [];
+    let conversationLog = []; // Maintain conversation history
 
     // Append messages to the chat history
     function appendMessage(sender, message) {
         const messageElement = document.createElement("div");
         messageElement.textContent = `${sender}: ${message}`;
         chatHistory.appendChild(messageElement);
-        chatHistory.scrollTop = chatHistory.scrollHeight;
+        chatHistory.scrollTop = chatHistory.scrollHeight; // Scroll to the latest message
     }
 
     // Show and hide loading indicator
@@ -58,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const audioBlob = new Blob([audioData], { type: "audio/wav" });
             const audioUrl = URL.createObjectURL(audioBlob);
             const audio = new Audio(audioUrl);
-            audio.volume = clampVolume(volumeControl.value); // Use clamped volume value
+            audio.volume = clampVolume(volumeControl.value); // Adjust volume
             audio.play().catch((error) => {
                 console.error("Error playing audio:", error);
                 appendMessage("Error", "Could not play audio response.");
@@ -75,7 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const message = chatInput.value.trim();
         const age = parseInt(ageInput.value, 10) || 10;
-        const volume = clampVolume(volumeControl.value); // Clamp volume
+        const volume = clampVolume(volumeControl.value);
 
         if (!message) return;
 
@@ -83,17 +84,19 @@ document.addEventListener("DOMContentLoaded", () => {
         appendMessage("You", message);
         chatInput.value = "";
 
+        // Add user message to conversation log
+        conversationLog.push({ user: message });
+
         // Show loading indicator
         showLoadingIndicator();
 
         try {
-            // Send the message to the backend
             const response = await fetch(`${BACKEND_URL}/chat`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ message, age, volume }),
+                body: JSON.stringify({ message, age, volume, conversation_log: conversationLog }),
             });
 
             if (!response.ok) {
@@ -105,6 +108,9 @@ document.addEventListener("DOMContentLoaded", () => {
             // Append bot's response to chat
             appendMessage("Amie", data.response);
 
+            // Update conversation log with bot's response
+            conversationLog.push({ bot: data.response });
+
             // Play audio response if available
             if (data.audio) {
                 playAudio(data.audio);
@@ -113,15 +119,14 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error("Error:", error);
             appendMessage("Error", "Something went wrong!");
         } finally {
-            // Hide loading indicator
-            hideLoadingIndicator();
+            hideLoadingIndicator(); // Hide loading indicator
         }
     });
 
     // Handle volume changes
     volumeControl.addEventListener("input", () => {
-        const volume = clampVolume(volumeControl.value); // Clamp volume
-        audioPlayer.volume = volume; // Adjust audio player volume in real-time
+        const volume = clampVolume(volumeControl.value);
+        audioPlayer.volume = volume; // Adjust audio player volume
     });
 
     // Handle voice recording
@@ -144,6 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const formData = new FormData();
                 formData.append("audio", audioBlob, "recording.wav");
                 formData.append("age", ageInput.value);
+                formData.append("conversation_log", JSON.stringify(conversationLog));
                 formData.append("volume", volumeControl.value);
 
                 try {
@@ -160,6 +166,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     // Append bot's response to chat
                     appendMessage("Amie", data.response);
+
+                    // Update conversation log
+                    conversationLog.push({ bot: data.response });
 
                     // Play audio response if available
                     if (data.audio) {
@@ -196,5 +205,6 @@ document.addEventListener("DOMContentLoaded", () => {
     resetButton.addEventListener("click", () => {
         chatHistory.innerHTML = ""; // Clear chat history
         appendMessage("Amie", "Chat reset. How can I help you today?");
+        conversationLog = []; // Reset conversation log
     });
 });
