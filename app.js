@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const startRecordBtn = document.getElementById("start-record-btn");
     const stopRecordBtn = document.getElementById("stop-record-btn");
     const statusMessage = document.getElementById("status");
+    const resetButton = document.getElementById("reset-button"); // New reset button
 
     let isRecording = false;
     let mediaRecorder;
@@ -20,6 +21,21 @@ document.addEventListener("DOMContentLoaded", () => {
         messageElement.textContent = `${sender}: ${message}`;
         chatHistory.appendChild(messageElement);
         chatHistory.scrollTop = chatHistory.scrollHeight;
+    }
+
+    // Show and hide loading indicator
+    function showLoadingIndicator() {
+        const loadingIndicator = document.createElement("div");
+        loadingIndicator.id = "loading-indicator";
+        loadingIndicator.textContent = "Processing...";
+        chatHistory.appendChild(loadingIndicator);
+    }
+
+    function hideLoadingIndicator() {
+        const loadingIndicator = document.getElementById("loading-indicator");
+        if (loadingIndicator) {
+            loadingIndicator.remove();
+        }
     }
 
     // Clamp volume to the range [0.0, 1.0]
@@ -64,6 +80,9 @@ document.addEventListener("DOMContentLoaded", () => {
         appendMessage("You", message);
         chatInput.value = "";
 
+        // Show loading indicator
+        showLoadingIndicator();
+
         try {
             // Send the message to the backend
             const response = await fetch(`${BACKEND_URL}/chat`, {
@@ -90,6 +109,9 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch (error) {
             console.error("Error:", error);
             appendMessage("Error", "Something went wrong!");
+        } finally {
+            // Hide loading indicator
+            hideLoadingIndicator();
         }
     });
 
@@ -165,5 +187,11 @@ document.addEventListener("DOMContentLoaded", () => {
         startRecordBtn.disabled = false;
         stopRecordBtn.disabled = true;
         statusMessage.textContent = "Processing...";
+    });
+
+    // Reset chat history
+    resetButton.addEventListener("click", () => {
+        chatHistory.innerHTML = ""; // Clear chat history
+        appendMessage("Amie", "Chat reset. How can I help you today?");
     });
 });
