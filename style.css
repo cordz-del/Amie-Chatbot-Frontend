@@ -19,7 +19,7 @@ header h1 {
     background: linear-gradient(to right, #0056b3, #007bff, #89cfff); /* Dark blue to light blue gradient */
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin: 20px 0;
+    margin: 40px 0; /* Moves the title lower */
 }
 
 /* Main container layout for chatbox */
@@ -46,6 +46,7 @@ header h1 {
     display: flex;
     flex-direction: column;
     align-items: center; /* Keep elements centered */
+    margin-top: 50px; /* Moves the chat box lower */
 }
 
 /* Chat history box */
@@ -64,23 +65,23 @@ header h1 {
 }
 
 /* Reset Chat button styling */
-#reset-button {
-    padding: 10px 20px;
-    font-size: 1rem;
-    background-color: #28a745; /* Green for reset */
+.reset-btn {
+    margin-top: 20px; /* Moves the reset button lower */
+    align-self: flex-end;
+    background-color: #007bff;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
+    padding: 10px 15px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    margin-bottom: 15px;
 }
 
-#reset-button:hover {
-    background-color: #218838; /* Darker green for hover */
+.reset-btn:hover {
+    background-color: #0056b3;
 }
 
-#reset-button:disabled {
+.reset-btn:disabled {
     background-color: #ccc; /* Gray for disabled buttons */
     cursor: not-allowed;
 }
