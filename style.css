@@ -16,8 +16,7 @@ body {
 header h1 {
     font-size: 3rem; /* Larger font size for "Amie" */
     text-align: center;
-    color: #007BFF; /* Bright blue for a professional look */
-    background: linear-gradient(to right, #0056b3, #007bff, #89cfff);
+    background: linear-gradient(to right, #0056b3, #007bff, #89cfff); /* Dark blue to light blue gradient */
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     margin: 20px 0;
@@ -41,8 +40,8 @@ header h1 {
     background-color: white;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    max-width: 880px; /* Increased size by 10% */
-    min-width: 440px; /* Increased size by 10% */
+    max-width: 750px; /* Reduced size for better mobile compatibility */
+    min-width: 300px; /* Reduced minimum width for small devices */
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -53,7 +52,7 @@ header h1 {
 #chat-history {
     border: 1px solid #ccc;
     padding: 15px;
-    height: 330px; /* Increased height by 10% */
+    height: 300px; /* Standardized height */
     overflow-y: auto;
     background-color: #fff;
     margin-bottom: 10px;
@@ -89,7 +88,7 @@ header h1 {
 /* Chat form styling */
 #input-container {
     display: flex;
-    gap: 15px; /* Add space between input fields */
+    gap: 10px; /* Reduced space for better alignment */
     flex-wrap: wrap; /* Ensure inputs wrap properly on smaller screens */
     margin-top: 10px;
     width: 100%; /* Full width for inputs */
@@ -102,7 +101,7 @@ header h1 {
 }
 
 #age-input {
-    width: 100px; /* Adjust width for age input */
+    width: 70px; /* Adjusted width for better fit */
     padding: 10px;
     font-size: 1rem;
     border: 1px solid #ccc;
@@ -116,11 +115,12 @@ header h1 {
     font-size: 1rem;
     border: 1px solid #ccc;
     border-radius: 4px;
+    min-width: 200px; /* Ensures minimum width on smaller screens */
 }
 
 /* Buttons */
 button {
-    padding: 10px 20px;
+    padding: 10px 15px; /* Adjusted padding for smaller screens */
     font-size: 1rem;
     background-color: #007BFF;
     color: white;
@@ -143,7 +143,7 @@ button:disabled {
 #voice-controls {
     display: flex;
     justify-content: center; /* Center the buttons */
-    gap: 20px;
+    gap: 10px; /* Adjusted spacing */
     margin-top: 20px;
     width: 100%;
 }
@@ -154,7 +154,6 @@ button:disabled {
     align-items: center;
     justify-content: center;
     margin-top: 10px;
-    width: 100%;
 }
 
 #volume-control-section label {
@@ -165,8 +164,8 @@ button:disabled {
 }
 
 #volume-control {
-    width: 150px;
-    -webkit-appearance: none;
+    width: 120px; /* Reduced width for smaller screens */
+    -webkit-appearance: none; /* Remove default slider styling */
     background: #ccc;
     height: 5px;
     border-radius: 5px;
@@ -201,18 +200,26 @@ footer {
 }
 
 /* Responsive adjustments */
-@media (max-width: 768px) {
-    #main-container {
-        flex-direction: column; /* Stack chatbox vertically */
-        align-items: center;
-    }
-
+@media (max-width: 600px) {
     #chat-container {
-        width: 95%; /* Adjust width of chatbox */
+        width: 100%; /* Take up full width */
+        margin: 0 10px; /* Add padding on mobile */
     }
 
-    #input-container {
-        flex-direction: column; /* Stack input fields vertically */
-        align-items: stretch; /* Align inputs to stretch fully */
+    header h1 {
+        font-size: 2.5rem; /* Slightly smaller for mobile */
+    }
+
+    button {
+        font-size: 0.9rem;
+        padding: 8px 12px; /* Reduced padding for smaller screens */
+    }
+
+    #volume-control {
+        width: 100px; /* Further reduce slider size for smaller screens */
+    }
+
+    #chat-input {
+        font-size: 0.9rem; /* Adjust input font size for smaller devices */
     }
 }
