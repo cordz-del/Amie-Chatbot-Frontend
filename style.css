@@ -67,7 +67,7 @@ header h1.title {
 /* Reset Chat button styling */
 .reset-btn {
     margin-top: 20px; /* Moves the reset button lower */
-    align-self: flex-end;
+    align-self: center;
     background-color: #007bff;
     color: white;
     border: none;
@@ -124,6 +124,47 @@ button[type="submit"] {
     width: 80px; /* Fixed width for send button */
 }
 
+/* General Button Styling */
+button {
+    background-color: #007BFF; /* Blue background */
+    color: white; /* White text */
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Hover Effect for Buttons */
+button:hover {
+    background-color: #0056b3; /* Darker blue when hovered */
+}
+
+/* Disabled Button Styling */
+button:disabled {
+    background-color: #ccc; /* Gray background */
+    cursor: not-allowed; /* Not-allowed cursor */
+}
+
+/* Start/Stop Recording Buttons Styling */
+#start-record-btn,
+#stop-record-btn {
+    width: 150px; /* Consistent width */
+    padding: 10px 15px;
+    margin: 5px; /* Spacing between buttons */
+}
+
+#start-record-btn:disabled,
+#stop-record-btn:disabled {
+    background-color: #ccc; /* Same as general disabled styling */
+}
+
+#start-record-btn:enabled,
+#stop-record-btn:enabled {
+    background-color: #007BFF; /* Blue background when enabled */
+}
+
 /* Footer styling */
 footer {
     text-align: center;
@@ -154,5 +195,11 @@ footer {
 
     #chat-input {
         font-size: 0.9rem; /* Adjust input font size for smaller devices */
+    }
+
+    #start-record-btn,
+    #stop-record-btn {
+        width: 100%; /* Full width for smaller screens */
+        margin: 5px 0;
     }
 }
