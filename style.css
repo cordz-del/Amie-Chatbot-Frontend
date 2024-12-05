@@ -41,8 +41,8 @@ header h1 {
     background-color: white;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    max-width: 1000px; /* Increased size (was 800px, now 1000px for 25% growth) */
-    min-width: 500px; /* Increased size (was 400px, now 500px for 25% growth) */
+    max-width: 880px; /* Increased size by 10% */
+    min-width: 440px; /* Increased size by 10% */
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -53,7 +53,7 @@ header h1 {
 #chat-history {
     border: 1px solid #ccc;
     padding: 15px;
-    height: 375px; /* Increased height (was 300px, now 375px for 25% growth) */
+    height: 330px; /* Increased height by 10% */
     overflow-y: auto;
     background-color: #fff;
     margin-bottom: 10px;
