@@ -40,8 +40,8 @@ header h1 {
     background-color: white;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    max-width: 750px; /* Reduced size for better mobile compatibility */
-    min-width: 300px; /* Reduced minimum width for small devices */
+    max-width: 700px; /* Reduced size for better mobile compatibility */
+    min-width: 280px; /* Reduced minimum width for smaller screens */
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -52,7 +52,7 @@ header h1 {
 #chat-history {
     border: 1px solid #ccc;
     padding: 15px;
-    height: 300px; /* Standardized height */
+    height: 280px; /* Adjusted height for smaller screens */
     overflow-y: auto;
     background-color: #fff;
     margin-bottom: 10px;
@@ -101,7 +101,7 @@ header h1 {
 }
 
 #age-input {
-    width: 70px; /* Adjusted width for better fit */
+    width: 60px; /* Adjusted width for better fit */
     padding: 10px;
     font-size: 1rem;
     border: 1px solid #ccc;
@@ -115,7 +115,12 @@ header h1 {
     font-size: 1rem;
     border: 1px solid #ccc;
     border-radius: 4px;
-    min-width: 200px; /* Ensures minimum width on smaller screens */
+    min-width: 120px; /* Ensures minimum width on smaller screens */
+}
+
+button[type="submit"] {
+    flex-shrink: 0; /* Prevent the send button from shrinking */
+    width: 80px; /* Fixed width for send button */
 }
 
 /* Buttons */
