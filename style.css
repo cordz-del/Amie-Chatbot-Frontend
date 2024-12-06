@@ -8,28 +8,31 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
-    height: 100vh;
+    justify-content: center; /* Center the content vertically */
+    height: 100vh; /* Take full viewport height */
 }
 
 /* Header styling */
+header {
+    margin-bottom: 20px; /* Add spacing between the title and chatbox */
+}
+
 header h1.title {
     font-size: 3rem; /* Larger font size for "Amie" */
     text-align: center;
-    background: linear-gradient(to right, #0056b3, #007bff, #89cfff); /* Dark blue to light blue gradient */
+    background: linear-gradient(to right, #0056b3, #007bff, #89cfff); /* Gradient styling */
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin: 20px 0; /* Reduced margin to bring the title closer to the chatbox */
 }
 
 /* Main container layout for chatbox */
 #main-container {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
     width: 100%;
     max-width: 1200px;
-    margin: 20px auto; /* Reduced margin for tighter spacing */
     padding: 20px;
     box-sizing: border-box;
 }
@@ -40,20 +43,19 @@ header h1.title {
     background-color: white;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    max-width: 700px; /* Reduced size for better mobile compatibility */
-    min-width: 280px; /* Reduced minimum width for smaller screens */
+    max-width: 700px; /* Maximum width for desktop */
+    min-width: 280px; /* Minimum width for smaller devices */
     padding: 20px;
     display: flex;
     flex-direction: column;
-    align-items: center; /* Keep elements centered */
-    margin-top: 10px; /* Reduced margin to align with the title */
+    align-items: center; /* Center content inside the chatbox */
 }
 
 /* Chat history box */
 #chat-history {
     border: 1px solid #ccc;
     padding: 15px;
-    height: 280px; /* Adjusted height for smaller screens */
+    height: 280px;
     overflow-y: auto;
     background-color: #fff;
     margin-bottom: 10px;
@@ -64,7 +66,7 @@ header h1.title {
     width: 100%; /* Ensure full width inside the container */
 }
 
-/* Chat form styling */
+/* Input form styling */
 #input-container {
     display: flex;
     gap: 10px; /* Reduced space for better alignment */
