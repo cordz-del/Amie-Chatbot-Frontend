@@ -3,42 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amie</title>
+    <title>Amie Chatbot</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="favicon.ico">
 </head>
 <body>
     <header>
-        <!-- Move Title "Amie" slightly lower -->
+        <!-- Updated title position -->
         <h1 id="amie-title">Amie</h1>
     </header>
 
-    <main>
+    <main id="main-container">
+        <!-- Chat Section -->
         <div id="chat-container">
             <!-- Chat History Section -->
-            <div id="chat-history" aria-label="Chat history"></div>
+            <div id="chat-history" aria-label="Chat history" tabindex="0"></div>
 
             <!-- Input Section -->
-            <form id="chat-form" aria-label="Chat form">
-                <input type="number" id="age-input" placeholder="Enter your age" min="1" max="30" required>
-                <input type="text" id="chat-input" placeholder="Type your message here..." required>
-                <button type="submit">Send</button>
-            </form>
+            <section id="input-container">
+                <form id="chat-form" aria-label="Chat form">
+                    <input type="number" id="age-input" placeholder="Enter your age" min="1" max="30" required aria-label="Enter your age">
+                    <input type="text" id="chat-input" placeholder="Type your message here..." autocomplete="off" required aria-label="Enter your message">
+                    <button type="submit" aria-label="Send your message">Send</button>
+                </form>
+            </section>
 
             <!-- Voice Controls -->
-            <div>
-                <button id="start-record-btn">Start Recording</button>
-                <button id="stop-record-btn" disabled>Stop Recording</button>
+            <section id="voice-controls" aria-label="Voice interaction controls">
+                <button id="start-record-btn" aria-label="Start voice recording">Start Recording</button>
+                <button id="stop-record-btn" disabled aria-label="Stop voice recording">Stop Recording</button>
                 <p id="status" aria-live="polite"></p>
-            </div>
+            </section>
 
-            <!-- Volume Control -->
-            <div id="volume-control-section">
+            <!-- Volume Control Section -->
+            <section id="volume-control-section" aria-label="Volume control">
                 <label for="volume-control">Volume:</label>
-                <input type="range" id="volume-control" min="0" max="1" step="0.1" value="0.5">
-            </div>
+                <input type="range" id="volume-control" min="0.5" max="2.0" step="0.1" value="1.0" aria-label="Adjust volume">
+            </section>
 
-            <!-- Reset Chat -->
-            <button id="reset-chat-btn">Reset Chat</button>
+            <!-- Reset Chat Button -->
+            <section id="reset-chat-section" aria-label="Reset chat">
+                <button id="reset-chat-btn" class="reset-btn" aria-label="Reset chat history">Reset Chat</button>
+            </section>
+
+            <!-- Hidden Audio Player -->
+            <audio id="audio-player" controls hidden aria-label="Audio player"></audio>
         </div>
     </main>
 
