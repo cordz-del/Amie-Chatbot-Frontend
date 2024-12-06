@@ -18,7 +18,7 @@ header {
 }
 
 #amie-title {
-    font-size: 5.4rem; /* Increased size by 20% (from 4.5rem to 5.4rem) */
+    font-size: 5.4rem; /* Increased size by 20% */
     margin-bottom: 40px; /* Added more space below the title */
     background: linear-gradient(to right, #0056b3, #007bff, #89cfff); /* Dark blue to light blue gradient */
     -webkit-background-clip: text;
@@ -31,11 +31,11 @@ header {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start; /* Adjusted to move content from bottom to top */
+    justify-content: flex-start;
     width: 100%;
     max-width: 1200px;
     padding: 20px;
-    margin-top: 50px; /* Added space between the title and the chat box */
+    margin-top: 50px; /* Space between title and chatbox */
 }
 
 /* Chat container */
@@ -43,26 +43,26 @@ header {
     background-color: white;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 840px; /* Increased width by 20% */
-    min-width: 336px; /* Increased minimum width by 20% */
-    padding: 24px; /* Increased padding by 20% */
+    max-width: 840px;
+    min-width: 336px;
+    padding: 24px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 30px 0; /* Adjusted spacing below the chat box */
+    margin: 30px 0; /* Adjusted spacing below chatbox */
 }
 
 /* Chat history */
 #chat-history {
     border: 1px solid #ccc;
-    padding: 18px; /* Increased padding by 20% */
-    height: 336px; /* Increased height by 20% */
+    padding: 18px;
+    height: 336px;
     overflow-y: auto;
     background-color: #fff;
-    margin-bottom: 12px; /* Adjusted spacing below the chat history */
+    margin-bottom: 12px;
     border-radius: 8px;
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-    font-size: 1.2rem; /* Slightly larger font for better readability */
+    font-size: 1.2rem;
     width: 100%;
 }
 
@@ -70,32 +70,32 @@ header {
 #chat-form {
     display: flex;
     width: 100%;
-    gap: 12px; /* Increased gap slightly for better spacing */
+    gap: 12px;
 }
 
 #age-input {
-    width: 72px; /* Increased width by 20% */
-    padding: 12px; /* Increased padding by 20% */
-    font-size: 1.2rem; /* Increased font size for readability */
+    width: 72px;
+    padding: 12px;
+    font-size: 1.2rem;
     border: 1px solid #ccc;
     border-radius: 4px;
 }
 
 #chat-input {
     flex: 1;
-    padding: 12px; /* Increased padding by 20% */
-    font-size: 1.2rem; /* Increased font size for readability */
+    padding: 12px;
+    font-size: 1.2rem;
     border: 1px solid #ccc;
     border-radius: 4px;
 }
 
 button[type="submit"] {
-    width: 96px; /* Increased width by 20% */
+    width: 96px;
     background-color: #007BFF;
     color: white;
     border: none;
     border-radius: 5px;
-    padding: 12px; /* Increased padding by 20% */
+    padding: 12px;
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -107,7 +107,7 @@ button[type="submit"]:hover {
 
 /* Volume control */
 #volume-control-section {
-    margin: 12px 0; /* Adjusted spacing for volume control */
+    margin: 12px 0;
     text-align: center;
 }
 
@@ -116,7 +116,6 @@ button[type="submit"]:hover {
     accent-color: #007bff;
 }
 
-/* Cross-browser volume slider */
 input[type="range"] {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -147,8 +146,8 @@ input[type="range"]::-moz-range-thumb {
 
 /* Start/Stop Recording Buttons */
 #start-record-btn, #stop-record-btn {
-    width: 180px; /* Increased width by 20% */
-    padding: 12px; /* Increased padding by 20% */
+    width: 180px;
+    padding: 12px;
     margin: 6px 0;
     background-color: #007BFF;
     color: white;
@@ -165,12 +164,12 @@ input[type="range"]::-moz-range-thumb {
 
 /* Reset Chat Button */
 .reset-btn {
-    margin-top: 24px; /* Adjusted spacing for better alignment */
+    margin-top: 24px;
     background-color: #007bff;
     color: white;
     border: none;
     border-radius: 5px;
-    padding: 12px; /* Increased padding by 20% */
+    padding: 12px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
@@ -187,21 +186,54 @@ footer {
     color: #666;
 }
 
-/* Mobile responsiveness */
+/* Responsive Design: Tablets and Mobile Devices */
 @media (max-width: 768px) {
-    body {
-        zoom: 1; /* Ensure content scales properly on mobile */
-    }
-
     header {
-        margin-top: 80px; /* Adjusted spacing for smaller screens */
+        margin-top: 80px;
     }
 
     #amie-title {
-        font-size: 4rem; /* Slightly reduced size for mobile */
+        font-size: 4rem; /* Reduce size slightly for tablets */
+    }
+
+    #chat-container {
+        width: 90%;
+        padding: 16px; /* Adjust padding for smaller screens */
+    }
+
+    #chat-history {
+        height: 250px; /* Reduce height on tablets */
+        font-size: 1rem;
+    }
+
+    #chat-form input,
+    #chat-form button {
+        font-size: 1rem; /* Adjust input and button font size */
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        margin-top: 60px;
+    }
+
+    #amie-title {
+        font-size: 3rem; /* Further reduce size for mobile */
     }
 
     #chat-container {
         width: 95%;
+        padding: 12px; /* Smaller padding for mobile */
+    }
+
+    #chat-history {
+        height: 200px; /* Further reduce height on mobile */
+        font-size: 0.9rem;
+    }
+
+    #chat-form input,
+    #chat-form button {
+        font-size: 0.9rem; /* Adjust font size for small devices */
+        padding: 8px;
     }
 }
