@@ -6,6 +6,52 @@
     <title>Amie Chatbot</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="favicon.ico">
+    <style>
+        /* Add media queries for responsive adjustments */
+        @media (max-width: 768px) {
+            #chat-container {
+                width: 90%; /* Reduce chat container width on tablets */
+                margin: 0 auto;
+            }
+
+            #chat-history {
+                max-height: 200px; /* Adjust chat history height */
+                font-size: 0.9rem; /* Slightly smaller font size for readability */
+            }
+
+            #input-container,
+            #voice-controls,
+            #volume-control-section {
+                padding: 10px; /* Adjust padding for better fit */
+            }
+        }
+
+        @media (max-width: 480px) {
+            #chat-container {
+                width: 95%; /* Further reduce width on mobile */
+                margin: 0 auto;
+            }
+
+            header h1 {
+                font-size: 1.8rem; /* Adjust header font size on mobile */
+            }
+
+            #chat-history {
+                max-height: 150px; /* Reduce chat history height on mobile */
+                font-size: 0.8rem;
+            }
+
+            #input-container input,
+            #input-container button {
+                font-size: 0.9rem; /* Adjust input and button font size */
+                padding: 8px;
+            }
+
+            #volume-control {
+                width: 100%; /* Ensure volume control fits on small screens */
+            }
+        }
+    </style>
 </head>
 <body>
     <header>
