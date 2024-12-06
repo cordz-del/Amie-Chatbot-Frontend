@@ -14,14 +14,18 @@ body {
 /* Header styling */
 header {
     text-align: center;
-    margin-top: 2rem;
+    margin-top: 40px; /* Add space above title */
+    margin-bottom: 20px; /* Add space below title */
 }
 
 #amie-title {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    position: relative;
-    top: 20px; /* Adjusted placement */
+    font-size: 30px; /* Larger title */
+    text-align: center;
+    margin: 0;
+    padding: 20px 0; /* Add space above and below for positioning */
+    background: linear-gradient(to right, #0056b3, #007bff, #89cfff); /* Dark blue to light blue gradient */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 /* Main container */
@@ -33,7 +37,6 @@ header {
     width: 100%;
     max-width: 1200px;
     padding: 20px;
-    margin-top: 10px;
 }
 
 /* Chat container */
@@ -115,8 +118,8 @@ button[type="submit"]:hover {
 
 /* Cross-browser volume slider */
 input[type="range"] {
-    -webkit-appearance: none;
-    -moz-appearance: none;
+    -webkit-appearance: none; /* For Chrome/Safari */
+    -moz-appearance: none;    /* For Firefox */
     appearance: none;
     width: 100%;
     height: 6px;
@@ -195,7 +198,6 @@ footer {
     }
 
     #amie-title {
-        font-size: 2rem;
-        top: 10px;
+        font-size: 25px;
     }
 }
