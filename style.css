@@ -26,6 +26,12 @@ header h1.title {
     margin-top: 4rem; /* Add 4 spaces above the title */
 }
 
+/* Adjust Title Position */
+header h1 {
+    text-align: center;
+    margin-top: 2rem; /* Adjust this value for the desired position */
+}
+
 /* Main container layout for chatbox */
 #main-container {
     display: flex;
@@ -156,6 +162,35 @@ button:disabled {
     width: 150px; /* Standardized width for the volume slider */
 }
 
+/* Volume Slider Style for Cross-Browser Compatibility */
+input[type="range"] {
+    -webkit-appearance: none; /* For Chrome/Safari */
+    -moz-appearance: none;    /* For Firefox */
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    background: blue;
+    border-radius: 5px;
+    outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 20px;
+    width: 20px;
+    background: #007BFF;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+input[type="range"]::-moz-range-thumb {
+    height: 20px;
+    width: 20px;
+    background: #007BFF;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
 /* Reset Chat button styling */
 .reset-btn {
     margin-top: 20px; /* Moves the reset button lower */
@@ -184,6 +219,25 @@ footer {
     margin-top: 20px;
     font-size: 0.9rem;
     color: #666;
+}
+
+/* Mobile Zoom Fix */
+@media only screen and (max-width: 768px) {
+    body {
+        zoom: 1; /* Ensure no zooming occurs on mobile */
+    }
+
+    .chat-container {
+        padding: 1rem; /* Reduce padding for smaller screens */
+    }
+
+    input, button {
+        font-size: 1rem; /* Adjust font size for better scaling */
+    }
+
+    h1 {
+        font-size: 1.5rem; /* Adjust title size */
+    }
 }
 
 /* Responsive adjustments */
