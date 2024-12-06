@@ -19,7 +19,7 @@ header h1.title {
     background: linear-gradient(to right, #0056b3, #007bff, #89cfff); /* Dark blue to light blue gradient */
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin: 50px 0; /* Moves the title down by ~half an inch */
+    margin: 20px 0; /* Reduced margin to bring the title closer to the chatbox */
 }
 
 /* Main container layout for chatbox */
@@ -29,7 +29,7 @@ header h1.title {
     align-items: center;
     width: 100%;
     max-width: 1200px;
-    margin: 30px auto; /* Adds additional margin for spacing */
+    margin: 20px auto; /* Reduced margin for tighter spacing */
     padding: 20px;
     box-sizing: border-box;
 }
@@ -46,7 +46,7 @@ header h1.title {
     display: flex;
     flex-direction: column;
     align-items: center; /* Keep elements centered */
-    margin-top: 50px; /* Moves the chatbox lower */
+    margin-top: 10px; /* Reduced margin to align with the title */
 }
 
 /* Chat history box */
@@ -62,28 +62,6 @@ header h1.title {
     font-size: 1rem;
     color: #333;
     width: 100%; /* Ensure full width inside the container */
-}
-
-/* Reset Chat button styling */
-.reset-btn {
-    margin-top: 20px; /* Moves the reset button lower */
-    align-self: center;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 15px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.reset-btn:hover {
-    background-color: #0056b3;
-}
-
-.reset-btn:disabled {
-    background-color: #ccc; /* Gray for disabled buttons */
-    cursor: not-allowed;
 }
 
 /* Chat form styling */
@@ -165,6 +143,37 @@ button:disabled {
     background-color: #007BFF; /* Blue background when enabled */
 }
 
+/* Volume control styling */
+#volume-control-section {
+    margin: 10px 0; /* Spacing above and below */
+}
+
+#volume-control {
+    width: 150px; /* Standardized width for the volume slider */
+}
+
+/* Reset Chat button styling */
+.reset-btn {
+    margin-top: 20px; /* Moves the reset button lower */
+    align-self: center;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.reset-btn:hover {
+    background-color: #0056b3;
+}
+
+.reset-btn:disabled {
+    background-color: #ccc; /* Gray for disabled buttons */
+    cursor: not-allowed;
+}
+
 /* Footer styling */
 footer {
     text-align: center;
@@ -175,13 +184,14 @@ footer {
 
 /* Responsive adjustments */
 @media (max-width: 600px) {
+    header h1.title {
+        font-size: 2.5rem; /* Slightly smaller for mobile */
+        margin: 15px 0; /* Adjust margin for mobile */
+    }
+
     #chat-container {
         width: 100%; /* Take up full width */
         margin: 0 10px; /* Add padding on mobile */
-    }
-
-    header h1 {
-        font-size: 2.5rem; /* Slightly smaller for mobile */
     }
 
     button {
