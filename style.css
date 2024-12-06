@@ -1,175 +1,126 @@
-/* General body styling */
+/* General styling */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f0f4f8; /* Light gray/blue background for a clean look */
-    color: #333; /* Neutral dark text for readability */
+    background-color: #f0f4f8; /* Light gray/blue background */
+    color: #333;
     margin: 0;
     padding: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start; /* Align items at the top initially */
-    height: 100vh; /* Full viewport height */
+    height: 100vh;
 }
 
 /* Header styling */
 header {
-    margin-bottom: 4rem; /* Move the chatbox down by 4 spaces relative to the title */
-}
-
-header h1.title {
-    font-size: 3rem; /* Size for "Amie" */
     text-align: center;
-    background: linear-gradient(to right, #0056b3, #007bff, #89cfff); /* Gradient styling */
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-top: 4rem; /* Add 4 spaces above the title */
+    margin-top: 2rem;
 }
 
-/* Adjust Title Position */
-header h1 {
-    text-align: center;
-    margin-top: 2rem; /* Adjust this value for the desired position */
+#amie-title {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    position: relative;
+    top: 20px; /* Adjusted placement */
 }
 
-/* Main container layout for chatbox */
+/* Main container */
 #main-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center; /* Center content vertically and horizontally */
+    justify-content: center;
     width: 100%;
     max-width: 1200px;
     padding: 20px;
-    box-sizing: border-box;
-    margin-top: 4rem; /* Add spacing between the title and the chatbox */
+    margin-top: 10px;
 }
 
 /* Chat container */
 #chat-container {
-    flex: 1;
     background-color: white;
     border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    max-width: 700px; /* Maximum width for desktop */
-    min-width: 280px; /* Minimum width for smaller devices */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 700px;
+    min-width: 280px;
     padding: 20px;
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center content inside the chatbox */
+    align-items: center;
+    margin: 20px 0;
 }
 
-/* Chat history box */
+/* Chat history */
 #chat-history {
     border: 1px solid #ccc;
     padding: 15px;
-    height: 280px; /* Adjusted height for smaller screens */
+    height: 280px;
     overflow-y: auto;
     background-color: #fff;
     margin-bottom: 10px;
     border-radius: 8px;
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
     font-size: 1rem;
-    color: #333;
-    width: 100%; /* Ensure full width inside the container */
-}
-
-/* Input form styling */
-#input-container {
-    display: flex;
-    gap: 10px; /* Reduced space for better alignment */
-    flex-wrap: wrap; /* Ensure inputs wrap properly on smaller screens */
-    margin-top: 10px;
-    width: 100%; /* Full width for inputs */
-    justify-content: space-between; /* Proper alignment of inputs */
-}
-
-#chat-form {
-    display: flex;
     width: 100%;
 }
 
+/* Input form */
+#chat-form {
+    display: flex;
+    width: 100%;
+    gap: 10px;
+}
+
 #age-input {
-    width: 60px; /* Adjusted width for better fit */
+    width: 60px;
     padding: 10px;
     font-size: 1rem;
     border: 1px solid #ccc;
     border-radius: 4px;
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 #chat-input {
-    flex: 1; /* Allow the chat input to take remaining space */
+    flex: 1;
     padding: 10px;
     font-size: 1rem;
     border: 1px solid #ccc;
     border-radius: 4px;
-    min-width: 120px; /* Ensures minimum width on smaller screens */
 }
 
 button[type="submit"] {
-    flex-shrink: 0; /* Prevent the send button from shrinking */
-    width: 80px; /* Fixed width for send button */
-}
-
-/* General Button Styling */
-button {
-    background-color: #007BFF; /* Blue background */
-    color: white; /* White text */
+    width: 80px;
+    background-color: #007BFF;
+    color: white;
     border: none;
     border-radius: 5px;
-    padding: 10px 15px;
-    font-size: 1rem;
+    padding: 10px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-/* Hover Effect for Buttons */
-button:hover {
-    background-color: #0056b3; /* Darker blue when hovered */
+button[type="submit"]:hover {
+    background-color: #0056b3;
 }
 
-/* Disabled Button Styling */
-button:disabled {
-    background-color: #ccc; /* Gray background */
-    cursor: not-allowed; /* Not-allowed cursor */
-}
-
-/* Start/Stop Recording Buttons Styling */
-#start-record-btn,
-#stop-record-btn {
-    width: 150px; /* Consistent width */
-    padding: 10px 15px;
-    margin: 5px; /* Spacing between buttons */
-}
-
-#start-record-btn:disabled,
-#stop-record-btn:disabled {
-    background-color: #ccc; /* Same as general disabled styling */
-}
-
-#start-record-btn:enabled,
-#stop-record-btn:enabled {
-    background-color: #007BFF; /* Blue background when enabled */
-}
-
-/* Volume control styling */
+/* Volume control */
 #volume-control-section {
-    margin: 10px 0; /* Spacing above and below */
+    margin: 10px 0;
+    text-align: center;
 }
 
 #volume-control {
-    width: 150px; /* Standardized width for the volume slider */
+    width: 100%;
+    accent-color: #007bff;
 }
 
-/* Volume Slider Style for Cross-Browser Compatibility */
+/* Cross-browser volume slider */
 input[type="range"] {
-    -webkit-appearance: none; /* For Chrome/Safari */
-    -moz-appearance: none;    /* For Firefox */
+    -webkit-appearance: none;
+    -moz-appearance: none;
     appearance: none;
     width: 100%;
     height: 6px;
-    background: blue;
+    background: #007bff;
     border-radius: 5px;
     outline: none;
 }
@@ -178,7 +129,7 @@ input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     height: 20px;
     width: 20px;
-    background: #007BFF;
+    background: #0056b3;
     cursor: pointer;
     border-radius: 50%;
 }
@@ -186,31 +137,43 @@ input[type="range"]::-webkit-slider-thumb {
 input[type="range"]::-moz-range-thumb {
     height: 20px;
     width: 20px;
-    background: #007BFF;
+    background: #0056b3;
     cursor: pointer;
     border-radius: 50%;
 }
 
-/* Reset Chat button styling */
+/* Start/Stop Recording Buttons */
+#start-record-btn, #stop-record-btn {
+    width: 150px;
+    padding: 10px;
+    margin: 5px 0;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#stop-record-btn:disabled, #start-record-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Reset Chat Button */
 .reset-btn {
-    margin-top: 20px; /* Moves the reset button lower */
-    align-self: center;
+    margin-top: 20px;
     background-color: #007bff;
     color: white;
     border: none;
     border-radius: 5px;
-    padding: 10px 15px;
+    padding: 10px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 .reset-btn:hover {
     background-color: #0056b3;
-}
-
-.reset-btn:disabled {
-    background-color: #ccc; /* Gray for disabled buttons */
-    cursor: not-allowed;
 }
 
 /* Footer styling */
@@ -221,53 +184,18 @@ footer {
     color: #666;
 }
 
-/* Mobile Zoom Fix */
-@media only screen and (max-width: 768px) {
+/* Mobile responsiveness */
+@media (max-width: 768px) {
     body {
-        zoom: 1; /* Ensure no zooming occurs on mobile */
-    }
-
-    .chat-container {
-        padding: 1rem; /* Reduce padding for smaller screens */
-    }
-
-    input, button {
-        font-size: 1rem; /* Adjust font size for better scaling */
-    }
-
-    h1 {
-        font-size: 1.5rem; /* Adjust title size */
-    }
-}
-
-/* Responsive adjustments */
-@media (max-width: 600px) {
-    header h1.title {
-        font-size: 2.5rem; /* Slightly smaller for mobile */
-        margin: 15px 0; /* Adjust margin for mobile */
+        zoom: 0.9;
     }
 
     #chat-container {
-        width: 100%; /* Take up full width */
-        margin: 0 10px; /* Add padding on mobile */
+        width: 95%;
     }
 
-    button {
-        font-size: 0.9rem;
-        padding: 8px 12px; /* Reduced padding for smaller screens */
-    }
-
-    #volume-control {
-        width: 100px; /* Further reduce slider size for smaller screens */
-    }
-
-    #chat-input {
-        font-size: 0.9rem; /* Adjust input font size for smaller devices */
-    }
-
-    #start-record-btn,
-    #stop-record-btn {
-        width: 100%; /* Full width for smaller screens */
-        margin: 5px 0;
+    #amie-title {
+        font-size: 2rem;
+        top: 10px;
     }
 }
