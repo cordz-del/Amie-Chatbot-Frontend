@@ -1,14 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // Ensure the page title is correct
-    document.title = "Amie";
-
     // Correct BACKEND_URL
     const BACKEND_URL = "https://462d2d49-1f98-4257-a721-46da919d929b-00-3hhfbf6wdvr1l.kirk.replit.dev";
     const chatHistory = document.getElementById("chat-history");
     const chatForm = document.getElementById("chat-form");
     const chatInput = document.getElementById("chat-input");
     const ageInput = document.getElementById("age-input");
-    const audioPlayer = document.getElementById("audio-player");
     const volumeControl = document.getElementById("volume-control");
     const startRecordBtn = document.getElementById("start-record-btn");
     const stopRecordBtn = document.getElementById("stop-record-btn");
@@ -135,7 +131,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // Handle volume changes
     volumeControl.addEventListener("input", () => {
         const volume = clampVolume(volumeControl.value);
-        audioPlayer.volume = volume; // Adjust audio player volume
     });
 
     // Handle voice recording
