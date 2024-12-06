@@ -123,6 +123,9 @@ document.addEventListener("DOMContentLoaded", () => {
             mediaRecorder = new MediaRecorder(stream);
             recordedChunks = [];
 
+            // Indicate recording started
+            appendMessage("System", "Listening...");
+
             mediaRecorder.ondataavailable = (event) => {
                 if (event.data.size > 0) {
                     recordedChunks.push(event.data);
