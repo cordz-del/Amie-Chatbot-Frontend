@@ -8,21 +8,22 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center; /* Center the content vertically */
-    height: 100vh; /* Take full viewport height */
+    justify-content: flex-start; /* Align items at the top initially */
+    height: 100vh; /* Full viewport height */
 }
 
 /* Header styling */
 header {
-    margin-bottom: 20px; /* Add spacing between the title and chatbox */
+    margin-bottom: 4rem; /* Move the chatbox down by 4 spaces relative to the title */
 }
 
 header h1.title {
-    font-size: 3rem; /* Larger font size for "Amie" */
+    font-size: 3rem; /* Size for "Amie" */
     text-align: center;
     background: linear-gradient(to right, #0056b3, #007bff, #89cfff); /* Gradient styling */
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    margin-top: 4rem; /* Add 4 spaces above the title */
 }
 
 /* Main container layout for chatbox */
@@ -30,11 +31,12 @@ header h1.title {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: center; /* Center content vertically and horizontally */
     width: 100%;
     max-width: 1200px;
     padding: 20px;
     box-sizing: border-box;
+    margin-top: 4rem; /* Add spacing between the title and the chatbox */
 }
 
 /* Chat container */
@@ -55,7 +57,7 @@ header h1.title {
 #chat-history {
     border: 1px solid #ccc;
     padding: 15px;
-    height: 280px;
+    height: 280px; /* Adjusted height for smaller screens */
     overflow-y: auto;
     background-color: #fff;
     margin-bottom: 10px;
