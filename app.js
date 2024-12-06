@@ -19,6 +19,14 @@ document.addEventListener("DOMContentLoaded", () => {
     let recordedChunks = [];
     let conversationLog = []; // Maintain conversation history
 
+    // Update button states dynamically
+    function updateButtonStates() {
+        startRecordBtn.disabled = isRecording;
+        stopRecordBtn.disabled = !isRecording;
+        startRecordBtn.classList.toggle("enabled", !isRecording);
+        stopRecordBtn.classList.toggle("enabled", isRecording);
+    }
+
     // Append messages to the chat history
     function appendMessage(sender, message) {
         const messageElement = document.createElement("div");
@@ -182,8 +190,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             mediaRecorder.start();
             isRecording = true;
-            startRecordBtn.disabled = true;
-            stopRecordBtn.disabled = false;
+            updateButtonStates();
             statusMessage.textContent = "Recording...";
         } catch (error) {
             console.error("Error accessing microphone:", error);
@@ -196,8 +203,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         mediaRecorder.stop();
         isRecording = false;
-        startRecordBtn.disabled = false;
-        stopRecordBtn.disabled = true;
+        updateButtonStates();
         statusMessage.textContent = "Processing...";
     });
 
@@ -207,4 +213,7 @@ document.addEventListener("DOMContentLoaded", () => {
         appendMessage("Amie", "Chat reset. How can I help you today?");
         conversationLog = []; // Reset conversation log
     });
+
+    // Initialize button states
+    updateButtonStates();
 });
