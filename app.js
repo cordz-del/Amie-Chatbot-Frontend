@@ -1,14 +1,13 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // Correct BACKEND_URL
     const BACKEND_URL = "https://462d2d49-1f98-4257-a721-46da919d929b-00-3hhfbf6wdvr1l.kirk.replit.dev";
-    const chatHistory = document.getElementById("chat-history");
     const chatForm = document.getElementById("chat-form");
     const chatInput = document.getElementById("chat-input");
-    const ageInput = document.getElementById("age-input");
-    const volumeControl = document.getElementById("volume-control");
+    const chatHistory = document.getElementById("chat-history");
     const startRecordBtn = document.getElementById("start-record-btn");
     const stopRecordBtn = document.getElementById("stop-record-btn");
     const statusMessage = document.getElementById("status");
+    const ageInput = document.getElementById("age-input");
+    const volumeControl = document.getElementById("volume-control");
     const resetButton = document.getElementById("reset-chat-btn");
 
     let isRecording = false;
@@ -20,8 +19,6 @@ document.addEventListener("DOMContentLoaded", () => {
     function updateButtonStates() {
         startRecordBtn.disabled = isRecording;
         stopRecordBtn.disabled = !isRecording;
-        startRecordBtn.classList.toggle("enabled", !isRecording);
-        stopRecordBtn.classList.toggle("enabled", isRecording);
     }
 
     // Append messages to the chat history
@@ -30,21 +27,6 @@ document.addEventListener("DOMContentLoaded", () => {
         messageElement.textContent = `${sender}: ${message}`;
         chatHistory.appendChild(messageElement);
         chatHistory.scrollTop = chatHistory.scrollHeight; // Scroll to the latest message
-    }
-
-    // Show and hide loading indicator
-    function showLoadingIndicator() {
-        const loadingIndicator = document.createElement("div");
-        loadingIndicator.id = "loading-indicator";
-        loadingIndicator.textContent = "Processing...";
-        chatHistory.appendChild(loadingIndicator);
-    }
-
-    function hideLoadingIndicator() {
-        const loadingIndicator = document.getElementById("loading-indicator");
-        if (loadingIndicator) {
-            loadingIndicator.remove();
-        }
     }
 
     // Clamp volume to the range [0.0, 1.0]
@@ -64,7 +46,11 @@ document.addEventListener("DOMContentLoaded", () => {
             const audioBlob = new Blob([audioData], { type: "audio/wav" });
             const audioUrl = URL.createObjectURL(audioBlob);
             const audio = new Audio(audioUrl);
-            audio.volume = clampVolume(volumeControl.value); // Adjust volume
+
+            // Set volume based on slider value
+            audio.volume = clampVolume(volumeControl.value);
+
+            // Play the audio
             audio.play().catch((error) => {
                 console.error("Error playing audio:", error);
                 appendMessage("Error", "Could not play audio response.");
@@ -90,10 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
         chatInput.value = "";
 
         // Add user message to conversation log
-        conversationLog.push({ user: message });
-
-        // Show loading indicator
-        showLoadingIndicator();
+        conversationLog.push({ role: "user", content: message });
 
         try {
             const response = await fetch(`${BACKEND_URL}/chat`, {
@@ -114,7 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
             appendMessage("Amie", data.response);
 
             // Update conversation log with bot's response
-            conversationLog.push({ bot: data.response });
+            conversationLog.push({ role: "assistant", content: data.response });
 
             // Play audio response if available
             if (data.audio) {
@@ -123,14 +106,12 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch (error) {
             console.error("Error:", error);
             appendMessage("Error", "Something went wrong!");
-        } finally {
-            hideLoadingIndicator(); // Hide loading indicator
         }
     });
 
     // Handle volume changes
     volumeControl.addEventListener("input", () => {
-        const volume = clampVolume(volumeControl.value);
+        console.log(`Volume set to: ${volumeControl.value}`);
     });
 
     // Handle voice recording
@@ -172,7 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     appendMessage("Amie", data.response);
 
                     // Update conversation log
-                    conversationLog.push({ bot: data.response });
+                    conversationLog.push({ role: "assistant", content: data.response });
 
                     // Play audio response if available
                     if (data.audio) {
@@ -212,4 +193,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Initialize button states
     updateButtonStates();
+
+    console.log("Frontend loaded successfully.");
 });
