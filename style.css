@@ -14,16 +14,15 @@ body {
 /* Header styling */
 header {
     text-align: center;
-    margin-top: 120px; /* Increased spacing to move the title down */
+    margin-top: 120px;
 }
 
 #amie-title {
-    font-size: 5.4rem; /* Increased size */
+    font-size: 5.4rem;
     margin-bottom: 40px;
     background: linear-gradient(to right, #0056b3, #007bff, #89cfff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    text-align: center;
 }
 
 /* Main container */
@@ -35,7 +34,7 @@ header {
     width: 100%;
     max-width: 1200px;
     padding: 20px;
-    margin-top: 50px; /* Space between title and chatbox */
+    margin-top: 50px;
 }
 
 /* Chat container */
@@ -195,6 +194,8 @@ footer {
     #chat-container {
         width: 90%;
         padding: 16px;
+        transform: scale(0.75); /* Scale the entire chat container */
+        transform-origin: top center;
     }
 
     #chat-history {
@@ -203,6 +204,15 @@ footer {
     }
 
     input[type="range"] {
+        height: 4px;
+    }
+
+    #start-record-btn, #stop-record-btn, .reset-btn {
+        font-size: 0.9rem;
+        padding: 10px;
+    }
+
+    #volume-control-section input[type="range"] {
         width: 80%;
     }
 }
@@ -228,5 +238,10 @@ footer {
 
     input[type="range"] {
         width: 75%;
+    }
+
+    #start-record-btn, #stop-record-btn, .reset-btn {
+        width: 90%;
+        padding: 8px;
     }
 }
