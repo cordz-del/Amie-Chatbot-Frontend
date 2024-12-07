@@ -7,11 +7,25 @@
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="favicon.ico">
     <style>
-        /* Responsive layout for mobile */
+        /* Gradient Title */
+        #amie-title {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #001a33, #0066cc, #89cfff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+        }
+
+        /* Responsive layout adjustments */
         @media (max-width: 768px) {
+            body {
+                zoom: 90%; /* Scale down the entire site for mobile */
+            }
+
             #chat-container {
                 width: 90%; /* Adjust width for mobile */
-                margin: auto; /* Center align */
+                margin: auto;
             }
 
             #volume-control-section {
@@ -22,6 +36,10 @@
 
             input[type="range"] {
                 width: 80%; /* Make slider smaller for mobile */
+            }
+
+            #amie-title {
+                font-size: 3.5rem; /* Smaller title for mobile */
             }
         }
 
@@ -58,54 +76,70 @@
         input[type="range"]:focus {
             outline: none;
         }
+
+        /* Center buttons */
+        #voice-controls button {
+            width: 80%;
+            margin: 5px auto;
+            text-align: center;
+        }
+
+        /* Chat container and form adjustments */
+        #chat-form label {
+            display: block;
+            margin: 5px 0;
+        }
+
+        #input-container {
+            margin-bottom: 10px;
+        }
+
+        #chat-container {
+            max-width: 700px;
+            margin: auto;
+            padding: 10px;
+        }
     </style>
 </head>
 <body>
     <header>
-        <h1>Amie Chatbot</h1>
+        <h1 id="amie-title">Amie</h1>
     </header>
 
-    <main>
-        <!-- Chat History Section -->
+    <main id="main-container">
+        <!-- Chat Section -->
         <div id="chat-container">
             <div id="chat-history" aria-label="Chat history" tabindex="0"></div>
-            <!-- Loading Indicator -->
-            <div id="loading-indicator" style="display: none; text-align: center; font-style: italic;">Processing...</div>
+
+            <!-- Input Section -->
+            <section id="input-container">
+                <form id="chat-form" aria-label="Chat form">
+                    <label for="age-input">Age</label>
+                    <input type="number" id="age-input" placeholder="Enter your age" min="1" max="100" required aria-label="Enter your age">
+                    <label for="chat-input">Message</label>
+                    <input type="text" id="chat-input" placeholder="Type your message here..." autocomplete="off" required aria-label="Enter your message">
+                    <button type="submit" aria-label="Send your message">Send</button>
+                </form>
+            </section>
+
+            <!-- Voice Interaction Controls -->
+            <section id="voice-controls" aria-label="Voice interaction controls">
+                <button id="start-record-btn" aria-label="Start voice recording">Start Recording</button>
+                <button id="stop-record-btn" disabled aria-label="Stop voice recording">Stop Recording</button>
+                <p id="status" aria-live="polite"></p>
+            </section>
+
+            <!-- Volume Control Section -->
+            <section id="volume-control-section" aria-label="Volume control">
+                <label for="volume-control">Volume:</label>
+                <input type="range" id="volume-control" min="0.5" max="2.0" step="0.1" value="1.0" aria-label="Adjust volume">
+            </section>
+
+            <!-- Reset Chat Button -->
+            <section id="reset-chat-section" aria-label="Reset chat">
+                <button id="reset-chat-btn" class="reset-btn" aria-label="Reset chat history">Reset Chat</button>
+            </section>
         </div>
-
-        <!-- Input Section -->
-        <section id="input-container">
-            <form id="chat-form" aria-label="Chat form">
-                <label for="age-input">Age:</label>
-                <input type="number" id="age-input" placeholder="Enter your age" min="1" max="30" required aria-label="Enter your age">
-
-                <label for="chat-input">Message:</label>
-                <input type="text" id="chat-input" placeholder="Type your message here..." autocomplete="off" required aria-label="Enter your message">
-
-                <button type="submit" aria-label="Send your message">Send</button>
-            </form>
-        </section>
-
-        <!-- Voice Interaction Controls -->
-        <section id="voice-controls" aria-label="Voice interaction controls">
-            <button id="start-record-btn" aria-label="Start voice recording">Start Recording</button>
-            <button id="stop-record-btn" disabled aria-label="Stop voice recording">Stop Recording</button>
-            <p id="status" aria-live="polite"></p>
-        </section>
-
-        <!-- Volume Control Section -->
-        <section id="volume-control-section" aria-label="Volume control">
-            <label for="volume-control">Volume:</label>
-            <input type="range" id="volume-control" min="0.5" max="2.0" step="0.1" value="1.0" aria-label="Adjust volume">
-        </section>
-
-        <!-- Reset Chat Button -->
-        <section id="reset-chat-section" aria-label="Reset chat">
-            <button id="reset-chat-btn" class="reset-btn" aria-label="Reset chat history">Reset Chat</button>
-        </section>
-
-        <!-- Hidden Audio Player -->
-        <audio id="audio-player" controls hidden aria-label="Audio player"></audio>
     </main>
 
     <footer>
