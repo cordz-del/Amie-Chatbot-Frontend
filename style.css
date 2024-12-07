@@ -18,9 +18,9 @@ header {
 }
 
 #amie-title {
-    font-size: 5.4rem; /* Increased size by 20% */
-    margin-bottom: 40px; /* Added more space below the title */
-    background: linear-gradient(to right, #0056b3, #007bff, #89cfff); /* Dark blue to light blue gradient */
+    font-size: 5.4rem; /* Increased size */
+    margin-bottom: 40px;
+    background: linear-gradient(to right, #0056b3, #007bff, #89cfff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-align: center;
@@ -49,7 +49,7 @@ header {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 30px 0; /* Adjusted spacing below chatbox */
+    margin: 30px 0;
 }
 
 /* Chat history */
@@ -111,35 +111,31 @@ button[type="submit"]:hover {
     text-align: center;
 }
 
-#volume-control {
-    width: 100%;
-    accent-color: #007bff;
-}
-
 input[type="range"] {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
     width: 100%;
     height: 6px;
-    background: #007bff;
+    background: linear-gradient(to right, blue 50%, gray 50%);
     border-radius: 5px;
     outline: none;
+    transition: background 0.3s ease;
 }
 
 input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
-    height: 20px;
-    width: 20px;
-    background: #0056b3;
+    height: 16px;
+    width: 16px;
+    background: blue;
     cursor: pointer;
     border-radius: 50%;
 }
 
 input[type="range"]::-moz-range-thumb {
-    height: 20px;
-    width: 20px;
-    background: #0056b3;
+    height: 16px;
+    width: 16px;
+    background: blue;
     cursor: pointer;
     border-radius: 50%;
 }
@@ -186,29 +182,28 @@ footer {
     color: #666;
 }
 
-/* Responsive Design: Tablets and Mobile Devices */
+/* Responsive Design */
 @media (max-width: 768px) {
     header {
         margin-top: 80px;
     }
 
     #amie-title {
-        font-size: 4rem; /* Reduce size slightly for tablets */
+        font-size: 4rem;
     }
 
     #chat-container {
         width: 90%;
-        padding: 16px; /* Adjust padding for smaller screens */
+        padding: 16px;
     }
 
     #chat-history {
-        height: 250px; /* Reduce height on tablets */
+        height: 250px;
         font-size: 1rem;
     }
 
-    #chat-form input,
-    #chat-form button {
-        font-size: 1rem; /* Adjust input and button font size */
+    input[type="range"] {
+        width: 80%;
     }
 }
 
@@ -218,22 +213,20 @@ footer {
     }
 
     #amie-title {
-        font-size: 3rem; /* Further reduce size for mobile */
+        font-size: 3rem;
     }
 
     #chat-container {
         width: 95%;
-        padding: 12px; /* Smaller padding for mobile */
+        padding: 12px;
     }
 
     #chat-history {
-        height: 200px; /* Further reduce height on mobile */
+        height: 200px;
         font-size: 0.9rem;
     }
 
-    #chat-form input,
-    #chat-form button {
-        font-size: 0.9rem; /* Adjust font size for small devices */
-        padding: 8px;
+    input[type="range"] {
+        width: 75%;
     }
 }
