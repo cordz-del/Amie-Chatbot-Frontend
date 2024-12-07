@@ -7,49 +7,61 @@
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="favicon.ico">
     <style>
-        /* Add media queries for responsive adjustments */
+        /* Responsive layout for mobile */
         @media (max-width: 768px) {
             #chat-container {
-                width: 90%; /* Reduce chat container width on tablets */
-                margin: 0 auto;
+                width: 90%; /* Adjust width for mobile */
+                margin: auto; /* Center align */
             }
 
-            #chat-history {
-                max-height: 200px; /* Adjust chat history height */
-                font-size: 0.9rem; /* Slightly smaller font size for readability */
-            }
-
-            #input-container,
-            #voice-controls,
             #volume-control-section {
-                padding: 10px; /* Adjust padding for better fit */
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            input[type="range"] {
+                width: 80%; /* Make slider smaller for mobile */
             }
         }
 
-        @media (max-width: 480px) {
-            #chat-container {
-                width: 95%; /* Further reduce width on mobile */
-                margin: 0 auto;
-            }
+        /* Style the volume slider */
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 5px;
+            background: linear-gradient(to right, blue 50%, gray 50%);
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            outline: none;
+            transition: background 0.3s;
+        }
 
-            header h1 {
-                font-size: 1.8rem; /* Adjust header font size on mobile */
-            }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: blue;
+            cursor: pointer;
+        }
 
-            #chat-history {
-                max-height: 150px; /* Reduce chat history height on mobile */
-                font-size: 0.8rem;
-            }
+        input[type="range"]::-moz-range-thumb {
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: blue;
+            cursor: pointer;
+        }
 
-            #input-container input,
-            #input-container button {
-                font-size: 0.9rem; /* Adjust input and button font size */
-                padding: 8px;
-            }
+        input[type="range"]:focus {
+            outline: none;
+        }
 
-            #volume-control {
-                width: 100%; /* Ensure volume control fits on small screens */
-            }
+        /* Adjust the slider background on input */
+        input[type="range"]:active {
+            background: linear-gradient(to right, blue var(--slider-value, 50%), gray var(--slider-value, 50%));
         }
     </style>
 </head>
