@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Append messages to the chat history
     function appendMessage(sender, message) {
         const messageElement = document.createElement("div");
-        messageElement.textContent = `${sender}: ${message}`;
+        messageElement.innerHTML = `<strong>${sender}:</strong> ${message}`;
         chatHistory.appendChild(messageElement);
         chatHistory.scrollTop = chatHistory.scrollHeight; // Scroll to the latest message
     }
@@ -34,31 +34,11 @@ document.addEventListener("DOMContentLoaded", () => {
         return Math.min(Math.max(parseFloat(value), 0.0), 1.0);
     }
 
-    // Play audio response from base64-encoded data
-    function playAudio(base64Audio) {
-        if (!base64Audio) {
-            console.error("No audio data received.");
-            appendMessage("Error", "Audio response not available.");
-            return;
-        }
-        try {
-            const audioData = Uint8Array.from(atob(base64Audio), (c) => c.charCodeAt(0));
-            const audioBlob = new Blob([audioData], { type: "audio/wav" });
-            const audioUrl = URL.createObjectURL(audioBlob);
-            const audio = new Audio(audioUrl);
-
-            // Set volume based on slider value
-            audio.volume = clampVolume(volumeControl.value);
-
-            // Play the audio
-            audio.play().catch((error) => {
-                console.error("Error playing audio:", error);
-                appendMessage("Error", "Could not play audio response.");
-            });
-        } catch (error) {
-            console.error("Error decoding or playing audio:", error);
-            appendMessage("Error", "Audio playback error.");
-        }
+    // Play audio response from a given path
+    function playAudio(audioPath) {
+        const audio = new Audio(audioPath);
+        audio.volume = clampVolume(volumeControl.value);
+        audio.play().catch((error) => console.error("Error playing audio:", error));
     }
 
     // Handle chat submission
@@ -71,47 +51,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!message) return;
 
-        // Append user message to chat
         appendMessage("You", message);
         chatInput.value = "";
 
-        // Add user message to conversation log
         conversationLog.push({ role: "user", content: message });
 
         try {
-            const response = await fetch(`${BACKEND_URL}/chat`, {
+            const response = await fetch(`${BACKEND_URL}/generate-audio`, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ message, age, volume, conversation_log: conversationLog }),
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ text: message, age, volume }),
             });
 
-            if (!response.ok) {
-                throw new Error("Failed to fetch response from server");
-            }
+            if (!response.ok) throw new Error("Failed to fetch response from server");
 
             const data = await response.json();
+            appendMessage("Amie", data.response || "No response received.");
 
-            // Append bot's response to chat
-            appendMessage("Amie", data.response);
-
-            // Update conversation log with bot's response
-            conversationLog.push({ role: "assistant", content: data.response });
-
-            // Play audio response if available
-            if (data.audio) {
-                playAudio(data.audio);
-            }
+            if (data.audio) playAudio(data.audio);
         } catch (error) {
             console.error("Error:", error);
             appendMessage("Error", "Something went wrong!");
         }
-    });
-
-    // Handle volume changes
-    volumeControl.addEventListener("input", () => {
-        console.log(`Volume set to: ${volumeControl.value}`);
     });
 
     // Handle voice recording
@@ -123,13 +84,10 @@ document.addEventListener("DOMContentLoaded", () => {
             mediaRecorder = new MediaRecorder(stream);
             recordedChunks = [];
 
-            // Indicate recording started
             appendMessage("System", "Listening...");
 
             mediaRecorder.ondataavailable = (event) => {
-                if (event.data.size > 0) {
-                    recordedChunks.push(event.data);
-                }
+                if (event.data.size > 0) recordedChunks.push(event.data);
             };
 
             mediaRecorder.onstop = async () => {
@@ -137,7 +95,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 const formData = new FormData();
                 formData.append("audio", audioBlob, "recording.wav");
                 formData.append("age", ageInput.value);
-                formData.append("conversation_log", JSON.stringify(conversationLog));
                 formData.append("volume", volumeControl.value);
 
                 try {
@@ -146,22 +103,12 @@ document.addEventListener("DOMContentLoaded", () => {
                         body: formData,
                     });
 
-                    if (!response.ok) {
-                        throw new Error("Failed to fetch response from server");
-                    }
+                    if (!response.ok) throw new Error("Failed to fetch response from server");
 
                     const data = await response.json();
+                    appendMessage("Amie", data.response || "No response received.");
 
-                    // Append bot's response to chat
-                    appendMessage("Amie", data.response);
-
-                    // Update conversation log
-                    conversationLog.push({ role: "assistant", content: data.response });
-
-                    // Play audio response if available
-                    if (data.audio) {
-                        playAudio(data.audio);
-                    }
+                    if (data.audio) playAudio(data.audio);
                 } catch (error) {
                     console.error("Error:", error);
                     appendMessage("Error", "Something went wrong!");
@@ -194,8 +141,11 @@ document.addEventListener("DOMContentLoaded", () => {
         conversationLog = []; // Reset conversation log
     });
 
-    // Initialize button states
-    updateButtonStates();
+    // Handle volume changes
+    volumeControl.addEventListener("input", () => {
+        console.log(`Volume set to: ${volumeControl.value}`);
+    });
 
+    updateButtonStates();
     console.log("Frontend loaded successfully.");
 });
