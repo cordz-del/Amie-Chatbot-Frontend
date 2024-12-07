@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
         event.preventDefault();
 
         const message = chatInput.value.trim();
-        const age = parseInt(ageInput.value, 10) || 10;
+        const age = parseInt(ageInput.value, 10) || 10; // Default age if not provided
         const volume = clampVolume(volumeControl.value);
 
         if (!message) return;
@@ -77,10 +77,10 @@ document.addEventListener("DOMContentLoaded", () => {
         conversationLog.push({ role: "user", content: message });
 
         try {
-            const response = await fetch(`${BACKEND_URL}/generate-audio`, {
+            const response = await fetch(`${BACKEND_URL}/chat`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ text: message, age, volume }),
+                body: JSON.stringify({ message, age, volume }),
             });
 
             if (!response.ok) throw new Error("Failed to fetch response from server");
