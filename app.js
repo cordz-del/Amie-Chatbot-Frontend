@@ -34,11 +34,31 @@ document.addEventListener("DOMContentLoaded", () => {
         return Math.min(Math.max(parseFloat(value), 0.0), 1.0);
     }
 
-    // Play audio response from a given path
-    function playAudio(audioPath) {
-        const audio = new Audio(audioPath);
-        audio.volume = clampVolume(volumeControl.value);
-        audio.play().catch((error) => console.error("Error playing audio:", error));
+    // Play audio response from base64-encoded data
+    function playAudio(base64Audio) {
+        if (!base64Audio) {
+            console.error("No audio data received.");
+            appendMessage("Error", "Audio response not available.");
+            return;
+        }
+        try {
+            const audioData = Uint8Array.from(atob(base64Audio), (c) => c.charCodeAt(0));
+            const audioBlob = new Blob([audioData], { type: "audio/wav" });
+            const audioUrl = URL.createObjectURL(audioBlob);
+            const audio = new Audio(audioUrl);
+
+            // Set volume based on slider value
+            audio.volume = clampVolume(volumeControl.value);
+
+            // Play the audio
+            audio.play().catch((error) => {
+                console.error("Error playing audio:", error);
+                appendMessage("Error", "Could not play audio response.");
+            });
+        } catch (error) {
+            console.error("Error decoding or playing audio:", error);
+            appendMessage("Error", "Audio playback error.");
+        }
     }
 
     // Handle chat submission
