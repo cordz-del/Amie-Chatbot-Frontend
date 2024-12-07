@@ -58,55 +58,54 @@
         input[type="range"]:focus {
             outline: none;
         }
-
-        /* Adjust the slider background on input */
-        input[type="range"]:active {
-            background: linear-gradient(to right, blue var(--slider-value, 50%), gray var(--slider-value, 50%));
-        }
     </style>
 </head>
 <body>
     <header>
-        <!-- Gradient Title: Amie -->
-        <h1 id="amie-title">Amie</h1>
+        <h1>Amie Chatbot</h1>
     </header>
 
-    <main id="main-container">
-        <!-- Chat Section -->
+    <main>
+        <!-- Chat History Section -->
         <div id="chat-container">
-            <!-- Chat History Section -->
             <div id="chat-history" aria-label="Chat history" tabindex="0"></div>
-
-            <!-- Input Section -->
-            <section id="input-container">
-                <form id="chat-form" aria-label="Chat form">
-                    <input type="number" id="age-input" placeholder="Enter your age" min="1" max="30" required aria-label="Enter your age">
-                    <input type="text" id="chat-input" placeholder="Type your message here..." autocomplete="off" required aria-label="Enter your message">
-                    <button type="submit" aria-label="Send your message">Send</button>
-                </form>
-            </section>
-
-            <!-- Voice Interaction Controls -->
-            <section id="voice-controls" aria-label="Voice interaction controls">
-                <button id="start-record-btn" aria-label="Start voice recording">Start Recording</button>
-                <button id="stop-record-btn" disabled aria-label="Stop voice recording">Stop Recording</button>
-                <p id="status" aria-live="polite"></p>
-            </section>
-
-            <!-- Volume Control Section -->
-            <section id="volume-control-section" aria-label="Volume control">
-                <label for="volume-control">Volume:</label>
-                <input type="range" id="volume-control" min="0.5" max="2.0" step="0.1" value="1.0" aria-label="Adjust volume">
-            </section>
-
-            <!-- Reset Chat Button -->
-            <section id="reset-chat-section" aria-label="Reset chat">
-                <button id="reset-chat-btn" class="reset-btn" aria-label="Reset chat history">Reset Chat</button>
-            </section>
-
-            <!-- Hidden Audio Player -->
-            <audio id="audio-player" controls hidden aria-label="Audio player"></audio>
+            <!-- Loading Indicator -->
+            <div id="loading-indicator" style="display: none; text-align: center; font-style: italic;">Processing...</div>
         </div>
+
+        <!-- Input Section -->
+        <section id="input-container">
+            <form id="chat-form" aria-label="Chat form">
+                <label for="age-input">Age:</label>
+                <input type="number" id="age-input" placeholder="Enter your age" min="1" max="30" required aria-label="Enter your age">
+
+                <label for="chat-input">Message:</label>
+                <input type="text" id="chat-input" placeholder="Type your message here..." autocomplete="off" required aria-label="Enter your message">
+
+                <button type="submit" aria-label="Send your message">Send</button>
+            </form>
+        </section>
+
+        <!-- Voice Interaction Controls -->
+        <section id="voice-controls" aria-label="Voice interaction controls">
+            <button id="start-record-btn" aria-label="Start voice recording">Start Recording</button>
+            <button id="stop-record-btn" disabled aria-label="Stop voice recording">Stop Recording</button>
+            <p id="status" aria-live="polite"></p>
+        </section>
+
+        <!-- Volume Control Section -->
+        <section id="volume-control-section" aria-label="Volume control">
+            <label for="volume-control">Volume:</label>
+            <input type="range" id="volume-control" min="0.5" max="2.0" step="0.1" value="1.0" aria-label="Adjust volume">
+        </section>
+
+        <!-- Reset Chat Button -->
+        <section id="reset-chat-section" aria-label="Reset chat">
+            <button id="reset-chat-btn" class="reset-btn" aria-label="Reset chat history">Reset Chat</button>
+        </section>
+
+        <!-- Hidden Audio Player -->
+        <audio id="audio-player" controls hidden aria-label="Audio player"></audio>
     </main>
 
     <footer>
@@ -114,5 +113,26 @@
     </footer>
 
     <script src="app.js"></script>
+
+    <script>
+        // Adjust zoom for mobile and tablet devices
+        document.addEventListener("DOMContentLoaded", () => {
+            if (window.innerWidth <= 768) {
+                document.body.style.zoom = "90%";
+            }
+        });
+
+        // Ensure the hidden audio player is visible when playing
+        const audioPlayer = document.getElementById('audio-player');
+        function playAudio(audioPath) {
+            if (audioPath) {
+                audioPlayer.src = audioPath;
+                audioPlayer.hidden = false;
+                audioPlayer.play().catch((err) => console.error("Error playing audio:", err));
+            } else {
+                console.error("No audio path provided.");
+            }
+        }
+    </script>
 </body>
 </html>
