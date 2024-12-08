@@ -69,6 +69,37 @@
         </footer>
     </div>
 
-    <script src="app.js"></script>
+    <script>
+        // Handle form submission
+        document.getElementById("chat-form").addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent default form submission behavior
+
+            const chatInput = document.getElementById("chat-input");
+            const chatHistory = document.getElementById("chat-history");
+            const message = chatInput.value.trim();
+
+            if (message) {
+                // Append user message to chat history
+                const userMessage = document.createElement("div");
+                userMessage.textContent = `You: ${message}`;
+                userMessage.classList.add("user-message");
+                chatHistory.appendChild(userMessage);
+
+                // Clear input field
+                chatInput.value = "";
+
+                // Simulate chatbot response (you can replace this logic with backend API calls)
+                setTimeout(() => {
+                    const botMessage = document.createElement("div");
+                    botMessage.textContent = `Amie: I heard you say "${message}".`;
+                    botMessage.classList.add("bot-message");
+                    chatHistory.appendChild(botMessage);
+
+                    // Scroll to the latest message
+                    chatHistory.scrollTop = chatHistory.scrollHeight;
+                }, 1000);
+            }
+        });
+    </script>
 </body>
 </html>
