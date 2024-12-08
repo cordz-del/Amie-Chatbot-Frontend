@@ -52,9 +52,10 @@ header {
 
 @media (max-width: 768px) {
     #chat-container {
-        width: 90%;
+        width: 93%; /* Increased width by 3% */
         padding: 10px;
         margin: 0 auto;
+        transform: scale(0.85); /* Reduced height by 15% */
     }
 }
 
@@ -119,6 +120,37 @@ button[type="submit"]:hover {
     background-color: #0056b3;
 }
 
+/* Mobile-Specific Adjustments */
+@media (max-width: 480px) {
+    #chat-container {
+        width: 93%; /* Increased width by 3% */
+        transform: scale(0.85); /* Reduced height by 15% */
+    }
+
+    #chat-form {
+        flex-direction: row; /* Ensure horizontal layout */
+        gap: 8px;
+    }
+
+    #age-btn {
+        font-size: 0.8rem;
+        padding: 4px 8px;
+        flex: 0 0 15%; /* 80% smaller */
+    }
+
+    #chat-input {
+        font-size: 0.7rem; /* 60% smaller */
+        padding: 4px 6px;
+        flex: 1;
+    }
+
+    button[type="submit"] {
+        font-size: 0.8rem;
+        padding: 4px 8px;
+        flex: 0 0 15%; /* 80% smaller */
+    }
+}
+
 /* Voice Controls */
 #voice-controls {
     display: flex;
@@ -177,37 +209,4 @@ button[type="submit"]:hover {
 
 .reset-btn:hover {
     background-color: #0056b3;
-}
-
-/* Responsive Adjustments */
-@media (max-width: 480px) {
-    #amie-title {
-        font-size: 3rem;
-    }
-
-    #chat-container {
-        transform: scale(1.1); /* Adjust to better fill the screen */
-    }
-
-    #chat-history {
-        font-size: 1rem;
-        height: 200px;
-    }
-
-    #chat-form {
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    #age-btn,
-    #chat-input,
-    button[type="submit"] {
-        width: 100%;
-        font-size: 0.9rem;
-    }
-
-    #voice-controls {
-        flex-direction: column;
-        gap: 8px;
-    }
 }
