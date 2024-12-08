@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="favicon.ico">
     <style>
-        /* General Styling */
+        /* Inline CSS adjustments for demonstration */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -27,71 +27,55 @@
             align-items: center;
             justify-content: center;
             width: 100%;
-            max-width: 1200px;
-            min-height: calc(100vh - 50px); /* Center everything */
+            max-width: 500px;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         #amie-title {
-            font-size: 3.5rem;
+            font-size: 3rem;
             text-align: center;
             background: linear-gradient(to right, #001a33, #0066cc, #89cfff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin: 20px 0;
-        }
-
-        #chat-container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            background: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            margin-bottom: 20px;
         }
 
         #chat-history {
-            width: 90%;
-            max-width: 500px;
+            width: 100%;
             height: 200px;
-            overflow-y: auto;
             border: 1px solid #ccc;
-            border-radius: 5px;
+            border-radius: 8px;
             padding: 10px;
             margin-bottom: 15px;
+            overflow-y: auto;
             background-color: #fff;
         }
 
         #chat-form {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             width: 100%;
             justify-content: center;
             align-items: center;
         }
 
-        /* Buttons and Inputs */
         #age-btn, #chat-input, button[type="submit"] {
             height: 36px;
             font-size: 0.9rem;
-            padding: 5px 8px;
+            padding: 5px;
             border-radius: 5px;
         }
 
         #age-btn {
-            width: auto;
+            width: 60px;
             border: none;
             background-color: #007bff;
             color: white;
             cursor: pointer;
             flex-shrink: 0;
-        }
-
-        #age-btn:hover {
-            background-color: #0056b3;
         }
 
         #chat-input {
@@ -114,49 +98,30 @@
             background-color: #0056b3;
         }
 
-        /* Voice Controls */
         #voice-controls {
             display: flex;
+            gap: 8px;
             justify-content: center;
-            gap: 10px;
-            margin-top: 10px;
+            margin: 15px 0;
         }
 
-        /* Footer */
-        footer {
-            margin-top: 20px;
+        #volume-control-section {
+            margin-top: 10px;
             text-align: center;
         }
 
-        /* Mobile Styling */
-        @media (max-width: 768px) {
-            body {
-                padding: 10px;
-            }
+        #volume-control {
+            width: 100%;
+        }
 
-            #amie-title {
-                font-size: 2.5rem;
-                margin-bottom: 10px;
-            }
-
-            #chat-container {
-                width: 90%;
-                transform: scale(1.2); /* Enlarges the chat-container by 20% */
-                margin: 0 auto;
-            }
-
-            #chat-form {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            #age-btn, button[type="submit"], #chat-input {
-                width: 100%;
-            }
-
-            #chat-history {
-                height: 250px; /* Increases chat history height proportionally */
-            }
+        #reset-chat-btn {
+            margin-top: 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -167,56 +132,25 @@
         </header>
 
         <main>
-            <div id="chat-container">
-                <!-- Chat History -->
-                <div id="chat-history" aria-label="Chat history" tabindex="0"></div>
+            <div id="chat-history" aria-label="Chat history" tabindex="0"></div>
 
-                <!-- Input Section -->
-                <section id="input-container">
-                    <form id="chat-form" aria-label="Chat form">
-                        <!-- Age Button -->
-                        <button id="age-btn" aria-label="Enter your age">Age</button>
-                        <input 
-                            type="number" 
-                            id="age-input" 
-                            placeholder="Enter age" 
-                            min="1" 
-                            max="100" 
-                            required 
-                            style="display: none;"
-                        >
+            <form id="chat-form" aria-label="Chat form">
+                <button id="age-btn" aria-label="Enter your age">Age</button>
+                <input type="text" id="chat-input" placeholder="Type your message here..." required aria-label="Enter your message">
+                <button type="submit" aria-label="Send your message">Send</button>
+            </form>
 
-                        <!-- Message Input -->
-                        <input 
-                            type="text" 
-                            id="chat-input" 
-                            placeholder="Type your message here..." 
-                            required 
-                            aria-label="Enter your message"
-                        >
+            <section id="voice-controls">
+                <button id="start-record-btn" aria-label="Start voice recording">Start Recording</button>
+                <button id="stop-record-btn" disabled aria-label="Stop voice recording">Stop Recording</button>
+            </section>
 
-                        <!-- Submit Button -->
-                        <button type="submit" aria-label="Send your message">Send</button>
-                    </form>
-                </section>
+            <section id="volume-control-section">
+                <label for="volume-control">Volume:</label>
+                <input type="range" id="volume-control" min="0.5" max="2.0" step="0.1" value="1.0">
+            </section>
 
-                <!-- Voice Controls -->
-                <section id="voice-controls">
-                    <button id="start-record-btn" aria-label="Start voice recording">Start Recording</button>
-                    <button id="stop-record-btn" disabled aria-label="Stop voice recording">Stop Recording</button>
-                </section>
-
-                <!-- Volume Control -->
-                <section id="volume-control-section">
-                    <label for="volume-control">Volume:</label>
-                    <input type="range" id="volume-control" min="0.5" max="2.0" step="0.1" value="1.0">
-                </section>
-
-                <!-- Reset Chat -->
-                <section id="reset-chat-section">
-                    <button id="reset-chat-btn" class="reset-btn" aria-label="Reset chat history">Reset Chat</button>
-                </section>
-            </div>
+            <button id="reset-chat-btn" class="reset-btn" aria-label="Reset chat history">Reset Chat</button>
         </main>
 
         <footer>
@@ -225,13 +159,11 @@
     </div>
 
     <script>
-        // Toggle Age Input Visibility
+        // JavaScript to show/hide age input if needed
         document.getElementById("age-btn").addEventListener("click", () => {
-            const ageInput = document.getElementById("age-input");
-            ageInput.style.display = "inline-block";
-            ageInput.focus();
+            const chatInput = document.getElementById("chat-input");
+            chatInput.placeholder = "Enter your age...";
         });
     </script>
-    <script src="app.js"></script>
 </body>
 </html>
