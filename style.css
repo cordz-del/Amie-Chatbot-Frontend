@@ -1,7 +1,7 @@
 /* General styling */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f0f4f8;
+    background-color: #f4f8fb;
     color: #333;
     margin: 0;
     padding: 0;
@@ -14,15 +14,15 @@ body {
 /* Header styling */
 header {
     text-align: center;
-    margin-top: 50px;
+    margin-top: 30px;
 }
 
 #amie-title {
-    font-size: 4rem;
-    margin-bottom: 20px;
-    background: linear-gradient(to right, #0056b3, #007bff, #89cfff);
+    font-size: 3.5rem;
+    background: linear-gradient(to right, #001a33, #0066cc, #89cfff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    margin-bottom: 20px;
 }
 
 /* Main container */
@@ -40,63 +40,53 @@ header {
 #chat-container {
     background-color: white;
     border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 90%;
     max-width: 600px;
-    width: 100%;
-    padding: 20px;
-    margin: 20px auto;
+    padding: 16px;
+    margin: 10px auto;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-@media (max-width: 768px) {
-    #chat-container {
-        width: 93%; /* Increased width by 3% */
-        padding: 10px;
-        margin: 0 auto;
-        transform: scale(0.85); /* Reduced height by 15% */
-    }
-}
-
 /* Chat history */
 #chat-history {
     border: 1px solid #ccc;
-    padding: 12px;
-    height: 300px;
+    padding: 10px;
+    height: 200px;
     overflow-y: auto;
     background-color: #fff;
     border-radius: 8px;
-    margin-bottom: 16px;
-    font-size: 1.2rem;
+    font-size: 1rem;
+    margin-bottom: 20px;
     width: 100%;
 }
 
 /* Form styling */
 #chat-form {
     display: flex;
-    gap: 10px;
+    gap: 5px;
     width: 100%;
-    justify-content: center;
     align-items: center;
+    justify-content: space-between;
 }
 
-#age-btn,
-#chat-input,
-button[type="submit"] {
-    padding: 10px;
-    font-size: 1rem;
-    border: 1px solid #ccc;
+#age-btn, #chat-input, button[type="submit"] {
+    font-size: 0.9rem;
+    padding: 5px 8px;
     border-radius: 5px;
     box-sizing: border-box;
+    border: 1px solid #ccc;
 }
 
 #age-btn {
     background-color: #007bff;
     color: white;
     border: none;
-    flex: 1;
     cursor: pointer;
+    width: 20%; /* Reduced size for mobile */
+    height: 36px;
 }
 
 #age-btn:hover {
@@ -104,69 +94,38 @@ button[type="submit"] {
 }
 
 #chat-input {
-    flex: 3;
+    flex: 2;
     padding: 8px;
+    font-size: 0.9rem;
 }
 
 button[type="submit"] {
     background-color: #007bff;
     color: white;
     border: none;
-    flex: 1;
     cursor: pointer;
+    width: 20%; /* Reduced size for mobile */
+    height: 36px;
 }
 
 button[type="submit"]:hover {
     background-color: #0056b3;
 }
 
-/* Mobile-Specific Adjustments */
-@media (max-width: 480px) {
-    #chat-container {
-        width: 93%; /* Increased width by 3% */
-        transform: scale(0.85); /* Reduced height by 15% */
-    }
-
-    #chat-form {
-        flex-direction: row; /* Ensure horizontal layout */
-        gap: 8px;
-    }
-
-    #age-btn {
-        font-size: 0.8rem;
-        padding: 4px 8px;
-        flex: 0 0 15%; /* 80% smaller */
-    }
-
-    #chat-input {
-        font-size: 0.7rem; /* 60% smaller */
-        padding: 4px 6px;
-        flex: 1;
-    }
-
-    button[type="submit"] {
-        font-size: 0.8rem;
-        padding: 4px 8px;
-        flex: 0 0 15%; /* 80% smaller */
-    }
-}
-
-/* Voice Controls */
+/* Voice controls */
 #voice-controls {
     display: flex;
     gap: 10px;
+    margin-top: 15px;
     justify-content: center;
-    margin-top: 10px;
 }
 
-#start-record-btn,
-#stop-record-btn {
-    padding: 10px;
-    flex: 1;
-    border-radius: 5px;
+#start-record-btn, #stop-record-btn {
+    padding: 8px;
     font-size: 1rem;
-    border: none;
+    border-radius: 5px;
     transition: background-color 0.3s ease;
+    width: 45%; /* Ensures buttons are smaller on mobile */
 }
 
 #start-record-btn {
@@ -175,38 +134,99 @@ button[type="submit"]:hover {
 }
 
 #stop-record-btn {
-    background-color: #ccc;
-    color: white;
+    background-color: white;
+    color: #999;
+    border: 1px solid #ccc;
     cursor: not-allowed;
 }
 
-#start-record-btn:hover {
+#start-record-btn:hover:not(:disabled),
+#stop-record-btn:hover:not(:disabled) {
     background-color: #0056b3;
+    color: white;
 }
 
-/* Volume Control */
+/* Volume control */
 #volume-control-section {
-    margin-top: 10px;
+    margin-top: 15px;
     text-align: center;
+    width: 100%;
 }
 
 #volume-control {
     width: 100%;
-    height: 6px;
+    height: 5px;
 }
 
-/* Reset Button */
-.reset-btn {
+/* Reset chat */
+#reset-chat-btn {
     margin-top: 20px;
     background-color: #007bff;
     color: white;
     border: none;
     border-radius: 5px;
-    padding: 10px;
+    padding: 10px 20px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-.reset-btn:hover {
+#reset-chat-btn:hover {
     background-color: #0056b3;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #chat-container {
+        width: 95%; /* Slightly larger width for mobile */
+    }
+
+    #chat-history {
+        height: 170px; /* Reduced height for smaller screens */
+        font-size: 0.9rem;
+    }
+
+    #age-btn, button[type="submit"] {
+        width: 18%; /* Further reduction in width for mobile */
+    }
+
+    #chat-input {
+        flex: 1.5; /* Proportionally reduced input field size */
+    }
+
+    #start-record-btn, #stop-record-btn {
+        width: 44%; /* Ensures even sizing on small screens */
+    }
+
+    #volume-control {
+        width: 95%;
+    }
+}
+
+@media (max-width: 480px) {
+    #chat-container {
+        transform: scale(0.9); /* Further scaling for smaller devices */
+    }
+
+    #amie-title {
+        font-size: 3rem;
+    }
+
+    #chat-history {
+        height: 150px;
+        font-size: 0.8rem;
+    }
+
+    #chat-form {
+        gap: 5px;
+    }
+
+    #start-record-btn, #stop-record-btn {
+        font-size: 0.8rem;
+        padding: 6px;
+    }
+
+    #reset-chat-btn {
+        font-size: 0.8rem;
+        padding: 8px 16px;
+    }
 }
