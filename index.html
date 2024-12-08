@@ -65,6 +65,58 @@
             background-color: #fff;
         }
 
+        #chat-form {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            width: 100%;
+            justify-content: center;
+        }
+
+        /* Buttons and Inputs */
+        #age-btn, #chat-input, button[type="submit"] {
+            height: 40px;
+            font-size: 1rem;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        #age-btn {
+            width: 70px;
+            border: 1px solid #ccc;
+            background-color: white;
+            color: #333;
+            cursor: pointer;
+        }
+
+        #chat-input {
+            flex: 1;
+            padding: 10px;
+            font-size: 0.9rem; /* Slightly smaller for better spacing */
+            border: 1px solid #ccc;
+        }
+
+        button[type="submit"] {
+            width: 70px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        /* Voice Controls */
+        #voice-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        /* Footer */
         footer {
             margin-top: 20px;
             text-align: center;
@@ -96,6 +148,14 @@
             #chat-container {
                 width: 90%;
             }
+
+            #chat-form {
+                flex-direction: column;
+            }
+
+            #age-btn, button[type="submit"], #chat-input {
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -113,19 +173,17 @@
                 <!-- Input Section -->
                 <section id="input-container">
                     <form id="chat-form" aria-label="Chat form">
-                        <!-- Age Button with Tooltip -->
-                        <div class="tooltip-container" data-tooltip="Please enter your age here">
-                            <button id="age-btn" aria-label="Enter your age">Age</button>
-                            <input 
-                                type="number" 
-                                id="age-input" 
-                                placeholder="Enter age" 
-                                min="1" 
-                                max="100" 
-                                required 
-                                style="display: none;"
-                            >
-                        </div>
+                        <!-- Age Button -->
+                        <button id="age-btn" aria-label="Enter your age">Age</button>
+                        <input 
+                            type="number" 
+                            id="age-input" 
+                            placeholder="Enter age" 
+                            min="1" 
+                            max="100" 
+                            required 
+                            style="display: none;"
+                        >
 
                         <!-- Message Input -->
                         <input 
