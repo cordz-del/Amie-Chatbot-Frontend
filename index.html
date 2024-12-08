@@ -21,15 +21,12 @@
                 <!-- Input Section -->
                 <section id="input-container">
                     <form id="chat-form" aria-label="Chat form">
-                        <!-- Age Dropdown -->
-                        <select id="age-select" aria-label="Select your age" required>
-                            <option value="" disabled selected hidden>Age</option>
-                            <!-- Dynamically generate options -->
-                            <script>
-                                for (let i = 1; i <= 30; i++) {
-                                    document.write(`<option value="${i}">${i} years old</option>`);
-                                }
-                            </script>
+                        <!-- Age Select -->
+                        <select id="age-select" aria-label="Select your age">
+                            <option value="" disabled selected>Age</option>
+                            <option value="1-10">1-10 years old</option>
+                            <option value="11-20">11-20 years old</option>
+                            <option value="21-30">21-30 years old</option>
                         </select>
 
                         <!-- Message Input -->
@@ -70,6 +67,30 @@
         </footer>
     </div>
 
-    <script src="app.js"></script>
+    <script>
+        // Age Select Dropdown
+        document.getElementById("age-select").addEventListener("change", (event) => {
+            console.log(`Selected age range: ${event.target.value}`);
+        });
+
+        // Chat Form Submission
+        document.getElementById("chat-form").addEventListener("submit", (event) => {
+            event.preventDefault();
+            const message = document.getElementById("chat-input").value;
+            if (message) {
+                const chatHistory = document.getElementById("chat-history");
+                const messageElement = document.createElement("div");
+                messageElement.textContent = `You: ${message}`;
+                chatHistory.appendChild(messageElement);
+                document.getElementById("chat-input").value = ""; // Clear the input
+            }
+        });
+
+        // Reset Chat
+        document.getElementById("reset-chat-btn").addEventListener("click", () => {
+            const chatHistory = document.getElementById("chat-history");
+            chatHistory.innerHTML = ""; // Clear the chat history
+        });
+    </script>
 </body>
 </html>
