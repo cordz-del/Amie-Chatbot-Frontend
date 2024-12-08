@@ -28,16 +28,16 @@
             justify-content: center;
             width: 100%;
             max-width: 1200px;
-            min-height: calc(100vh - 50px); /* Adjusts to center everything with minimal space below */
+            min-height: calc(100vh - 50px); /* Adjusts to center everything */
         }
 
         #amie-title {
-            font-size: 3.5rem; /* Increased font size */
+            font-size: 3.5rem;
             text-align: center;
             background: linear-gradient(to right, #001a33, #0066cc, #89cfff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin: 10px 0; /* Moved higher */
+            margin: 20px 0;
         }
 
         #chat-container {
@@ -75,9 +75,9 @@
 
         /* Buttons and Inputs */
         #age-btn, #chat-input, button[type="submit"] {
-            height: 40px;
-            font-size: 1rem;
-            padding: 5px 10px;
+            height: 36px; /* Reduced height */
+            font-size: 0.9rem; /* Adjusted font size */
+            padding: 5px 8px;
             border-radius: 5px;
         }
 
@@ -95,8 +95,8 @@
 
         #chat-input {
             flex: 1;
-            padding: 10px;
-            font-size: 0.9rem; /* Slightly smaller for better spacing */
+            padding: 8px;
+            font-size: 0.9rem;
             border: 1px solid #ccc;
         }
 
@@ -126,22 +126,6 @@
             text-align: center;
         }
 
-        /* Center elements on desktop */
-        @media (min-width: 1024px) {
-            body {
-                justify-content: center;
-            }
-
-            #main-container {
-                margin-top: auto;
-                margin-bottom: auto;
-            }
-
-            #amie-title {
-                margin: 20px 0; /* Slightly higher for desktop */
-            }
-        }
-
         /* Mobile Styling */
         @media (max-width: 768px) {
             body {
@@ -158,11 +142,25 @@
             }
 
             #chat-form {
-                flex-direction: column;
+                flex-direction: row; /* Keeps buttons in a row */
+                justify-content: space-between;
             }
 
             #age-btn, button[type="submit"], #chat-input {
-                width: 100%;
+                width: auto; /* Automatically size inputs and buttons */
+                flex-shrink: 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #chat-form {
+                flex-direction: column; /* Stacks elements for very small screens */
+                gap: 5px;
+            }
+
+            #age-btn, button[type="submit"], #chat-input {
+                width: 100%; /* Full width on small devices */
+                margin-bottom: 5px;
             }
         }
     </style>
