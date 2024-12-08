@@ -15,6 +15,12 @@ document.addEventListener("DOMContentLoaded", () => {
     let recordedChunks = [];
     let conversationLog = []; // Maintain conversation history
 
+    // Ensure elements exist before accessing them
+    if (!chatForm || !chatInput || !chatHistory || !startRecordBtn || !stopRecordBtn || !statusMessage || !ageInput || !volumeControl || !resetButton) {
+        console.error("One or more required elements are missing in the DOM.");
+        return;
+    }
+
     // Update button states dynamically
     function updateButtonStates() {
         startRecordBtn.disabled = isRecording;
