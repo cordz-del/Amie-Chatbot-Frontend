@@ -32,12 +32,12 @@
         }
 
         #amie-title {
-            font-size: 3rem;
+            font-size: 3.5rem; /* Increased font size */
             text-align: center;
             background: linear-gradient(to right, #001a33, #0066cc, #89cfff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin: 20px 0;
+            margin: 10px 0; /* Moved higher */
         }
 
         #chat-container {
@@ -83,10 +83,14 @@
 
         #age-btn {
             width: 70px;
-            border: 1px solid #ccc;
-            background-color: white;
-            color: #333;
+            border: none;
+            background-color: #007bff; /* Matches Send button */
+            color: white;
             cursor: pointer;
+        }
+
+        #age-btn:hover {
+            background-color: #0056b3;
         }
 
         #chat-input {
@@ -131,6 +135,10 @@
             #main-container {
                 margin-top: auto;
                 margin-bottom: auto;
+            }
+
+            #amie-title {
+                margin: 20px 0; /* Slightly higher for desktop */
             }
         }
 
