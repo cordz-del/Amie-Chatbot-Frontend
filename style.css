@@ -1,4 +1,4 @@
-/* General styling */
+/* General Styling */
 body {
     font-family: 'Arial', sans-serif;
     background-color: #f0f4f8;
@@ -11,21 +11,21 @@ body {
     height: 100vh;
 }
 
-/* Header styling */
+/* Header Styling */
 header {
     text-align: center;
-    margin-top: 120px;
+    margin-top: 50px;
 }
 
 #amie-title {
-    font-size: 5.4rem;
-    margin-bottom: 40px;
-    background: linear-gradient(to right, #0056b3, #007bff, #89cfff);
+    font-size: 3rem;
+    margin-bottom: 20px;
+    background: linear-gradient(to right, #001a33, #0066cc, #89cfff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
-/* Main container */
+/* Main Container */
 #main-container {
     display: flex;
     flex-direction: column;
@@ -34,137 +34,156 @@ header {
     width: 100%;
     max-width: 1200px;
     padding: 20px;
-    margin-top: 50px;
 }
 
-/* Chat container */
+/* Chat Container */
 #chat-container {
     background-color: white;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 840px;
-    min-width: 336px;
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 30px 0;
+    max-width: 600px;
+    width: 100%;
+    padding: 16px;
+    margin: 20px 0;
 }
 
-/* Chat history */
+/* Chat History */
 #chat-history {
     border: 1px solid #ccc;
-    padding: 18px;
-    height: 336px;
+    padding: 12px;
+    height: 300px;
     overflow-y: auto;
     background-color: #fff;
-    margin-bottom: 12px;
     border-radius: 8px;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 16px;
     font-size: 1.2rem;
     width: 100%;
 }
 
-/* Input form */
+/* Form Styling */
 #chat-form {
     display: flex;
+    flex-direction: column;
     width: 100%;
-    gap: 12px;
+    gap: 10px;
 }
 
-#age-input {
-    width: 72px;
-    padding: 12px;
-    font-size: 1.2rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+/* Tooltip Styling */
+.tooltip-container {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
 }
 
-#chat-input {
-    flex: 1;
-    padding: 12px;
-    font-size: 1.2rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-button[type="submit"] {
-    width: 96px;
-    background-color: #007BFF;
+.tooltip-container:hover::after {
+    content: attr(data-tooltip); /* Use the 'data-tooltip' attribute for the text */
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #555;
     color: white;
+    padding: 5px 8px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+/* Input Fields */
+#age-input,
+#chat-input {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+}
+
+/* Buttons */
+button {
+    padding: 10px;
+    font-size: 1rem;
     border: none;
     border-radius: 5px;
-    padding: 12px;
-    font-size: 1rem;
     cursor: pointer;
+    background-color: white;
+    color: #333;
+    border: 1px solid #ccc;
     transition: background-color 0.3s ease;
 }
 
-button[type="submit"]:hover {
-    background-color: #0056b3;
+button:hover {
+    background-color: #007bff;
+    color: white;
 }
 
-/* Volume control */
-#volume-control-section {
-    margin: 12px 0;
-    text-align: center;
-}
-
-input[type="range"] {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    width: 100%;
-    height: 6px;
-    background: linear-gradient(to right, blue 50%, gray 50%);
-    border-radius: 5px;
-    outline: none;
-    transition: background 0.3s ease;
-}
-
-input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    height: 16px;
-    width: 16px;
-    background: blue;
-    cursor: pointer;
-    border-radius: 50%;
-}
-
-input[type="range"]::-moz-range-thumb {
-    height: 16px;
-    width: 16px;
-    background: blue;
-    cursor: pointer;
-    border-radius: 50%;
+button:disabled {
+    background-color: white;
+    color: #999;
+    border: 1px solid #ccc;
+    cursor: not-allowed;
 }
 
 /* Start/Stop Recording Buttons */
+#voice-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
 #start-record-btn, #stop-record-btn {
-    width: 180px;
-    padding: 12px;
-    margin: 6px 0;
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+    flex: 1;
+    padding: 10px;
+    text-align: center;
     transition: background-color 0.3s ease;
 }
 
-#stop-record-btn:disabled, #start-record-btn:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
+#start-record-btn {
+    background-color: #007bff;
+    color: white;
+}
+
+#stop-record-btn {
+    background-color: white;
+    color: #007bff;
+    border: 1px solid #007bff;
+}
+
+#start-record-btn:hover {
+    background-color: #0056b3;
+}
+
+#stop-record-btn:hover {
+    background-color: #0056b3;
+    color: white;
+}
+
+/* Volume Control */
+#volume-control-section {
+    margin-top: 10px;
+    text-align: center;
+}
+
+#volume-control {
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(to right, #007bff, #ccc);
+    border-radius: 5px;
+    transition: background 0.3s ease;
+}
+
+#volume-control:active {
+    background: linear-gradient(to right, #0056b3, #ccc);
 }
 
 /* Reset Chat Button */
 .reset-btn {
-    margin-top: 24px;
+    margin-top: 20px;
     background-color: #007bff;
     color: white;
     border: none;
     border-radius: 5px;
-    padding: 12px;
+    padding: 10px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
@@ -173,75 +192,71 @@ input[type="range"]::-moz-range-thumb {
     background-color: #0056b3;
 }
 
-/* Footer styling */
-footer {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 0.9rem;
-    color: #666;
-}
-
-/* Responsive Design */
+/* Responsive Adjustments */
 @media (max-width: 768px) {
     header {
-        margin-top: 80px;
+        margin-top: 20px;
     }
 
     #amie-title {
-        font-size: 4rem;
+        font-size: 2.5rem;
     }
 
     #chat-container {
         width: 90%;
-        padding: 16px;
-        transform: scale(0.75); /* Scale the entire chat container */
-        transform-origin: top center;
+        margin: 0 auto;
+        transform: scale(0.95);
     }
 
     #chat-history {
         height: 250px;
-        font-size: 1rem;
     }
 
-    input[type="range"] {
-        height: 4px;
+    #chat-form {
+        gap: 8px;
     }
 
-    #start-record-btn, #stop-record-btn, .reset-btn {
+    button {
         font-size: 0.9rem;
-        padding: 10px;
+        padding: 8px;
     }
 
-    #volume-control-section input[type="range"] {
-        width: 80%;
+    #voice-controls {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    #start-record-btn, #stop-record-btn {
+        flex: none;
+        padding: 8px;
+    }
+
+    #volume-control {
+        height: 4px;
     }
 }
 
 @media (max-width: 480px) {
     header {
-        margin-top: 60px;
+        margin-top: 15px;
     }
 
     #amie-title {
-        font-size: 3rem;
+        font-size: 2.2rem;
+        margin-bottom: 15px;
     }
 
     #chat-container {
-        width: 95%;
-        padding: 12px;
+        transform: scale(0.85);
     }
 
     #chat-history {
+        font-size: 1rem;
         height: 200px;
-        font-size: 0.9rem;
-    }
-
-    input[type="range"] {
-        width: 75%;
     }
 
     #start-record-btn, #stop-record-btn, .reset-btn {
-        width: 90%;
+        font-size: 0.9rem;
         padding: 8px;
     }
 }
