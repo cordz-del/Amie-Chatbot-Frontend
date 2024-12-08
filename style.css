@@ -1,4 +1,4 @@
-/* General Styling */
+/* General styling */
 body {
     font-family: 'Arial', sans-serif;
     background-color: #f0f4f8;
@@ -11,7 +11,7 @@ body {
     height: 100vh;
 }
 
-/* Header Styling */
+/* Header styling */
 header {
     text-align: center;
     margin-top: 50px;
@@ -25,7 +25,7 @@ header {
     -webkit-text-fill-color: transparent;
 }
 
-/* Main Container */
+/* Main container */
 #main-container {
     display: flex;
     flex-direction: column;
@@ -36,7 +36,7 @@ header {
     padding: 20px;
 }
 
-/* Chat Container */
+/* Chat container */
 #chat-container {
     background-color: white;
     border-radius: 12px;
@@ -47,7 +47,15 @@ header {
     margin: 20px 0;
 }
 
-/* Chat History */
+/* Desktop Chat container adjustments */
+@media (min-width: 769px) {
+    #chat-container {
+        width: 50%;
+        margin: 40px auto;
+    }
+}
+
+/* Chat history */
 #chat-history {
     border: 1px solid #ccc;
     padding: 12px;
@@ -60,15 +68,38 @@ header {
     width: 100%;
 }
 
-/* Form Styling */
+/* Form styling */
 #chat-form {
     display: flex;
-    flex-direction: column;
-    width: 100%;
     gap: 10px;
+    width: 100%;
 }
 
-/* Tooltip Styling */
+#age-input,
+#chat-input {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    flex: 1;
+}
+
+button[type="submit"] {
+    padding: 10px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #007BFF;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* Tooltip styling */
 .tooltip {
     position: relative;
     display: inline-block;
@@ -89,81 +120,36 @@ header {
     white-space: nowrap;
 }
 
-/* Input Fields */
-#age-input,
-#chat-input {
-    padding: 10px;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 100%;
+/* Voice Controls */
+#voice-controls {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
 }
 
-/* Buttons */
-button {
+#start-record-btn, #stop-record-btn {
     padding: 10px;
+    flex: 1;
+    border-radius: 5px;
     font-size: 1rem;
     border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    background-color: #007BFF;
-    color: white;
     transition: background-color 0.3s ease;
 }
 
-button:hover {
-    background-color: #0056b3;
+#start-record-btn {
+    background-color: #007BFF;
+    color: white;
 }
 
-button:disabled {
+#stop-record-btn {
     background-color: white;
     color: #999;
     border: 1px solid #ccc;
     cursor: not-allowed;
 }
 
-/* Start/Stop Recording Buttons */
-#voice-controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap; /* Ensure buttons wrap on smaller screens */
-    gap: 10px;
-    margin-top: 10px;
-    padding: 10px;
-}
-
-#start-record-btn, #stop-record-btn {
-    flex: 1; /* Buttons take equal width */
-    max-width: 45%; /* Prevents buttons from stretching too wide */
-    min-width: 100px; /* Ensures buttons don't shrink too small */
-    padding: 10px;
-    text-align: center;
-    transition: background-color 0.3s ease;
-    font-size: 1rem;
-}
-
-/* Start Recording Button */
-#start-record-btn {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-}
-
-#start-record-btn:hover {
-    background-color: #0056b3;
-}
-
-/* Stop Recording Button */
-#stop-record-btn {
-    background-color: white;
-    color: #007bff;
-    border: 1px solid #007bff;
-    border-radius: 5px;
-}
-
-#stop-record-btn:hover {
+#start-record-btn:hover:not(:disabled),
+#stop-record-btn:hover:not(:disabled) {
     background-color: #0056b3;
     color: white;
 }
@@ -179,7 +165,7 @@ button:disabled {
     height: 6px;
 }
 
-/* Reset Chat Button */
+/* Reset Button */
 .reset-btn {
     margin-top: 20px;
     background-color: #007bff;
@@ -207,33 +193,19 @@ button:disabled {
 
     #chat-container {
         width: 90%;
-        margin: 0 auto; /* Center the chat box */
-        transform: scale(0.9); /* Slightly smaller for mobile */
-    }
-
-    #chat-history {
-        height: 250px;
-    }
-
-    #chat-form {
-        gap: 8px;
-    }
-
-    button {
-        font-size: 0.9rem;
-        padding: 8px;
+        margin: 0 auto;
+        transform: scale(0.9);
     }
 
     #voice-controls {
-        flex-wrap: wrap;
-        flex-direction: row;
-        justify-content: center; /* Ensure buttons stay centered */
+        flex-direction: column;
         align-items: center;
     }
 
     #start-record-btn, #stop-record-btn {
-        width: 100%; /* Buttons stack on smaller screens */
-        margin-bottom: 8px;
+        flex: none;
+        width: 100%;
+        margin-bottom: 10px;
     }
 
     #volume-control {
@@ -263,20 +235,5 @@ button:disabled {
     #start-record-btn, #stop-record-btn, .reset-btn {
         font-size: 0.9rem;
         padding: 8px;
-        width: 90%; /* Buttons take full width on smaller screens */
-    }
-}
-
-/* Safari-Specific Fixes */
-@supports (-webkit-touch-callout: none) {
-    #voice-controls {
-        display: -webkit-flex;
-        flex-wrap: wrap;
-        -webkit-justify-content: center; /* Safari-specific alignment */
-        -webkit-align-items: center;
-    }
-
-    #start-record-btn, #stop-record-btn {
-        -webkit-box-flex: 1; /* Safari-specific flexbox fix */
     }
 }
