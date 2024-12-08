@@ -18,7 +18,7 @@ header {
 }
 
 #amie-title {
-    font-size: 5.4rem;
+    font-size: 4rem;
     margin-bottom: 20px;
     background: linear-gradient(to right, #0056b3, #007bff, #89cfff);
     -webkit-background-clip: text;
@@ -43,14 +43,18 @@ header {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     max-width: 600px;
     width: 100%;
-    padding: 16px;
+    padding: 20px;
     margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-/* Desktop Chat container adjustments */
-@media (min-width: 769px) {
+@media (max-width: 768px) {
     #chat-container {
-        width: 50%;
+        width: 90%;
+        padding: 10px;
+        margin: 0 auto;
     }
 }
 
@@ -72,51 +76,47 @@ header {
     display: flex;
     gap: 10px;
     width: 100%;
+    justify-content: center;
+    align-items: center;
 }
 
-#age-input,
-#chat-input {
+#age-btn,
+#chat-input,
+button[type="submit"] {
     padding: 10px;
     font-size: 1rem;
     border: 1px solid #ccc;
     border-radius: 5px;
+    box-sizing: border-box;
+}
+
+#age-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
     flex: 1;
+    cursor: pointer;
+}
+
+#age-btn:hover {
+    background-color: #0056b3;
+}
+
+#chat-input {
+    flex: 3;
+    padding: 8px;
 }
 
 button[type="submit"] {
-    padding: 10px;
-    font-size: 1rem;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    background-color: #007BFF;
+    background-color: #007bff;
     color: white;
-    transition: background-color 0.3s ease;
+    border: none;
+    flex: 1;
+    cursor: pointer;
 }
 
 button[type="submit"]:hover {
     background-color: #0056b3;
-}
-
-/* Tooltip styling */
-.tooltip {
-    position: relative;
-    display: inline-block;
-    cursor: pointer;
-}
-
-.tooltip:hover::after {
-    content: attr(data-tooltip); /* Use the 'data-tooltip' attribute for the text */
-    position: absolute;
-    bottom: -25px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #555;
-    color: white;
-    padding: 5px 8px;
-    border-radius: 5px;
-    font-size: 0.9rem;
-    white-space: nowrap;
 }
 
 /* Voice Controls */
@@ -127,7 +127,8 @@ button[type="submit"]:hover {
     margin-top: 10px;
 }
 
-#start-record-btn, #stop-record-btn {
+#start-record-btn,
+#stop-record-btn {
     padding: 10px;
     flex: 1;
     border-radius: 5px;
@@ -137,21 +138,18 @@ button[type="submit"]:hover {
 }
 
 #start-record-btn {
-    background-color: #007BFF;
+    background-color: #007bff;
     color: white;
 }
 
 #stop-record-btn {
-    background-color: white;
-    color: #999;
-    border: 1px solid #ccc;
+    background-color: #ccc;
+    color: white;
     cursor: not-allowed;
 }
 
-#start-record-btn:hover:not(:disabled),
-#stop-record-btn:hover:not(:disabled) {
+#start-record-btn:hover {
     background-color: #0056b3;
-    color: white;
 }
 
 /* Volume Control */
@@ -182,50 +180,13 @@ button[type="submit"]:hover {
 }
 
 /* Responsive Adjustments */
-@media (max-width: 768px) {
-    header {
-        margin-top: 20px;
-    }
-
-    #amie-title {
-        font-size: 4rem;
-    }
-
-    #chat-container {
-        width: 90%;
-        margin: 0 auto;
-        transform: scale(0.9);
-    }
-
-    #voice-controls {
-        flex-direction: row; /* Ensure buttons are side-by-side */
-        justify-content: space-between;
-    }
-
-    #start-record-btn, #stop-record-btn {
-        flex: 1 1 auto; /* Buttons resize evenly */
-        padding: 8px;
-        font-size: 0.9rem;
-        max-width: 45%; /* Ensure they fit inside the chat box */
-    }
-
-    #volume-control {
-        height: 4px;
-    }
-}
-
 @media (max-width: 480px) {
-    header {
-        margin-top: 15px;
-    }
-
     #amie-title {
-        font-size: 3.5rem;
-        margin-bottom: 15px;
+        font-size: 3rem;
     }
 
     #chat-container {
-        transform: scale(0.85);
+        transform: scale(1.1); /* Adjust to better fill the screen */
     }
 
     #chat-history {
@@ -233,14 +194,20 @@ button[type="submit"]:hover {
         height: 200px;
     }
 
-    #start-record-btn, #stop-record-btn {
-        font-size: 0.8rem;
-        padding: 8px;
-        max-width: 48%; /* Ensure buttons are smaller */
-        margin-bottom: 5px;
+    #chat-form {
+        flex-direction: column;
+        gap: 8px;
     }
 
-    #volume-control {
-        width: 90%;
+    #age-btn,
+    #chat-input,
+    button[type="submit"] {
+        width: 100%;
+        font-size: 0.9rem;
+    }
+
+    #voice-controls {
+        flex-direction: column;
+        gap: 8px;
     }
 }
