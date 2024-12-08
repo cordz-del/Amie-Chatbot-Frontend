@@ -98,7 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
             mediaRecorder = new MediaRecorder(stream);
             recordedChunks = [];
 
-            appendMessage("System", "Recording started...");
+            appendMessage("System", "Listening...");
 
             mediaRecorder.ondataavailable = event => {
                 if (event.data.size > 0) recordedChunks.push(event.data);
@@ -128,7 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             };
 
-            mediaRecorder.start();
+            mediaRecorder.start(500); // Fire dataavailable events every 500ms
             isRecording = true;
             startRecordBtn.disabled = true;
             stopRecordBtn.disabled = false;
