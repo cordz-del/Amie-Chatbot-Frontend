@@ -18,9 +18,9 @@ header {
 }
 
 #amie-title {
-    font-size: 3rem;
+    font-size: 5.4rem;
     margin-bottom: 20px;
-    background: linear-gradient(to right, #001a33, #0066cc, #89cfff);
+    background: linear-gradient(to right, #0056b3, #007bff, #89cfff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -69,13 +69,13 @@ header {
 }
 
 /* Tooltip Styling */
-.tooltip-container {
+.tooltip {
     position: relative;
     display: inline-block;
     cursor: pointer;
 }
 
-.tooltip-container:hover::after {
+.tooltip:hover::after {
     content: attr(data-tooltip); /* Use the 'data-tooltip' attribute for the text */
     position: absolute;
     bottom: -25px;
@@ -106,15 +106,13 @@ button {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    background-color: white;
-    color: #333;
-    border: 1px solid #ccc;
+    background-color: #007BFF;
+    color: white;
     transition: background-color 0.3s ease;
 }
 
 button:hover {
-    background-color: #007bff;
-    color: white;
+    background-color: #0056b3;
 }
 
 button:disabled {
@@ -128,29 +126,41 @@ button:disabled {
 #voice-controls {
     display: flex;
     justify-content: center;
+    align-items: center;
+    flex-wrap: wrap; /* Ensure buttons wrap on smaller screens */
     gap: 10px;
+    margin-top: 10px;
+    padding: 10px;
 }
 
 #start-record-btn, #stop-record-btn {
-    flex: 1;
+    flex: 1; /* Buttons take equal width */
+    max-width: 45%; /* Prevents buttons from stretching too wide */
+    min-width: 100px; /* Ensures buttons don't shrink too small */
     padding: 10px;
     text-align: center;
     transition: background-color 0.3s ease;
+    font-size: 1rem;
 }
 
+/* Start Recording Button */
 #start-record-btn {
     background-color: #007bff;
     color: white;
-}
-
-#stop-record-btn {
-    background-color: white;
-    color: #007bff;
-    border: 1px solid #007bff;
+    border: none;
+    border-radius: 5px;
 }
 
 #start-record-btn:hover {
     background-color: #0056b3;
+}
+
+/* Stop Recording Button */
+#stop-record-btn {
+    background-color: white;
+    color: #007bff;
+    border: 1px solid #007bff;
+    border-radius: 5px;
 }
 
 #stop-record-btn:hover {
@@ -167,13 +177,6 @@ button:disabled {
 #volume-control {
     width: 100%;
     height: 6px;
-    background: linear-gradient(to right, #007bff, #ccc);
-    border-radius: 5px;
-    transition: background 0.3s ease;
-}
-
-#volume-control:active {
-    background: linear-gradient(to right, #0056b3, #ccc);
 }
 
 /* Reset Chat Button */
@@ -199,13 +202,13 @@ button:disabled {
     }
 
     #amie-title {
-        font-size: 2.5rem;
+        font-size: 4rem;
     }
 
     #chat-container {
         width: 90%;
-        margin: 0 auto;
-        transform: scale(0.95);
+        margin: 0 auto; /* Center the chat box */
+        transform: scale(0.9); /* Slightly smaller for mobile */
     }
 
     #chat-history {
@@ -222,13 +225,15 @@ button:disabled {
     }
 
     #voice-controls {
-        flex-direction: column;
-        gap: 8px;
+        flex-wrap: wrap;
+        flex-direction: row;
+        justify-content: center; /* Ensure buttons stay centered */
+        align-items: center;
     }
 
     #start-record-btn, #stop-record-btn {
-        flex: none;
-        padding: 8px;
+        width: 100%; /* Buttons stack on smaller screens */
+        margin-bottom: 8px;
     }
 
     #volume-control {
@@ -242,7 +247,7 @@ button:disabled {
     }
 
     #amie-title {
-        font-size: 2.2rem;
+        font-size: 3.5rem;
         margin-bottom: 15px;
     }
 
@@ -258,5 +263,20 @@ button:disabled {
     #start-record-btn, #stop-record-btn, .reset-btn {
         font-size: 0.9rem;
         padding: 8px;
+        width: 90%; /* Buttons take full width on smaller screens */
+    }
+}
+
+/* Safari-Specific Fixes */
+@supports (-webkit-touch-callout: none) {
+    #voice-controls {
+        display: -webkit-flex;
+        flex-wrap: wrap;
+        -webkit-justify-content: center; /* Safari-specific alignment */
+        -webkit-align-items: center;
+    }
+
+    #start-record-btn, #stop-record-btn {
+        -webkit-box-flex: 1; /* Safari-specific flexbox fix */
     }
 }
