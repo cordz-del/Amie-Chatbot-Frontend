@@ -70,35 +70,59 @@
     </div>
 
     <script>
-        // Handle form submission
-        document.getElementById("chat-form").addEventListener("submit", function (event) {
-            event.preventDefault(); // Prevent default form submission behavior
-
+        document.addEventListener("DOMContentLoaded", () => {
+            const chatForm = document.getElementById("chat-form");
             const chatInput = document.getElementById("chat-input");
             const chatHistory = document.getElementById("chat-history");
-            const message = chatInput.value.trim();
+            const resetChatBtn = document.getElementById("reset-chat-btn");
+            const startRecordBtn = document.getElementById("start-record-btn");
+            const stopRecordBtn = document.getElementById("stop-record-btn");
 
-            if (message) {
-                // Append user message to chat history
+            // Handle form submission
+            chatForm.addEventListener("submit", (event) => {
+                event.preventDefault();
+                const message = chatInput.value.trim();
+                if (!message) return;
+
+                // Append user's message to chat history
                 const userMessage = document.createElement("div");
                 userMessage.textContent = `You: ${message}`;
-                userMessage.classList.add("user-message");
                 chatHistory.appendChild(userMessage);
 
-                // Clear input field
                 chatInput.value = "";
 
-                // Simulate chatbot response (you can replace this logic with backend API calls)
+                // Simulate chatbot response (replace with backend API call if necessary)
                 setTimeout(() => {
                     const botMessage = document.createElement("div");
                     botMessage.textContent = `Amie: I heard you say "${message}".`;
-                    botMessage.classList.add("bot-message");
                     chatHistory.appendChild(botMessage);
 
                     // Scroll to the latest message
                     chatHistory.scrollTop = chatHistory.scrollHeight;
                 }, 1000);
-            }
+            });
+
+            // Reset chat button functionality
+            resetChatBtn.addEventListener("click", () => {
+                chatHistory.innerHTML = "";
+                const resetMessage = document.createElement("div");
+                resetMessage.textContent = "Chat has been reset. How can I assist you today?";
+                chatHistory.appendChild(resetMessage);
+            });
+
+            // Start recording functionality
+            startRecordBtn.addEventListener("click", () => {
+                console.log("Start Recording clicked");
+                startRecordBtn.disabled = true;
+                stopRecordBtn.disabled = false;
+            });
+
+            // Stop recording functionality
+            stopRecordBtn.addEventListener("click", () => {
+                console.log("Stop Recording clicked");
+                stopRecordBtn.disabled = true;
+                startRecordBtn.disabled = false;
+            });
         });
     </script>
 </body>
