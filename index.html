@@ -68,25 +68,26 @@
         #chat-form {
             display: flex;
             gap: 10px;
-            flex-wrap: wrap;
             width: 100%;
             justify-content: center;
+            align-items: center;
         }
 
         /* Buttons and Inputs */
         #age-btn, #chat-input, button[type="submit"] {
-            height: 36px; /* Reduced height */
-            font-size: 0.9rem; /* Adjusted font size */
+            height: 36px;
+            font-size: 0.9rem;
             padding: 5px 8px;
             border-radius: 5px;
         }
 
         #age-btn {
-            width: 70px;
+            width: auto;
             border: none;
-            background-color: #007bff; /* Matches Send button */
+            background-color: #007bff;
             color: white;
             cursor: pointer;
+            flex-shrink: 0;
         }
 
         #age-btn:hover {
@@ -101,11 +102,12 @@
         }
 
         button[type="submit"] {
-            width: 70px;
+            width: auto;
             background-color: #007bff;
             color: white;
             border: none;
             cursor: pointer;
+            flex-shrink: 0;
         }
 
         button[type="submit"]:hover {
@@ -142,25 +144,12 @@
             }
 
             #chat-form {
-                flex-direction: row; /* Keeps buttons in a row */
-                justify-content: space-between;
+                flex-direction: column;
+                gap: 10px;
             }
 
             #age-btn, button[type="submit"], #chat-input {
-                width: auto; /* Automatically size inputs and buttons */
-                flex-shrink: 0;
-            }
-        }
-
-        @media (max-width: 480px) {
-            #chat-form {
-                flex-direction: column; /* Stacks elements for very small screens */
-                gap: 5px;
-            }
-
-            #age-btn, button[type="submit"], #chat-input {
-                width: 100%; /* Full width on small devices */
-                margin-bottom: 5px;
+                width: 100%;
             }
         }
     </style>
