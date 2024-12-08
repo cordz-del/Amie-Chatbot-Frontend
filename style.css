@@ -1,4 +1,4 @@
-/* General Styling */
+/* General styling */
 body {
     font-family: 'Arial', sans-serif;
     background-color: #f0f4f8;
@@ -11,7 +11,7 @@ body {
     min-height: 100vh;
 }
 
-/* Header Styling */
+/* Header styling */
 header {
     text-align: center;
     margin-top: 50px;
@@ -25,7 +25,7 @@ header {
     -webkit-text-fill-color: transparent;
 }
 
-/* Main Container */
+/* Main container */
 #main-container {
     display: flex;
     flex-direction: column;
@@ -36,82 +36,93 @@ header {
     padding: 20px;
 }
 
-/* Chat Container */
+/* Chat container */
 #chat-container {
     background-color: white;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 588px; /* Reduced size by 2% */
-    width: 98%;
+    max-width: 600px;
+    width: 98%; /* Adjusted width to make it 2% smaller */
     padding: 16px;
     margin: 20px auto;
 }
 
-/* Chat History */
+/* Chat history */
 #chat-history {
     border: 1px solid #ccc;
     padding: 12px;
-    height: 300px;
+    height: 280px; /* Reduced size by 5% */
     overflow-y: auto;
     background-color: #fff;
     border-radius: 8px;
     margin-bottom: 16px;
     font-size: 1.2rem;
     width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
-/* Form Styling */
+/* Form styling */
 #chat-form {
     display: flex;
     gap: 10px;
     width: 100%;
-    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
 }
 
-/* Age Select Styling */
 #age-select {
-    padding: 12px; /* Increased vertical padding */
-    font-size: 1rem;
+    width: 80px; /* 60% smaller */
+    padding: 8px;
+    font-size: 0.9rem;
     border: 1px solid #ccc;
     border-radius: 5px;
-    width: 50%; /* Shortened horizontal size by 50% */
-    max-width: 150px; /* Ensures alignment with the send button */
+    height: 36px; /* Adjusted height */
     box-sizing: border-box;
-    background-color: white;
-    color: #333;
-    cursor: pointer;
 }
 
-#age-select:focus {
-    outline: none;
-    border-color: #007BFF;
-}
-
-/* Chat Input */
 #chat-input {
-    padding: 10px;
-    font-size: 1rem;
+    flex: 2;
+    padding: 8px;
+    font-size: 0.9rem;
     border: 1px solid #ccc;
     border-radius: 5px;
-    flex: 2;
-    box-sizing: border-box;
+    height: 36px;
+    width: calc(100% - 120px); /* Adjusted for proper fit */
 }
 
-/* Submit Button */
 button[type="submit"] {
-    padding: 10px;
-    font-size: 1rem;
+    width: 80px; /* 60% smaller */
+    padding: 8px;
+    font-size: 0.9rem;
     border: none;
     border-radius: 5px;
+    cursor: pointer;
     background-color: #007BFF;
     color: white;
-    cursor: pointer;
     transition: background-color 0.3s ease;
-    width: 50%; /* Matches the age-select width */
-    max-width: 150px; /* Ensures consistency with age-select */
+    height: 36px; /* Match the dropdown height */
 }
 
+/* Button hover effects */
 button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+.reset-btn {
+    margin-top: 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-align: center;
+    width: 100%;
+}
+
+.reset-btn:hover {
     background-color: #0056b3;
 }
 
@@ -123,13 +134,15 @@ button[type="submit"]:hover {
     margin-top: 10px;
 }
 
-#start-record-btn, #stop-record-btn {
+#start-record-btn,
+#stop-record-btn {
     padding: 10px;
     flex: 1;
     border-radius: 5px;
     font-size: 1rem;
     border: none;
     transition: background-color 0.3s ease;
+    height: 36px;
 }
 
 #start-record-btn {
@@ -144,6 +157,12 @@ button[type="submit"]:hover {
     cursor: not-allowed;
 }
 
+#start-record-btn:hover:not(:disabled),
+#stop-record-btn:hover:not(:disabled) {
+    background-color: #0056b3;
+    color: white;
+}
+
 /* Volume Control */
 #volume-control-section {
     margin-top: 10px;
@@ -155,35 +174,25 @@ button[type="submit"]:hover {
     height: 6px;
 }
 
-/* Reset Button */
-.reset-btn {
-    margin-top: 20px;
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 10px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    text-align: center;
-    display: block;
-    width: 100%;
-}
-
-.reset-btn:hover {
-    background-color: #0056b3;
-}
-
-/* Footer Styling */
+/* Footer styling */
 footer {
     margin-top: 20px;
     text-align: center;
     font-size: 0.9rem;
-    color: #555;
+    padding: 0 10px; /* Adjusted indentation */
+    width: calc(100% - 20px); /* Adjusted for 10-character left/right indents */
 }
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
+    header {
+        margin-top: 20px;
+    }
+
+    #amie-title {
+        font-size: 4rem;
+    }
+
     #chat-container {
         width: 90%;
     }
@@ -193,8 +202,11 @@ footer {
         gap: 10px;
     }
 
-    #reset-chat-btn {
+    #age-select,
+    #chat-input,
+    button[type="submit"] {
         width: 100%;
+        height: 36px;
     }
 }
 
@@ -208,17 +220,27 @@ footer {
         margin-bottom: 15px;
     }
 
-    #chat-history {
-        font-size: 1rem;
-        height: 200px;
+    #chat-container {
+        width: 92%;
     }
 
-    #start-record-btn, #stop-record-btn {
+    #chat-history {
+        font-size: 1rem;
+        height: 240px;
+    }
+
+    #age-select,
+    #chat-input,
+    button[type="submit"] {
         font-size: 0.8rem;
-        padding: 8px;
+        height: 32px;
+    }
+
+    #reset-chat-btn {
+        font-size: 0.9rem;
     }
 
     #volume-control {
-        height: 4px;
+        width: 90%;
     }
 }
