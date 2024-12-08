@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const volumeControl = document.getElementById("volume-control");
 
     let isRecording = false;
-    let mediaRecorder;
+    let mediaRecorder = null;
     let recordedChunks = [];
     let conversationLog = []; // Maintain conversation log for chat history
 
@@ -108,8 +108,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 const audioBlob = new Blob(recordedChunks, { type: "audio/wav" });
                 const formData = new FormData();
                 formData.append("audio", audioBlob, "recording.wav");
-                formData.append("age", ageDropdown.value);
-                formData.append("volume", volumeControl.value);
+                formData.append("age", ageDropdown.value || "10");
+                formData.append("volume", volumeControl.value || "1.0");
 
                 try {
                     const response = await fetch(`${BACKEND_URL}/voice`, {
