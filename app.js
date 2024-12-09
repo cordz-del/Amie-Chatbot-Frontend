@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let recordedChunks = [];
     let conversationLog = []; // Maintain conversation log for chat history
 
-    // Ensure all required elements are present in the DOM
+    // Ensure all required DOM elements are present
     if (!chatForm || !chatInput || !chatHistory || !startRecordBtn || !stopRecordBtn || !resetChatBtn || !ageDropdown || !volumeControl) {
         console.error("One or more required elements are missing in the DOM.");
         return;
@@ -22,8 +22,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /**
      * Append a message to the chat history.
-     * @param {string} sender - Sender of the message (e.g., "You", "Amie").
-     * @param {string} message - Content of the message.
+     * @param {string} sender - The sender of the message (e.g., "You", "Amie").
+     * @param {string} message - The content of the message.
      */
     function appendMessage(sender, message) {
         const messageElement = document.createElement("div");
@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /**
-     * Clamp the volume to ensure it stays within a safe range [0.0, 1.0].
+     * Clamp the volume value to ensure it stays within a safe range [0.0, 1.0].
      * @param {number} value - Volume value.
      * @returns {number} - Clamped volume value.
      */
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /**
      * Play audio from a Base64-encoded string.
-     * @param {string} base64Audio - The Base64-encoded audio string.
+     * @param {string} base64Audio - The Base64-encoded audio data.
      */
     function playAudio(base64Audio) {
         if (!base64Audio) {
@@ -69,8 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /**
-     * Handle form submission to send chat messages.
-     * @param {Event} event - The form submission event.
+     * Handle form submission to send chat messages to the backend.
      */
     chatForm.addEventListener("submit", async event => {
         event.preventDefault();
@@ -111,7 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            mediaRecorder = new MediaRecorder(stream, { mimeType: "audio/webm" });
+            mediaRecorder = new MediaRecorder(stream);
             recordedChunks = [];
 
             appendMessage("System", "Listening...");
@@ -121,9 +120,9 @@ document.addEventListener("DOMContentLoaded", () => {
             };
 
             mediaRecorder.onstop = async () => {
-                const audioBlob = new Blob(recordedChunks, { type: "audio/webm" });
+                const audioBlob = new Blob(recordedChunks, { type: "audio/wav" });
                 const formData = new FormData();
-                formData.append("audio", audioBlob, "recording.webm");
+                formData.append("audio", audioBlob, "recording.wav");
                 formData.append("age", ageDropdown.value || "10");
                 formData.append("volume", volumeControl.value || "1.0");
 
@@ -155,7 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     /**
-     * Stop the ongoing recording and process the audio.
+     * Stop the ongoing recording and process the recorded audio.
      */
     stopRecordBtn.addEventListener("click", () => {
         if (!isRecording || !mediaRecorder) return;
@@ -177,7 +176,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     /**
-     * Log changes in volume control slider.
+     * Log volume slider changes.
      */
     volumeControl.addEventListener("input", () => {
         console.log(`Volume set to: ${volumeControl.value}`);
