@@ -8,7 +8,6 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     min-height: 100vh;
 }
 
@@ -16,20 +15,14 @@ body {
 header {
     text-align: center;
     margin-top: 30px;
-    width: 100%;
-    max-width: 1200px; /* Ensures proper alignment within the page width */
-    display: flex;
-    justify-content: center; /* Centers the header content */
 }
 
-/* Header Title */
 #amie-title {
     font-size: 3rem;
     margin-bottom: 20px;
     background: linear-gradient(to right, #0056b3, #007bff, #89cfff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    text-align: center; /* Ensures text within the header is centered */
 }
 
 /* Main Container */
@@ -54,7 +47,6 @@ header {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center; /* Ensures content inside the container is aligned */
 }
 
 /* Chat History */
@@ -82,7 +74,7 @@ header {
 
 /* Age Dropdown */
 #age-dropdown {
-    width: 60px; /* Default width */
+    width: 60px;
     height: 40px;
     padding: 5px;
     font-size: 0.9rem;
@@ -182,26 +174,26 @@ footer {
     margin-top: 20px;
     font-size: 0.8rem;
     text-align: center;
-    width: 100%;
-    max-width: 1200px; /* Centers the footer content */
-    margin: 20px auto; /* Aligns horizontally and vertically within the page */
+    width: calc(100% - 20px);
     color: #555;
 }
 
-/* Responsive Adjustments for Mobile */
+/* Responsive Adjustments for Mobile and Tablet */
 @media (max-width: 768px) {
     #chat-container {
-        width: 95%;
+        width: 88%; /* Reduced by 2% */
     }
 
-    #chat-form {
-        flex-direction: row;
-        gap: 5px;
+    #chat-history {
+        width: 93%; /* Adjusted to maintain proportion */
     }
 
-    #reset-chat-btn {
-        margin-top: 15px;
-        width: 90%;
+    header {
+        margin-left: 48px; /* Aligned header for mobile/tablet */
+    }
+
+    footer {
+        margin-left: 48px; /* Aligned footer for mobile/tablet */
     }
 }
 
@@ -219,12 +211,12 @@ footer {
     }
 
     #age-dropdown {
-        width: 90px; /* Adjusted width to look like the second image */
-        font-size: 1rem; /* Slightly larger text */
-        height: 50px; /* Increased height to prevent text cutoff */
-        line-height: 1.8; /* Adjust line height for better vertical alignment */
-        padding: 10px; /* Adjust padding for better appearance */
-        text-align: center; /* Align text in the center */
+        width: 90px; /* Adjusted width for desktop */
+        font-size: 1rem;
+        height: 50px;
+        line-height: 1.8;
+        padding: 10px;
+        text-align: center;
     }
 
     footer {
