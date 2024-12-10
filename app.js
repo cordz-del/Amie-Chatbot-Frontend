@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const BACKEND_URL = "http://127.0.0.1:5000"; // Update with your backend's actual URL
+    const BACKEND_URL = "https://462d2d49-1f98-4257-a721-46da919d929b-00-3hhfbf6wdvr1l.kirk.replit.dev/"; // Update with your backend's actual URL
     const chatForm = document.getElementById("chat-form");
     const chatInput = document.getElementById("chat-input");
     const chatHistory = document.getElementById("chat-history");
@@ -53,24 +53,24 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    chatForm.addEventListener("submit", async event => {
-        event.preventDefault();
-        const message = chatInput.value.trim();
-        const age = parseInt(ageDropdown.value, 10) || 10;
-        const volume = clampVolume(volumeControl.value);
+    async function testBackend() {
+        try {
+            const response = await fetch(`${BACKEND_URL}/test`);
+            const data = await response.json();
+            console.log('Test Endpoint Response:', data);
+            appendMessage("System", `Backend test response: ${data.message}`);
+        } catch (error) {
+            console.error('Error testing backend:', error);
+            appendMessage("Error", "Backend test failed.");
+        }
+    }
 
-        if (!message) return;
-
-        appendMessage("You", message);
-        chatInput.value = "";
-
-        conversationLog.push({ role: "user", content: message });
-
+    async function sendMessageToChatbot(message) {
         try {
             const response = await fetch(`${BACKEND_URL}/chat`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ message, conversation_log: conversationLog, volume }),
+                body: JSON.stringify({ message, conversation_log: conversationLog, volume: clampVolume(volumeControl.value) }),
             });
 
             if (!response.ok) throw new Error(`Failed to fetch chatbot response: ${response.statusText}`);
@@ -82,6 +82,39 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error("Error:", error);
             appendMessage("Error", "Failed to connect to the server. Please try again.");
         }
+    }
+
+    async function sendVoiceMessage(audioFile) {
+        try {
+            const formData = new FormData();
+            formData.append('audio', audioFile);
+
+            const response = await fetch(`${BACKEND_URL}/voice`, {
+                method: "POST",
+                body: formData,
+            });
+
+            if (!response.ok) throw new Error("Failed to fetch voice response");
+
+            const data = await response.json();
+            appendMessage("Amie", data.response || "No response received.");
+            if (data.audio) playAudio(data.audio);
+        } catch (error) {
+            console.error("Error:", error);
+            appendMessage("Error", "Something went wrong during processing.");
+        }
+    }
+
+    chatForm.addEventListener("submit", event => {
+        event.preventDefault();
+        const message = chatInput.value.trim();
+        if (!message) return;
+
+        appendMessage("You", message);
+        chatInput.value = "";
+
+        conversationLog.push({ role: "user", content: message });
+        sendMessageToChatbot(message);
     });
 
     startRecordBtn.addEventListener("click", async () => {
@@ -100,24 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             mediaRecorder.onstop = async () => {
                 const audioBlob = new Blob(recordedChunks, { type: "audio/wav" });
-                const formData = new FormData();
-                formData.append("audio", audioBlob, "recording.wav");
-
-                try {
-                    const response = await fetch(`${BACKEND_URL}/voice`, {
-                        method: "POST",
-                        body: formData,
-                    });
-
-                    if (!response.ok) throw new Error("Failed to fetch voice response");
-
-                    const data = await response.json();
-                    appendMessage("Amie", data.response || "No response received.");
-                    if (data.audio) playAudio(data.audio);
-                } catch (error) {
-                    console.error("Error:", error);
-                    appendMessage("Error", "Something went wrong during processing.");
-                }
+                sendVoiceMessage(audioBlob);
             };
 
             mediaRecorder.start();
@@ -154,4 +170,7 @@ document.addEventListener("DOMContentLoaded", () => {
     stopRecordBtn.disabled = true;
 
     console.log("Frontend loaded successfully.");
+
+    // Test the backend connection
+    testBackend();
 });
