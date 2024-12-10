@@ -8,6 +8,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     min-height: 100vh;
 }
 
@@ -15,14 +16,20 @@ body {
 header {
     text-align: center;
     margin-top: 30px;
+    width: 100%;
+    max-width: 1200px; /* Ensures proper alignment within the page width */
+    display: flex;
+    justify-content: center; /* Centers the header content */
 }
 
+/* Header Title */
 #amie-title {
     font-size: 3rem;
     margin-bottom: 20px;
     background: linear-gradient(to right, #0056b3, #007bff, #89cfff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    text-align: center; /* Ensures text within the header is centered */
 }
 
 /* Main Container */
@@ -47,6 +54,7 @@ header {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center; /* Ensures content inside the container is aligned */
 }
 
 /* Chat History */
@@ -174,7 +182,9 @@ footer {
     margin-top: 20px;
     font-size: 0.8rem;
     text-align: center;
-    width: calc(100% - 20px);
+    width: 100%;
+    max-width: 1200px; /* Centers the footer content */
+    margin: 20px auto; /* Aligns horizontally and vertically within the page */
     color: #555;
 }
 
