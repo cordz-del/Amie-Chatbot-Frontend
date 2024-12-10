@@ -211,6 +211,8 @@ footer {
     #age-dropdown {
         width: 90px; /* Adjusted width to look like the second image */
         font-size: 1rem; /* Slightly larger text */
+        height: 45px; /* Increased height to prevent text cutoff */
+        line-height: 1.5; /* Adjust line height for better text alignment */
         padding: 8px; /* Increase padding for better appearance */
         text-align: left; /* Align text to the left */
     }
