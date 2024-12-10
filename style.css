@@ -40,7 +40,7 @@ header {
     background-color: white;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 90%; /* Increased by 3% */
+    width: 90%;
     max-width: 600px;
     padding: 20px;
     margin: 20px auto;
@@ -74,7 +74,7 @@ header {
 
 /* Age Dropdown */
 #age-dropdown {
-    width: 60px; /* Reduced by 60% */
+    width: 60px;
     height: 40px;
     padding: 5px;
     font-size: 0.9rem;
@@ -95,7 +95,7 @@ header {
 
 /* Send Button */
 #send-button {
-    width: 60px; /* Reduced by 60% */
+    width: 60px;
     padding: 10px;
     font-size: 0.9rem;
     background-color: #007bff;
@@ -174,11 +174,11 @@ footer {
     margin-top: 20px;
     font-size: 0.8rem;
     text-align: center;
-    width: calc(100% - 20px); /* Reduced indent on both sides */
+    width: calc(100% - 20px);
     color: #555;
 }
 
-/* Responsive Adjustments */
+/* Responsive Adjustments for Mobile */
 @media (max-width: 768px) {
     #chat-container {
         width: 95%;
@@ -195,21 +195,31 @@ footer {
     }
 }
 
-@media (max-width: 480px) {
-    #amie-title {
-        font-size: 2.5rem;
+/* Desktop Adjustments - Increase Chat Container by 20% */
+@media (min-width: 769px) {
+    #chat-container {
+        width: 108%; /* 20% larger */
+        max-width: 720px; /* Maintain proportion */
     }
 
     #chat-history {
-        font-size: 0.9rem;
-        height: 250px;
+        width: 100%; /* Expanded with container */
+        height: 360px; /* 20% larger */
+        font-size: 1.1rem; /* Slightly larger font for desktop */
     }
 
-    #send-button {
-        font-size: 0.8rem;
+    #age-dropdown,
+    #chat-input,
+    #send-button,
+    #start-record-btn,
+    #stop-record-btn {
+        font-size: 1rem; /* Slightly larger */
+        padding: 12px; /* Adjust padding */
     }
 
-    footer {
-        font-size: 0.7rem;
+    #reset-chat-btn {
+        padding: 12px 18px; /* Adjust button size */
+        font-size: 1.1rem; /* Larger font */
+        max-width: 180px; /* Wider button */
     }
 }
