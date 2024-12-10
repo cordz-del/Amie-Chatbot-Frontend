@@ -6,10 +6,30 @@
     <title>Amie Chatbot</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="favicon.ico">
+    <style>
+        /* Inline styles for mobile and tablet adjustments */
+        @media (max-width: 768px) {
+            header {
+                margin-left: 48px;
+            }
+
+            footer {
+                margin-left: 48px;
+            }
+
+            #chat-container {
+                width: 88%;
+            }
+
+            #chat-history {
+                width: 93%;
+            }
+        }
+    </style>
 </head>
 <body>
     <div id="main-container">
-        <header style="margin-left: 64px;"> <!-- Added margin-left to align header -->
+        <header>
             <h1 id="amie-title">Amie</h1>
         </header>
 
@@ -64,7 +84,7 @@
             </div>
         </main>
 
-        <footer style="margin-left: 48px;"> <!-- Added margin-left to align footer -->
+        <footer>
             <p>Powered by Amie - AI for Social & Emotional learning</p>
         </footer>
     </div>
