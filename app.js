@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const BACKEND_URL = "https://462d2d49-1f98-4257-a721-46da919d929b-00-3hhfbf6wdvr1l.kirk.replit.dev";
+    const BACKEND_URL = "http://127.0.0.1:5000"; // Update with your backend's actual URL
     const chatForm = document.getElementById("chat-form");
     const chatInput = document.getElementById("chat-input");
     const chatHistory = document.getElementById("chat-history");
@@ -12,39 +12,24 @@ document.addEventListener("DOMContentLoaded", () => {
     let isRecording = false;
     let mediaRecorder = null;
     let recordedChunks = [];
-    let conversationLog = []; // Maintain conversation log for chat history
+    let conversationLog = [];
 
-    // Ensure all required DOM elements are present
     if (!chatForm || !chatInput || !chatHistory || !startRecordBtn || !stopRecordBtn || !resetChatBtn || !ageDropdown || !volumeControl) {
         console.error("One or more required elements are missing in the DOM.");
         return;
     }
 
-    /**
-     * Append a message to the chat history.
-     * @param {string} sender - The sender of the message (e.g., "You", "Amie").
-     * @param {string} message - The content of the message.
-     */
     function appendMessage(sender, message) {
         const messageElement = document.createElement("div");
         messageElement.innerHTML = `<strong>${sender}:</strong> ${message}`;
         chatHistory.appendChild(messageElement);
-        chatHistory.scrollTop = chatHistory.scrollHeight; // Scroll to the latest message
+        chatHistory.scrollTop = chatHistory.scrollHeight;
     }
 
-    /**
-     * Clamp the volume value to ensure it stays within a safe range [0.0, 1.0].
-     * @param {number} value - Volume value.
-     * @returns {number} - Clamped volume value.
-     */
     function clampVolume(value) {
         return Math.min(Math.max(parseFloat(value), 0.0), 1.0);
     }
 
-    /**
-     * Play audio from a Base64-encoded string.
-     * @param {string} base64Audio - The Base64-encoded audio data.
-     */
     function playAudio(base64Audio) {
         if (!base64Audio) {
             appendMessage("Error", "Audio response not available.");
@@ -57,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const audioUrl = URL.createObjectURL(audioBlob);
             const audio = new Audio(audioUrl);
 
-            audio.volume = clampVolume(volumeControl.value); // Adjust playback volume
+            audio.volume = clampVolume(volumeControl.value);
             audio.play().catch(error => {
                 console.error("Error playing audio:", error);
                 appendMessage("Error", "Unable to play audio response.");
@@ -68,19 +53,16 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    /**
-     * Handle form submission to send chat messages to the backend.
-     */
     chatForm.addEventListener("submit", async event => {
         event.preventDefault();
         const message = chatInput.value.trim();
-        const age = parseInt(ageDropdown.value, 10) || 10; // Default age to 10 if not selected
+        const age = parseInt(ageDropdown.value, 10) || 10;
         const volume = clampVolume(volumeControl.value);
 
         if (!message) return;
 
         appendMessage("You", message);
-        chatInput.value = ""; // Clear the input field
+        chatInput.value = "";
 
         conversationLog.push({ role: "user", content: message });
 
@@ -88,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const response = await fetch(`${BACKEND_URL}/chat`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ message, age, volume }),
+                body: JSON.stringify({ message, conversation_log: conversationLog, volume }),
             });
 
             if (!response.ok) throw new Error(`Failed to fetch chatbot response: ${response.statusText}`);
@@ -102,9 +84,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    /**
-     * Start recording audio using the MediaRecorder API.
-     */
     startRecordBtn.addEventListener("click", async () => {
         if (isRecording) return;
 
@@ -123,8 +102,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 const audioBlob = new Blob(recordedChunks, { type: "audio/wav" });
                 const formData = new FormData();
                 formData.append("audio", audioBlob, "recording.wav");
-                formData.append("age", ageDropdown.value || "10");
-                formData.append("volume", volumeControl.value || "1.0");
 
                 try {
                     const response = await fetch(`${BACKEND_URL}/voice`, {
@@ -143,7 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             };
 
-            mediaRecorder.start(); // Start recording
+            mediaRecorder.start();
             isRecording = true;
             startRecordBtn.disabled = true;
             stopRecordBtn.disabled = false;
@@ -153,9 +130,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    /**
-     * Stop the ongoing recording and process the recorded audio.
-     */
     stopRecordBtn.addEventListener("click", () => {
         if (!isRecording || !mediaRecorder) return;
 
@@ -166,23 +140,16 @@ document.addEventListener("DOMContentLoaded", () => {
         appendMessage("System", "Recording stopped. Processing...");
     });
 
-    /**
-     * Reset the chat history and clear the conversation log.
-     */
     resetChatBtn.addEventListener("click", () => {
-        chatHistory.innerHTML = ""; // Clear chat history
+        chatHistory.innerHTML = "";
         appendMessage("Amie", "Chat reset. How can I help you today?");
-        conversationLog = []; // Clear conversation log
+        conversationLog = [];
     });
 
-    /**
-     * Log volume slider changes.
-     */
     volumeControl.addEventListener("input", () => {
         console.log(`Volume set to: ${volumeControl.value}`);
     });
 
-    // Initialize button states
     startRecordBtn.disabled = false;
     stopRecordBtn.disabled = true;
 
