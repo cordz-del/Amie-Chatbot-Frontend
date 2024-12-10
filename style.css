@@ -195,7 +195,7 @@ footer {
     }
 }
 
-/* Desktop Adjustments - Increase Chat Container by 20% */
+/* Desktop Adjustments */
 @media (min-width: 769px) {
     #chat-container {
         width: 108%; /* 20% larger */
@@ -206,6 +206,16 @@ footer {
         width: 100%; /* Expanded with container */
         height: 360px; /* 20% larger */
         font-size: 1.1rem; /* Slightly larger font for desktop */
+    }
+
+    #age-dropdown {
+        width: 80px; /* Wider for desktop to accommodate "Age" text */
+    }
+
+    footer {
+        margin: 20px auto; /* Center the footer horizontally */
+        text-align: center;
+        width: 100%; /* Full width on desktop */
     }
 
     #age-dropdown,
