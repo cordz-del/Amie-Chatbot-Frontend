@@ -1,12 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const BACKEND_URL = "https://462d2d49-1f98-4257-a721-46da919d929b-00-3hhfbf6wdvr1l.kirk.replit.dev/"; // Update with your backend's actual URL
+    const BACKEND_URL = "https://462d2d49-1f98-4257-a721-46da919d929b-00-3hhfbf6wdvr1l.kirk.replit.dev/"; // Replace <your-backend-url> with the actual Replit backend URL
     const chatForm = document.getElementById("chat-form");
     const chatInput = document.getElementById("chat-input");
     const chatHistory = document.getElementById("chat-history");
     const startRecordBtn = document.getElementById("start-record-btn");
     const stopRecordBtn = document.getElementById("stop-record-btn");
     const resetChatBtn = document.getElementById("reset-chat-btn");
-    const ageDropdown = document.getElementById("age-dropdown");
     const volumeControl = document.getElementById("volume-control");
 
     let isRecording = false;
@@ -14,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let recordedChunks = [];
     let conversationLog = [];
 
-    if (!chatForm || !chatInput || !chatHistory || !startRecordBtn || !stopRecordBtn || !resetChatBtn || !ageDropdown || !volumeControl) {
+    if (!chatForm || !chatInput || !chatHistory || !startRecordBtn || !stopRecordBtn || !resetChatBtn || !volumeControl) {
         console.error("One or more required elements are missing in the DOM.");
         return;
     }
@@ -57,10 +56,10 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
             const response = await fetch(`${BACKEND_URL}/test`);
             const data = await response.json();
-            console.log('Test Endpoint Response:', data);
+            console.log("Test Endpoint Response:", data);
             appendMessage("System", `Backend test response: ${data.message}`);
         } catch (error) {
-            console.error('Error testing backend:', error);
+            console.error("Error testing backend:", error);
             appendMessage("Error", "Backend test failed.");
         }
     }
@@ -70,7 +69,11 @@ document.addEventListener("DOMContentLoaded", () => {
             const response = await fetch(`${BACKEND_URL}/chat`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ message, conversation_log: conversationLog, volume: clampVolume(volumeControl.value) }),
+                body: JSON.stringify({
+                    message,
+                    conversation_log: conversationLog,
+                    volume: clampVolume(volumeControl.value),
+                }),
             });
 
             if (!response.ok) throw new Error(`Failed to fetch chatbot response: ${response.statusText}`);
@@ -87,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
     async function sendVoiceMessage(audioFile) {
         try {
             const formData = new FormData();
-            formData.append('audio', audioFile);
+            formData.append("audio", audioFile);
 
             const response = await fetch(`${BACKEND_URL}/voice`, {
                 method: "POST",
