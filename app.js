@@ -1,179 +1,58 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const BACKEND_URL = "https://462d2d49-1f98-4257-a721-46da919d929b-00-3hhfbf6wdvr1l.kirk.replit.dev/"; // Replace <your-backend-url> with the actual Replit backend URL
-    const chatForm = document.getElementById("chat-form");
+    // Select DOM elements
     const chatInput = document.getElementById("chat-input");
     const chatHistory = document.getElementById("chat-history");
-    const startRecordBtn = document.getElementById("start-record-btn");
-    const stopRecordBtn = document.getElementById("stop-record-btn");
+    const chatForm = document.getElementById("chat-form");
     const resetChatBtn = document.getElementById("reset-chat-btn");
-    const volumeControl = document.getElementById("volume-control");
 
-    let isRecording = false;
-    let mediaRecorder = null;
-    let recordedChunks = [];
-    let conversationLog = [];
+    // Initialize Bot Libre SDK
+    const SDK = new SDKConnection();
+    SDK.applicationId = "5657790313173565017"; // Replace with your Bot Libre Application ID
 
-    if (!chatForm || !chatInput || !chatHistory || !startRecordBtn || !stopRecordBtn || !resetChatBtn || !volumeControl) {
-        console.error("One or more required elements are missing in the DOM.");
-        return;
-    }
+    const webChat = new WebChatbotListener();
+    webChat.connection = SDK;
+    webChat.instance = "55654109"; // Replace with your Bot Libre Bot ID
+    webChat.instanceName = "Amie";
 
-    function appendMessage(sender, message) {
-        const messageElement = document.createElement("div");
-        messageElement.innerHTML = `<strong>${sender}:</strong> ${message}`;
-        chatHistory.appendChild(messageElement);
-        chatHistory.scrollTop = chatHistory.scrollHeight;
-    }
-
-    function clampVolume(value) {
-        return Math.min(Math.max(parseFloat(value), 0.0), 1.0);
-    }
-
-    function playAudio(base64Audio) {
-        if (!base64Audio) {
-            appendMessage("Error", "Audio response not available.");
-            return;
-        }
-
-        try {
-            const audioData = Uint8Array.from(atob(base64Audio), c => c.charCodeAt(0));
-            const audioBlob = new Blob([audioData], { type: "audio/wav" });
-            const audioUrl = URL.createObjectURL(audioBlob);
-            const audio = new Audio(audioUrl);
-
-            audio.volume = clampVolume(volumeControl.value);
-            audio.play().catch(error => {
-                console.error("Error playing audio:", error);
-                appendMessage("Error", "Unable to play audio response.");
-            });
-        } catch (error) {
-            console.error("Audio playback error:", error);
-            appendMessage("Error", "Audio playback error.");
-        }
-    }
-
-    async function testBackend() {
-        try {
-            const response = await fetch(`${BACKEND_URL}/test`);
-            const data = await response.json();
-            console.log("Test Endpoint Response:", data);
-            appendMessage("System", `Backend test response: ${data.message}`);
-        } catch (error) {
-            console.error("Error testing backend:", error);
-            appendMessage("Error", "Backend test failed.");
-        }
-    }
-
-    async function sendMessageToChatbot(message) {
-        try {
-            const response = await fetch(`${BACKEND_URL}/chat`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    message,
-                    conversation_log: conversationLog,
-                    volume: clampVolume(volumeControl.value),
-                }),
-            });
-
-            if (!response.ok) throw new Error(`Failed to fetch chatbot response: ${response.statusText}`);
-
-            const data = await response.json();
-            appendMessage("Amie", data.response || "No response received.");
-            if (data.audio) playAudio(data.audio);
-        } catch (error) {
-            console.error("Error:", error);
-            appendMessage("Error", "Failed to connect to the server. Please try again.");
-        }
-    }
-
-    async function sendVoiceMessage(audioFile) {
-        try {
-            const formData = new FormData();
-            formData.append("audio", audioFile);
-
-            const response = await fetch(`${BACKEND_URL}/voice`, {
-                method: "POST",
-                body: formData,
-            });
-
-            if (!response.ok) throw new Error("Failed to fetch voice response");
-
-            const data = await response.json();
-            appendMessage("Amie", data.response || "No response received.");
-            if (data.audio) playAudio(data.audio);
-        } catch (error) {
-            console.error("Error:", error);
-            appendMessage("Error", "Something went wrong during processing.");
-        }
-    }
-
-    chatForm.addEventListener("submit", event => {
+    // Handle chat form submission
+    chatForm.addEventListener("submit", (event) => {
         event.preventDefault();
-        const message = chatInput.value.trim();
-        if (!message) return;
+        const userMessage = chatInput.value.trim();
+        if (!userMessage) return;
 
-        appendMessage("You", message);
+        // Append user's message to chat history
+        appendMessage("You", userMessage);
+
+        // Clear chat input
         chatInput.value = "";
 
-        conversationLog.push({ role: "user", content: message });
-        sendMessageToChatbot(message);
+        // Send message to Bot Libre
+        webChat.connection.sendMessage(userMessage);
     });
 
-    startRecordBtn.addEventListener("click", async () => {
-        if (isRecording) return;
-
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            mediaRecorder = new MediaRecorder(stream);
-            recordedChunks = [];
-
-            appendMessage("System", "Listening...");
-
-            mediaRecorder.ondataavailable = event => {
-                if (event.data.size > 0) recordedChunks.push(event.data);
-            };
-
-            mediaRecorder.onstop = async () => {
-                const audioBlob = new Blob(recordedChunks, { type: "audio/wav" });
-                sendVoiceMessage(audioBlob);
-            };
-
-            mediaRecorder.start();
-            isRecording = true;
-            startRecordBtn.disabled = true;
-            stopRecordBtn.disabled = false;
-        } catch (error) {
-            console.error("Microphone access error:", error);
-            appendMessage("Error", "Unable to access microphone. Please enable permissions.");
-        }
-    });
-
-    stopRecordBtn.addEventListener("click", () => {
-        if (!isRecording || !mediaRecorder) return;
-
-        mediaRecorder.stop();
-        isRecording = false;
-        startRecordBtn.disabled = false;
-        stopRecordBtn.disabled = true;
-        appendMessage("System", "Recording stopped. Processing...");
-    });
-
+    // Handle reset chat button
     resetChatBtn.addEventListener("click", () => {
         chatHistory.innerHTML = "";
         appendMessage("Amie", "Chat reset. How can I help you today?");
-        conversationLog = [];
     });
 
-    volumeControl.addEventListener("input", () => {
-        console.log(`Volume set to: ${volumeControl.value}`);
-    });
+    // Listen for Bot Libre responses
+    webChat.onMessage = (message) => {
+        appendMessage("Amie", message.message);
+    };
 
-    startRecordBtn.disabled = false;
-    stopRecordBtn.disabled = true;
+    webChat.onError = (error) => {
+        console.error("Bot Libre Error:", error);
+        appendMessage("Error", "Unable to connect to Bot Libre. Please try again.");
+    };
 
-    console.log("Frontend loaded successfully.");
+    // Helper function to append messages to chat history
+    function appendMessage(sender, message) {
+        const messageDiv = document.createElement("div");
+        messageDiv.innerHTML = `<strong>${sender}:</strong> ${message}`;
+        chatHistory.appendChild(messageDiv);
+        chatHistory.scrollTop = chatHistory.scrollHeight; // Scroll to the latest message
+    }
 
-    // Test the backend connection
-    testBackend();
+    console.log("Bot Libre integration loaded successfully.");
 });
