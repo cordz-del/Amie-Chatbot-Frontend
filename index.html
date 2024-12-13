@@ -9,7 +9,7 @@
 </head>
 <body>
     <div id="main-container">
-        <header>
+        <header style="margin-left: 64px;"> <!-- Added margin-left to align header -->
             <h1 id="amie-title">Amie</h1>
         </header>
 
@@ -44,65 +44,95 @@
                         <button type="submit" id="send-button" aria-label="Send your message">Send</button>
                     </form>
                 </section>
+
+                <!-- Voice Controls -->
+                <section id="voice-controls">
+                    <button id="start-record-btn" aria-label="Start voice recording">Start Recording</button>
+                    <button id="stop-record-btn" disabled aria-label="Stop voice recording">Stop Recording</button>
+                </section>
+
+                <!-- Volume Control -->
+                <section id="volume-control-section">
+                    <label for="volume-control">Volume:</label>
+                    <input type="range" id="volume-control" min="0.5" max="2.0" step="0.1" value="1.0">
+                </section>
+
+                <!-- Reset Chat -->
+                <section id="reset-chat-section">
+                    <button id="reset-chat-btn" class="reset-btn" aria-label="Reset chat history">Reset Chat</button>
+                </section>
             </div>
         </main>
 
-        <footer>
-            <p>Powered by Amie - AI for Social & Emotional Learning</p>
+        <footer style="margin-left: 48px;"> <!-- Added margin-left to align footer -->
+            <p>Powered by Amie - AI for Social & Emotional learning</p>
         </footer>
     </div>
 
-    <!-- Bot Libre SDK Integration -->
-    <script type="text/javascript" src="https://www.botlibre.com/scripts/sdk.js"></script>
-    <script type="text/javascript">
-        // Bot Libre Configuration
-        const applicationId = "5657790313173565017"; // Replace with your Application ID
-        const botId = "55654109"; // Replace with your Bot ID
-
-        // Initialize Bot Libre Web Chat
-        SDK.applicationId = applicationId;
-
-        const webChat = new WebChatbotListener();
-        webChat.instance = botId;
-        webChat.instanceName = "Amie";
-        webChat.prefix = "botplatform";
-        webChat.caption = "Chat Now";
-        webChat.boxLocation = "bottom-right";
-        webChat.color = "#007bff"; // Customize button color
-        webChat.background = "#fff"; // Customize background color
-        webChat.bubble = true; // Enable chatbot bubble
-        webChat.showMenubar = true;
-        webChat.showBoxmax = true;
-        webChat.avatar = true; // Show chatbot avatar
-        webChat.chatLog = true; // Enable chat log
-        webChat.popupURL = `https://www.botlibre.com/chat?id=${botId}&embedded=true&chatLog=true&application=${applicationId}`;
-
-        webChat.createBox();
-    </script>
-
     <script>
-        // Handle form submission for user input
-        const chatForm = document.getElementById("chat-form");
-        const chatInput = document.getElementById("chat-input");
-        const chatHistory = document.getElementById("chat-history");
+        document.addEventListener("DOMContentLoaded", () => {
+            const chatForm = document.getElementById("chat-form");
+            const chatInput = document.getElementById("chat-input");
+            const chatHistory = document.getElementById("chat-history");
+            const resetChatBtn = document.getElementById("reset-chat-btn");
+            const startRecordBtn = document.getElementById("start-record-btn");
+            const stopRecordBtn = document.getElementById("stop-record-btn");
 
-        chatForm.addEventListener("submit", (event) => {
-            event.preventDefault();
-            const userMessage = chatInput.value.trim();
-            if (!userMessage) return;
+            // Handle form submission
+            chatForm.addEventListener("submit", (event) => {
+                event.preventDefault();
+                const message = chatInput.value.trim();
+                if (!message) return;
 
-            // Display user message in the chat history
-            const userMessageElement = document.createElement("div");
-            userMessageElement.textContent = `You: ${userMessage}`;
-            chatHistory.appendChild(userMessageElement);
+                // Append user's message to chat history
+                const userMessage = document.createElement("div");
+                userMessage.textContent = `You: ${message}`;
+                chatHistory.appendChild(userMessage);
 
-            // Clear input field
-            chatInput.value = "";
+                chatInput.value = "";
 
-            // Send message to Bot Libre
-            webChat.connection.sendMessage(userMessage);
+                // Simulate chatbot response (replace with backend API call if necessary)
+                setTimeout(() => {
+                    const botMessage = document.createElement("div");
+                    botMessage.textContent = `Amie: I heard you say "${message}".`;
+                    chatHistory.appendChild(botMessage);
 
-            // Bot response handling will be done automatically by the SDK
+                    // Scroll to the latest message
+                    chatHistory.scrollTop = chatHistory.scrollHeight;
+                }, 1000);
+            });
+
+            // Reset chat button functionality
+            resetChatBtn.addEventListener("click", () => {
+                chatHistory.innerHTML = "";
+                const resetMessage = document.createElement("div");
+                resetMessage.textContent = "Chat has been reset. How can I assist you today?";
+                chatHistory.appendChild(resetMessage);
+            });
+
+            // Start recording functionality
+            startRecordBtn.addEventListener("click", () => {
+                console.log("Start Recording clicked");
+                appendMessage("System", "Listening..."); // Feedback in chat history
+                startRecordBtn.disabled = true;
+                stopRecordBtn.disabled = false;
+            });
+
+            // Stop recording functionality
+            stopRecordBtn.addEventListener("click", () => {
+                console.log("Stop Recording clicked");
+                appendMessage("System", "Recording stopped. Processing...");
+                stopRecordBtn.disabled = true;
+                startRecordBtn.disabled = false;
+            });
+
+            // Append messages to chat history
+            function appendMessage(sender, message) {
+                const messageElement = document.createElement("div");
+                messageElement.innerHTML = `<strong>${sender}:</strong> ${message}`;
+                chatHistory.appendChild(messageElement);
+                chatHistory.scrollTop = chatHistory.scrollHeight; // Scroll to latest
+            }
         });
     </script>
 </body>
