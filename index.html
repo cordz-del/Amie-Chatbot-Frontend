@@ -4,136 +4,83 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Amie Chatbot</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="favicon.ico">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="main-container">
-        <header>
-            <h1 id="amie-title">Amie</h1>
-        </header>
+    <header>
+        <h1>Amie Chatbot</h1>
+    </header>
 
-        <main>
-            <div id="chat-container">
-                <!-- Chat History -->
-                <div id="chat-history" aria-label="Chat history" tabindex="0"></div>
+    <main>
+        <!-- Chat History Section -->
+        <div id="chat-container">
+            <div id="chat-history" aria-label="Chat history" tabindex="0"></div>
+            <!-- Loading Indicator -->
+            <div id="loading-indicator" style="display: none; text-align: center; font-style: italic;">Processing...</div>
+        </div>
 
-                <!-- Input Section -->
-                <section id="input-container">
-                    <form id="chat-form" aria-label="Chat form">
-                        <!-- Age Dropdown -->
-                        <select id="age-dropdown" aria-label="Select your age">
-                            <option value="" disabled selected>Age</option>
-                            <script>
-                                for (let i = 1; i <= 30; i++) {
-                                    document.write(`<option value="${i}">${i}</option>`);
-                                }
-                            </script>
-                        </select>
+        <!-- Input Section -->
+        <section id="input-container">
+            <form id="chat-form" aria-label="Chat form">
+                <!-- Age Input -->
+                <label for="age-dropdown">Select Age:</label>
+                <select id="age-dropdown" aria-label="Select your age">
+                    <option value="" disabled selected>Age</option>
+                    <script>
+                        for (let i = 1; i <= 30; i++) {
+                            document.write(`<option value="${i}">${i}</option>`);
+                        }
+                    </script>
+                </select>
 
-                        <!-- Message Input -->
-                        <input 
-                            type="text" 
-                            id="chat-input" 
-                            placeholder="Type your message here..." 
-                            required 
-                            aria-label="Enter your message"
-                        >
+                <!-- Message Input -->
+                <label for="chat-input">Message:</label>
+                <input 
+                    type="text" 
+                    id="chat-input" 
+                    placeholder="Type your message here..." 
+                    autocomplete="off" 
+                    required 
+                    aria-label="Enter your message"
+                />
 
-                        <!-- Submit Button -->
-                        <button type="submit" id="send-button" aria-label="Send your message">Send</button>
-                    </form>
-                </section>
+                <!-- Submit Button -->
+                <button type="submit" aria-label="Send your message">Send</button>
+            </form>
+        </section>
 
-                <!-- Voice Controls -->
-                <section id="voice-controls">
-                    <button id="start-record-btn" aria-label="Start voice recording">Start Recording</button>
-                    <button id="stop-record-btn" disabled aria-label="Stop voice recording">Stop Recording</button>
-                </section>
+        <!-- Voice Interaction Controls -->
+        <section id="voice-controls" aria-label="Voice interaction controls">
+            <button id="start-record-btn" aria-label="Start voice recording">Start Recording</button>
+            <button id="stop-record-btn" disabled aria-label="Stop voice recording">Stop Recording</button>
+            <p id="status" aria-live="polite"></p>
+        </section>
 
-                <!-- Volume Control -->
-                <section id="volume-control-section">
-                    <label for="volume-control">Volume:</label>
-                    <input type="range" id="volume-control" min="0.5" max="2.0" step="0.1" value="1.0">
-                </section>
+        <!-- Volume Control Section -->
+        <section id="volume-control-section" aria-label="Volume control">
+            <label for="volume-control">Volume:</label>
+            <input 
+                type="range" 
+                id="volume-control" 
+                min="0.5" 
+                max="2.0" 
+                step="0.1" 
+                value="1.0" 
+                aria-label="Adjust volume"
+            />
+        </section>
 
-                <!-- Reset Chat -->
-                <section id="reset-chat-section">
-                    <button id="reset-chat-btn" class="reset-btn" aria-label="Reset chat history">Reset Chat</button>
-                </section>
-            </div>
-        </main>
+        <!-- Reset Chat Button -->
+        <section id="reset-chat-section">
+            <button id="reset-chat-btn" class="reset-btn" aria-label="Reset chat history">Reset Chat</button>
+        </section>
+    </main>
 
-        <footer>
-            <p>Powered by Amie Chatbot Project - AI for Social and Emotional Learning</p>
-        </footer>
-    </div>
+    <footer>
+        <p>Powered by Amie Chatbot Project - AI for Social and Emotional Learning</p>
+    </footer>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const chatForm = document.getElementById("chat-form");
-            const chatInput = document.getElementById("chat-input");
-            const chatHistory = document.getElementById("chat-history");
-            const resetChatBtn = document.getElementById("reset-chat-btn");
-            const startRecordBtn = document.getElementById("start-record-btn");
-            const stopRecordBtn = document.getElementById("stop-record-btn");
-
-            // Handle form submission
-            chatForm.addEventListener("submit", (event) => {
-                event.preventDefault();
-                const message = chatInput.value.trim();
-                if (!message) return;
-
-                // Append user's message to chat history
-                const userMessage = document.createElement("div");
-                userMessage.textContent = `You: ${message}`;
-                chatHistory.appendChild(userMessage);
-
-                chatInput.value = "";
-
-                // Simulate chatbot response (replace with backend API call if necessary)
-                setTimeout(() => {
-                    const botMessage = document.createElement("div");
-                    botMessage.textContent = `Amie: I heard you say "${message}".`;
-                    chatHistory.appendChild(botMessage);
-
-                    // Scroll to the latest message
-                    chatHistory.scrollTop = chatHistory.scrollHeight;
-                }, 1000);
-            });
-
-            // Reset chat button functionality
-            resetChatBtn.addEventListener("click", () => {
-                chatHistory.innerHTML = "";
-                const resetMessage = document.createElement("div");
-                resetMessage.textContent = "Chat has been reset. How can I assist you today?";
-                chatHistory.appendChild(resetMessage);
-            });
-
-            // Start recording functionality
-            startRecordBtn.addEventListener("click", () => {
-                console.log("Start Recording clicked");
-                appendMessage("System", "Listening..."); // Feedback in chat history
-                startRecordBtn.disabled = true;
-                stopRecordBtn.disabled = false;
-            });
-
-            // Stop recording functionality
-            stopRecordBtn.addEventListener("click", () => {
-                console.log("Stop Recording clicked");
-                appendMessage("System", "Recording stopped. Processing...");
-                stopRecordBtn.disabled = true;
-                startRecordBtn.disabled = false;
-            });
-
-            // Append messages to chat history
-            function appendMessage(sender, message) {
-                const messageElement = document.createElement("div");
-                messageElement.innerHTML = `<strong>${sender}:</strong> ${message}`;
-                chatHistory.appendChild(messageElement);
-                chatHistory.scrollTop = chatHistory.scrollHeight; // Scroll to latest
-            }
-        });
-    </script>
+    <!-- Link to external JavaScript -->
+    <script src="/static/app.js"></script>
 </body>
 </html>
