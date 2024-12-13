@@ -1,250 +1,206 @@
-/* General Styling */
+/* General body styling */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f0f4f8;
-    color: #333;
     margin: 0;
     padding: 0;
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
-    min-height: 100vh;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f4f8; /* Light gray/blue background for a clean look */
+    color: #333; /* Neutral dark text for readability */
 }
 
-/* Header */
-header {
-    text-align: center;
-    margin-top: 30px;
-    width: 100%;
-    max-width: 1200px; /* Ensures proper alignment within the page width */
-    display: flex;
-    justify-content: center; /* Centers the header content */
-}
-
-/* Header Title */
-#amie-title {
-    font-size: 3rem;
-    margin-bottom: 20px;
-    background: linear-gradient(to right, #0056b3, #007bff, #89cfff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-align: center; /* Ensures text within the header is centered */
-}
-
-/* Main Container */
+/* Main chatbot container */
 #main-container {
-    width: 100%;
-    max-width: 1200px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* Chat Container */
-#chat-container {
     background-color: white;
+    width: 60%;
+    max-width: 800px;
+    min-width: 300px;
     border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 90%;
-    max-width: 600px;
-    padding: 20px;
-    margin: 20px auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    overflow: hidden;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center; /* Ensures content inside the container is aligned */
 }
 
-/* Chat History */
+/* Chat header styling */
+header {
+    background-color: #4CAF50; /* Green header for a friendly look */
+    color: white;
+    text-align: center;
+    padding: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2rem;
+}
+
+header p {
+    font-size: 1rem;
+    margin: 5px 0 0;
+    color: #f1f1f1;
+}
+
+/* Chat history section */
 #chat-history {
-    width: 95%;
-    height: 300px;
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+    background-color: #f9f9f9; /* Light background for message area */
+    display: flex;
+    flex-direction: column;
+    gap: 12px; /* Add space between chat messages */
+    border-bottom: 1px solid #ddd;
+}
+
+/* Style individual chat messages */
+.chat-message {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 8px;
+    max-width: 70%;
+}
+
+/* User message styling */
+.chat-message.user {
+    align-self: flex-end;
+    background-color: #007BFF; /* User messages in blue */
+    color: white;
+}
+
+/* Bot message styling */
+.chat-message.bot {
+    align-self: flex-start;
+    background-color: #e9ecef; /* Bot messages in light gray */
+    color: #333;
+}
+
+/* Input section */
+#input-container {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #fff;
+}
+
+/* Age input field */
+#age-dropdown {
     border: 1px solid #ccc;
     border-radius: 8px;
-    padding: 12px;
-    overflow-y: auto;
-    background-color: #fff;
-    margin-bottom: 16px;
-    font-size: 1rem;
-    text-align: center;
+    padding: 10px;
+    font-size: 16px;
+    outline: none;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-/* Input Container */
-#chat-form {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    gap: 10px;
-}
-
-/* Age Dropdown */
-#age-dropdown {
-    width: 60px; /* Default width */
-    height: 40px;
-    padding: 5px;
-    font-size: 0.9rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    text-align: center;
-    box-sizing: border-box;
-}
-
-/* Chat Input */
+/* Chat input field */
 #chat-input {
     flex: 1;
-    padding: 10px;
-    font-size: 0.9rem;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 16px;
+    outline: none;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-/* Send Button */
-#send-button {
-    width: 60px;
-    padding: 10px;
-    font-size: 0.9rem;
-    background-color: #007bff;
+/* Submit button */
+#input-container button {
+    background-color: #007BFF;
     color: white;
     border: none;
-    border-radius: 5px;
+    padding: 12px 16px;
+    font-size: 16px;
+    border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-#send-button:hover {
+#input-container button:hover {
     background-color: #0056b3;
 }
 
-/* Voice Controls */
+/* Controls for recording */
 #voice-controls {
     display: flex;
-    justify-content: space-between;
     gap: 10px;
-    margin-top: 15px;
-    width: 100%;
-}
-
-#start-record-btn,
-#stop-record-btn {
-    flex: 1;
-    padding: 10px;
-    font-size: 0.9rem;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-#start-record-btn {
-    background-color: #007bff;
-    color: white;
-}
-
-#stop-record-btn {
-    background-color: #ccc;
-    color: #666;
-}
-
-/* Volume Control */
-#volume-control-section {
-    width: 100%;
-    text-align: center;
     margin-top: 10px;
+    justify-content: center;
 }
 
-#volume-control {
-    width: 90%;
-}
-
-/* Reset Chat Button */
-#reset-chat-btn {
-    margin-top: 20px;
-    background-color: #007bff;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
+#voice-controls button {
+    padding: 8px 12px;
+    font-size: 14px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
     cursor: pointer;
-    width: 100%;
-    max-width: 150px;
-    text-align: center;
+    background-color: white;
+    color: #333;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-#reset-chat-btn:hover {
-    background-color: #0056b3;
+#voice-controls button:hover {
+    background-color: #007BFF;
+    color: white;
 }
 
-/* Footer */
-footer {
-    margin-top: 20px;
-    font-size: 0.8rem;
-    text-align: center;
-    width: 100%;
-    max-width: 1200px; /* Centers the footer content */
-    margin: 20px auto; /* Aligns horizontally and vertically within the page */
+/* Status message styling */
+#status {
+    margin-top: 8px;
+    font-size: 14px;
     color: #555;
 }
 
-/* Responsive Adjustments for Mobile */
-@media (max-width: 768px) {
-    #chat-container {
-        width: 95%;
-    }
-
-    #chat-form {
-        flex-direction: row;
-        gap: 5px;
-    }
-
-    #reset-chat-btn {
-        margin-top: 15px;
-        width: 90%;
-    }
+/* Volume control styling */
+#volume-control-section {
+    padding: 10px;
+    text-align: center;
 }
 
-/* Desktop Adjustments */
-@media (min-width: 769px) {
-    #chat-container {
-        width: 108%; /* 20% larger */
-        max-width: 720px; /* Maintain proportion */
+#volume-control {
+    width: 100%;
+    margin-top: 8px;
+}
+
+/* Reset chat button */
+#reset-chat-btn {
+    margin-top: 16px;
+    padding: 10px 15px;
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#reset-chat-btn:hover {
+    background-color: #495057;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    #main-container {
+        width: 90%;
     }
 
-    #chat-history {
-        width: 100%; /* Expanded with container */
-        height: 360px; /* 20% larger */
-        font-size: 1.1rem; /* Slightly larger font for desktop */
+    header h1 {
+        font-size: 1.5rem;
     }
 
-    #age-dropdown {
-        width: 90px; /* Adjusted width to look like the second image */
-        font-size: 1rem; /* Slightly larger text */
-        height: 50px; /* Increased height to prevent text cutoff */
-        line-height: 1.8; /* Adjust line height for better vertical alignment */
-        padding: 10px; /* Adjust padding for better appearance */
-        text-align: center; /* Align text in the center */
+    header p {
+        font-size: 0.9rem;
     }
 
-    footer {
-        margin: 20px auto; /* Center the footer horizontally */
-        text-align: center;
-        width: 100%; /* Full width on desktop */
-    }
-
-    #age-dropdown,
-    #chat-input,
-    #send-button,
-    #start-record-btn,
-    #stop-record-btn {
-        font-size: 1rem; /* Slightly larger */
-        padding: 12px; /* Adjust padding */
-    }
-
-    #reset-chat-btn {
-        padding: 12px 18px; /* Adjust button size */
-        font-size: 1.1rem; /* Larger font */
-        max-width: 180px; /* Wider button */
+    #input-container button {
+        font-size: 14px;
+        padding: 10px;
     }
 }
