@@ -4,83 +4,115 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Amie Chatbot</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="favicon.ico">
+    <style>
+        /* Responsive layout for mobile */
+        @media (max-width: 768px) {
+            #chat-container {
+                width: 90%; /* Adjust width for mobile */
+                margin: auto; /* Center align */
+            }
+
+            #volume-control-section {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            input[type="range"] {
+                width: 80%; /* Make slider smaller for mobile */
+            }
+        }
+
+        /* Style the volume slider */
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 5px;
+            background: linear-gradient(to right, blue 50%, gray 50%);
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            outline: none;
+            transition: background 0.3s;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: blue;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: blue;
+            cursor: pointer;
+        }
+
+        input[type="range"]:focus {
+            outline: none;
+        }
+
+        /* Adjust the slider background on input */
+        input[type="range"]:active {
+            background: linear-gradient(to right, blue var(--slider-value, 50%), gray var(--slider-value, 50%));
+        }
+    </style>
 </head>
 <body>
     <header>
-        <h1>Amie Chatbot</h1>
+        <!-- Gradient Title: Amie -->
+        <h1 id="amie-title">Amie</h1>
     </header>
 
-    <main>
-        <!-- Chat History Section -->
+    <main id="main-container">
+        <!-- Chat Section -->
         <div id="chat-container">
+            <!-- Chat History Section -->
             <div id="chat-history" aria-label="Chat history" tabindex="0"></div>
-            <!-- Loading Indicator -->
-            <div id="loading-indicator" style="display: none; text-align: center; font-style: italic;">Processing...</div>
+
+            <!-- Input Section -->
+            <section id="input-container">
+                <form id="chat-form" aria-label="Chat form">
+                    <input type="number" id="age-input" placeholder="Enter your age" min="1" max="30" required aria-label="Enter your age">
+                    <input type="text" id="chat-input" placeholder="Type your message here..." autocomplete="off" required aria-label="Enter your message">
+                    <button type="submit" aria-label="Send your message">Send</button>
+                </form>
+            </section>
+
+            <!-- Voice Interaction Controls -->
+            <section id="voice-controls" aria-label="Voice interaction controls">
+                <button id="start-record-btn" aria-label="Start voice recording">Start Recording</button>
+                <button id="stop-record-btn" disabled aria-label="Stop voice recording">Stop Recording</button>
+                <p id="status" aria-live="polite"></p>
+            </section>
+
+            <!-- Volume Control Section -->
+            <section id="volume-control-section" aria-label="Volume control">
+                <label for="volume-control">Volume:</label>
+                <input type="range" id="volume-control" min="0.5" max="2.0" step="0.1" value="1.0" aria-label="Adjust volume">
+            </section>
+
+            <!-- Reset Chat Button -->
+            <section id="reset-chat-section" aria-label="Reset chat">
+                <button id="reset-chat-btn" class="reset-btn" aria-label="Reset chat history">Reset Chat</button>
+            </section>
+
+            <!-- Hidden Audio Player -->
+            <audio id="audio-player" controls hidden aria-label="Audio player"></audio>
         </div>
-
-        <!-- Input Section -->
-        <section id="input-container">
-            <form id="chat-form" aria-label="Chat form">
-                <!-- Age Input -->
-                <label for="age-dropdown">Select Age:</label>
-                <select id="age-dropdown" aria-label="Select your age">
-                    <option value="" disabled selected>Age</option>
-                    <script>
-                        for (let i = 1; i <= 30; i++) {
-                            document.write(`<option value="${i}">${i}</option>`);
-                        }
-                    </script>
-                </select>
-
-                <!-- Message Input -->
-                <label for="chat-input">Message:</label>
-                <input 
-                    type="text" 
-                    id="chat-input" 
-                    placeholder="Type your message here..." 
-                    autocomplete="off" 
-                    required 
-                    aria-label="Enter your message"
-                />
-
-                <!-- Submit Button -->
-                <button type="submit" aria-label="Send your message">Send</button>
-            </form>
-        </section>
-
-        <!-- Voice Interaction Controls -->
-        <section id="voice-controls" aria-label="Voice interaction controls">
-            <button id="start-record-btn" aria-label="Start voice recording">Start Recording</button>
-            <button id="stop-record-btn" disabled aria-label="Stop voice recording">Stop Recording</button>
-            <p id="status" aria-live="polite"></p>
-        </section>
-
-        <!-- Volume Control Section -->
-        <section id="volume-control-section" aria-label="Volume control">
-            <label for="volume-control">Volume:</label>
-            <input 
-                type="range" 
-                id="volume-control" 
-                min="0.5" 
-                max="2.0" 
-                step="0.1" 
-                value="1.0" 
-                aria-label="Adjust volume"
-            />
-        </section>
-
-        <!-- Reset Chat Button -->
-        <section id="reset-chat-section">
-            <button id="reset-chat-btn" class="reset-btn" aria-label="Reset chat history">Reset Chat</button>
-        </section>
     </main>
 
     <footer>
         <p>Powered by Amie Chatbot Project - AI for Social and Emotional Learning</p>
     </footer>
 
-    <!-- Link to external JavaScript -->
-    <script src="/static/app.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
