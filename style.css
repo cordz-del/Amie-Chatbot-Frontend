@@ -8,6 +8,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     min-height: 100vh;
 }
 
@@ -15,14 +16,20 @@ body {
 header {
     text-align: center;
     margin-top: 30px;
+    width: 100%;
+    max-width: 1200px; /* Ensures proper alignment within the page width */
+    display: flex;
+    justify-content: center; /* Centers the header content */
 }
 
+/* Header Title */
 #amie-title {
     font-size: 3rem;
     margin-bottom: 20px;
     background: linear-gradient(to right, #0056b3, #007bff, #89cfff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    text-align: center; /* Ensures text within the header is centered */
 }
 
 /* Main Container */
@@ -38,7 +45,6 @@ header {
 /* Chat Container */
 #chat-container {
     background-color: white;
-    border: 2px solid #007bff;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 90%;
@@ -48,6 +54,7 @@ header {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center; /* Ensures content inside the container is aligned */
 }
 
 /* Chat History */
@@ -61,19 +68,7 @@ header {
     background-color: #fff;
     margin-bottom: 16px;
     font-size: 1rem;
-    text-align: left;
-}
-
-/* Bot Libre Chat Box */
-.botlibre-chatbox {
-    width: 100%;
-    max-width: 600px;
-    height: 400px;
-    border: none;
-    border-radius: 12px;
-    overflow: hidden;
-    margin: 20px auto;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
 }
 
 /* Input Container */
@@ -87,7 +82,7 @@ header {
 
 /* Age Dropdown */
 #age-dropdown {
-    width: 60px;
+    width: 60px; /* Default width */
     height: 40px;
     padding: 5px;
     font-size: 0.9rem;
@@ -187,42 +182,69 @@ footer {
     margin-top: 20px;
     font-size: 0.8rem;
     text-align: center;
-    width: calc(100% - 20px);
+    width: 100%;
+    max-width: 1200px; /* Centers the footer content */
+    margin: 20px auto; /* Aligns horizontally and vertically within the page */
     color: #555;
 }
 
-/* Responsive Adjustments for Mobile and Tablet */
+/* Responsive Adjustments for Mobile */
 @media (max-width: 768px) {
     #chat-container {
-        width: 90%; /* Adjusted for mobile */
+        width: 95%;
     }
 
-    .botlibre-chatbox {
-        width: 100%;
-        height: 300px; /* Adjust height for mobile */
+    #chat-form {
+        flex-direction: row;
+        gap: 5px;
     }
 
-    header {
-        margin-left: 20px;
-    }
-
-    footer {
-        margin-left: 20px;
+    #reset-chat-btn {
+        margin-top: 15px;
+        width: 90%;
     }
 }
 
 /* Desktop Adjustments */
 @media (min-width: 769px) {
     #chat-container {
-        width: 90%; /* Standard size for desktop */
+        width: 108%; /* 20% larger */
+        max-width: 720px; /* Maintain proportion */
     }
 
     #chat-history {
-        height: 400px; /* Larger chat history for desktop */
+        width: 100%; /* Expanded with container */
+        height: 360px; /* 20% larger */
+        font-size: 1.1rem; /* Slightly larger font for desktop */
     }
 
-    .botlibre-chatbox {
-        width: 100%;
-        height: 500px; /* Larger height for desktop */
+    #age-dropdown {
+        width: 90px; /* Adjusted width to look like the second image */
+        font-size: 1rem; /* Slightly larger text */
+        height: 50px; /* Increased height to prevent text cutoff */
+        line-height: 1.8; /* Adjust line height for better vertical alignment */
+        padding: 10px; /* Adjust padding for better appearance */
+        text-align: center; /* Align text in the center */
+    }
+
+    footer {
+        margin: 20px auto; /* Center the footer horizontally */
+        text-align: center;
+        width: 100%; /* Full width on desktop */
+    }
+
+    #age-dropdown,
+    #chat-input,
+    #send-button,
+    #start-record-btn,
+    #stop-record-btn {
+        font-size: 1rem; /* Slightly larger */
+        padding: 12px; /* Adjust padding */
+    }
+
+    #reset-chat-btn {
+        padding: 12px 18px; /* Adjust button size */
+        font-size: 1.1rem; /* Larger font */
+        max-width: 180px; /* Wider button */
     }
 }
