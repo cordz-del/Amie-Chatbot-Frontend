@@ -13,8 +13,8 @@ body {
 
 /* Header */
 header {
-    text-align: center;
-    margin-left: 54px; /* Header offset 54px on the left */
+    text-align: right; /* Align text to the right */
+    margin-right: 54px; /* 54px margin on the right */
     margin-top: 30px;
 }
 
@@ -42,8 +42,8 @@ header {
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 90%;
-    max-width: 720px; /* Default width */
-    padding: 20px;
+    max-width: 864px; /* 20% larger than before */
+    padding: 24px; /* Slightly increased padding */
     margin: 20px auto;
     display: flex;
     flex-direction: column;
@@ -53,14 +53,14 @@ header {
 /* Chat History */
 #chat-history {
     width: 100%;
-    height: 360px; /* Default height */
+    height: 414px; /* 15% larger than the original 360px */
     border: 1px solid #ccc;
     border-radius: 8px;
-    padding: 12px;
+    padding: 14px; /* Slightly larger padding */
     overflow-y: auto;
     background-color: #fff;
     margin-bottom: 16px;
-    font-size: 1rem;
+    font-size: 1.1rem; /* Slightly larger font size */
     text-align: left;
 }
 
@@ -70,14 +70,14 @@ header {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    gap: 10px;
+    gap: 12px;
 }
 
 #age-dropdown {
-    width: 60px;
-    height: 40px;
-    padding: 5px;
-    font-size: 0.9rem;
+    width: 72px; /* Larger width */
+    height: 48px; /* Larger height */
+    padding: 6px;
+    font-size: 1rem; /* Larger font */
     border: 1px solid #ccc;
     border-radius: 5px;
     text-align: center;
@@ -86,16 +86,16 @@ header {
 
 #chat-input {
     flex: 1;
-    padding: 10px;
-    font-size: 0.9rem;
+    padding: 12px; /* Larger padding */
+    font-size: 1rem; /* Larger font */
     border: 1px solid #ccc;
     border-radius: 5px;
 }
 
 #send-button {
-    width: 60px;
-    padding: 10px;
-    font-size: 0.9rem;
+    width: 72px; /* Larger button */
+    padding: 12px; /* Larger padding */
+    font-size: 1rem; /* Larger font */
     background-color: #007bff;
     color: white;
     border: none;
@@ -112,16 +112,16 @@ header {
 #voice-controls {
     display: flex;
     justify-content: space-between;
-    gap: 10px;
-    margin-top: 15px;
+    gap: 12px;
+    margin-top: 18px;
     width: 100%;
 }
 
 #start-record-btn,
 #stop-record-btn {
     flex: 1;
-    padding: 10px;
-    font-size: 0.9rem;
+    padding: 12px; /* Larger padding */
+    font-size: 1rem; /* Larger font */
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -141,7 +141,7 @@ header {
 #volume-control-section {
     width: 100%;
     text-align: center;
-    margin-top: 10px;
+    margin-top: 14px;
 }
 
 #volume-control {
@@ -150,16 +150,16 @@ header {
 
 /* Reset Chat Button */
 #reset-chat-btn {
-    margin-top: 20px;
+    margin-top: 24px;
     background-color: #007bff;
     color: white;
-    padding: 10px 15px;
+    padding: 12px 18px; /* Larger padding */
     border: none;
     border-radius: 5px;
-    font-size: 1rem;
+    font-size: 1.1rem; /* Larger font */
     cursor: pointer;
     width: 100%;
-    max-width: 150px;
+    max-width: 180px; /* Wider button */
     text-align: center;
 }
 
@@ -169,21 +169,20 @@ header {
 
 /* Footer */
 footer {
-    text-align: center;
-    font-size: 0.8rem;
-    width: 100%;
+    text-align: left; /* Align text to the left */
+    margin-left: 20px; /* Add 20px margin on the left */
+    font-size: 0.9rem;
     color: #555;
-    margin: 0; /* Removed extra space */
 }
 
 /* Desktop Adjustments */
 @media (min-width: 769px) {
     #chat-container {
-        max-width: 864px; /* 20% larger than 720px */
+        max-width: 864px; /* 20% larger */
     }
 
     #chat-history {
-        height: 432px; /* 20% larger than 360px */
+        height: 414px; /* 15% larger */
     }
 
     #age-dropdown,
@@ -191,8 +190,8 @@ footer {
     #send-button,
     #start-record-btn,
     #stop-record-btn {
-        font-size: 1rem;
-        padding: 12px;
+        font-size: 1.1rem; /* Larger font for desktop */
+        padding: 14px; /* Larger padding */
     }
 }
 
@@ -201,18 +200,20 @@ footer {
     #chat-container {
         width: 95%; /* Full width for small screens */
         max-width: 100%;
-        padding: 15px;
+        padding: 16px;
     }
 
     #chat-history {
-        height: 300px; /* Adjusted height for small screens */
+        height: 300px; /* Adjusted for small screens */
     }
 
     header {
-        margin: 20px auto 0; /* Remove left margin for mobile */
+        margin-right: 0; /* Remove right margin for mobile */
+        text-align: center; /* Center text on mobile */
     }
 
     footer {
-        margin-top: 10px;
+        margin-left: 0; /* Remove left margin for mobile */
+        text-align: center;
     }
 }
