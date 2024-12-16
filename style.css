@@ -13,9 +13,8 @@ body {
 
 /* Header */
 header {
-    text-align: right; /* Align text to the right */
-    margin-right: 54px; /* 54px margin on the right */
-    margin-top: 30px;
+    text-align: right;
+    margin-right: 54px; /* Align to the right with a 54px margin */
 }
 
 #amie-title {
@@ -42,25 +41,24 @@ header {
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 90%;
-    max-width: 864px; /* 20% larger than before */
-    padding: 24px; /* Slightly increased padding */
+    max-width: 600px;
+    padding: 20px;
     margin: 20px auto;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-/* Chat History */
 #chat-history {
-    width: 100%;
-    height: 414px; /* 15% larger than the original 360px */
+    width: 95%;
+    height: 300px;
     border: 1px solid #ccc;
     border-radius: 8px;
-    padding: 14px; /* Slightly larger padding */
+    padding: 12px;
     overflow-y: auto;
     background-color: #fff;
     margin-bottom: 16px;
-    font-size: 1.1rem; /* Slightly larger font size */
+    font-size: 1rem;
     text-align: left;
 }
 
@@ -70,32 +68,36 @@ header {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    gap: 12px;
+    gap: 10px;
 }
 
+/* Age Dropdown */
 #age-dropdown {
-    width: 72px; /* Larger width */
-    height: 48px; /* Larger height */
-    padding: 6px;
-    font-size: 1rem; /* Larger font */
+    width: 50px; /* Adjust to fit the word "Age" */
+    height: 40px;
+    padding: 5px;
+    font-size: 0.9rem;
     border: 1px solid #ccc;
     border-radius: 5px;
     text-align: center;
     box-sizing: border-box;
 }
 
+/* Chat Input */
 #chat-input {
     flex: 1;
-    padding: 12px; /* Larger padding */
-    font-size: 1rem; /* Larger font */
+    padding: 8px; /* Slightly reduce padding */
+    font-size: 0.9rem;
     border: 1px solid #ccc;
     border-radius: 5px;
+    max-width: 300px; /* Slightly smaller width on desktop */
 }
 
+/* Send Button */
 #send-button {
-    width: 72px; /* Larger button */
-    padding: 12px; /* Larger padding */
-    font-size: 1rem; /* Larger font */
+    width: 60px;
+    padding: 10px;
+    font-size: 0.9rem;
     background-color: #007bff;
     color: white;
     border: none;
@@ -112,16 +114,16 @@ header {
 #voice-controls {
     display: flex;
     justify-content: space-between;
-    gap: 12px;
-    margin-top: 18px;
+    gap: 10px;
+    margin-top: 15px;
     width: 100%;
 }
 
 #start-record-btn,
 #stop-record-btn {
     flex: 1;
-    padding: 12px; /* Larger padding */
-    font-size: 1rem; /* Larger font */
+    padding: 10px;
+    font-size: 0.9rem;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -137,29 +139,18 @@ header {
     color: #666;
 }
 
-/* Volume Control */
-#volume-control-section {
-    width: 100%;
-    text-align: center;
-    margin-top: 14px;
-}
-
-#volume-control {
-    width: 90%;
-}
-
 /* Reset Chat Button */
 #reset-chat-btn {
-    margin-top: 24px;
+    margin-top: 20px;
     background-color: #007bff;
     color: white;
-    padding: 12px 18px; /* Larger padding */
+    padding: 10px 15px;
     border: none;
     border-radius: 5px;
-    font-size: 1.1rem; /* Larger font */
+    font-size: 1rem;
     cursor: pointer;
     width: 100%;
-    max-width: 180px; /* Wider button */
+    max-width: 150px;
     text-align: center;
 }
 
@@ -169,51 +160,61 @@ header {
 
 /* Footer */
 footer {
-    text-align: left; /* Align text to the left */
-    margin-left: 20px; /* Add 20px margin on the left */
-    font-size: 0.9rem;
+    margin-left: 20px; /* Align footer to the left with 20px margin */
+    font-size: 0.8rem;
+    text-align: center;
+    width: 100%;
     color: #555;
 }
 
-/* Desktop Adjustments */
-@media (min-width: 769px) {
-    #chat-container {
-        max-width: 864px; /* 20% larger */
-    }
-
-    #chat-history {
-        height: 414px; /* 15% larger */
-    }
-
-    #age-dropdown,
-    #chat-input,
-    #send-button,
-    #start-record-btn,
-    #stop-record-btn {
-        font-size: 1.1rem; /* Larger font for desktop */
-        padding: 14px; /* Larger padding */
-    }
-}
-
-/* Responsive Adjustments for Mobile and Tablet */
+/* Responsive Adjustments */
 @media (max-width: 768px) {
     #chat-container {
-        width: 95%; /* Full width for small screens */
-        max-width: 100%;
-        padding: 16px;
+        width: 88%;
     }
 
     #chat-history {
-        height: 300px; /* Adjusted for small screens */
+        width: 93%;
     }
 
     header {
-        margin-right: 0; /* Remove right margin for mobile */
-        text-align: center; /* Center text on mobile */
+        margin-right: 12px; /* Adjust for mobile */
     }
 
     footer {
-        margin-left: 0; /* Remove left margin for mobile */
-        text-align: center;
+        margin-left: 12px;
+    }
+}
+
+@media (min-width: 769px) {
+    /* Desktop Adjustments */
+    #chat-container {
+        width: 108%; /* 20% larger */
+        max-width: 720px;
+    }
+
+    #chat-history {
+        width: 100%;
+        height: 360px; /* 15% larger */
+    }
+
+    #age-dropdown {
+        width: 50px; /* Fixed width for Age dropdown */
+    }
+
+    #chat-input {
+        max-width: 280px; /* Slightly smaller width */
+    }
+
+    #send-button,
+    #start-record-btn,
+    #stop-record-btn,
+    #reset-chat-btn {
+        font-size: 1rem;
+        padding: 12px; /* Larger buttons for desktop */
+    }
+
+    footer {
+        margin-left: 20px; /* Align footer properly */
     }
 }
