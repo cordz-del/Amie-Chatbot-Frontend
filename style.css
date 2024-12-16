@@ -1,121 +1,246 @@
 /* General styling */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f4f8;
+    color: #333;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Header styling */
+header {
+    text-align: center;
+    margin-top: 50px;
 }
 
 #amie-title {
-    font-size: 3rem;
-    text-align: center;
-    background: linear-gradient(to right, #001a33, #0066cc, #89cfff);
+    font-size: 5.4rem;
+    margin-bottom: 20px;
+    background: linear-gradient(to right, #0056b3, #007bff, #89cfff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin: 20px 0;
 }
 
-#chat-container {
-    max-width: 600px;
-    margin: 0 auto;
+/* Main container */
+#main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    max-width: 1200px;
     padding: 20px;
-    background: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* Chat container */
+#chat-container {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 100%;
+    padding: 16px;
+    margin: 20px auto;
+}
+
+/* Desktop Chat container adjustments */
+@media (min-width: 769px) {
+    #chat-container {
+        width: 50%;
+    }
+}
+
+/* Chat history */
 #chat-history {
+    border: 1px solid #ccc;
+    padding: 12px;
     height: 300px;
     overflow-y: auto;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
-    margin-bottom: 15px;
+    background-color: #fff;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    font-size: 1.2rem;
+    width: 100%;
 }
 
-input[type="text"],
-input[type="number"],
-button {
-    display: block;
+/* Form styling */
+#chat-form {
+    display: flex;
+    gap: 10px;
     width: 100%;
-    margin-bottom: 10px;
+}
+
+#age-input,
+#chat-input {
     padding: 10px;
     font-size: 1rem;
-    border-radius: 5px;
     border: 1px solid #ccc;
-    box-sizing: border-box;
+    border-radius: 5px;
+    flex: 1;
 }
 
-button {
-    background-color: #0066cc;
-    color: white;
+button[type="submit"] {
+    padding: 10px;
+    font-size: 1rem;
     border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #007BFF;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* Tooltip styling */
+.tooltip {
+    position: relative;
+    display: inline-block;
     cursor: pointer;
 }
 
-button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-}
-
-/* Volume Control */
-#volume-control {
-    width: 100%;
-    height: 6px;
-    margin-top: 10px;
+.tooltip:hover::after {
+    content: attr(data-tooltip); /* Use the 'data-tooltip' attribute for the text */
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #555;
+    color: white;
+    padding: 5px 8px;
     border-radius: 5px;
-    background: linear-gradient(to right, blue 50%, gray 50%);
+    font-size: 0.9rem;
+    white-space: nowrap;
 }
 
-/* Reset Chat Section */
-#reset-chat-btn {
-    background-color: #ff6666;
+/* Voice Controls */
+#voice-controls {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+#start-record-btn, #stop-record-btn {
+    padding: 10px;
+    flex: 1;
+    border-radius: 5px;
+    font-size: 1rem;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+#start-record-btn {
+    background-color: #007BFF;
     color: white;
 }
 
-/* Responsive layout for mobile devices */
+#stop-record-btn {
+    background-color: white;
+    color: #999;
+    border: 1px solid #ccc;
+    cursor: not-allowed;
+}
+
+#start-record-btn:hover:not(:disabled),
+#stop-record-btn:hover:not(:disabled) {
+    background-color: #0056b3;
+    color: white;
+}
+
+/* Volume Control */
+#volume-control-section {
+    margin-top: 10px;
+    text-align: center;
+}
+
+#volume-control {
+    width: 100%;
+    height: 6px;
+}
+
+/* Reset Button */
+.reset-btn {
+    margin-top: 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.reset-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Responsive Adjustments */
 @media (max-width: 768px) {
-    body {
-        font-size: 0.9rem;
+    header {
+        margin-top: 20px;
     }
 
     #amie-title {
-        font-size: 2rem;
-        margin-bottom: 10px;
+        font-size: 4rem;
     }
 
     #chat-container {
         width: 90%;
-        padding: 10px;
-        transform: scale(0.75); /* Scale down the entire chat container */
-        transform-origin: top center; /* Ensure it scales from the top */
+        margin: 0 auto;
+        transform: scale(0.9);
     }
 
-    #chat-history {
-        height: 250px;
+    #voice-controls {
+        flex-direction: row; /* Ensure buttons are side-by-side */
+        justify-content: space-between;
     }
 
-    input[type="text"],
-    input[type="number"],
-    button {
-        font-size: 0.9rem;
+    #start-record-btn, #stop-record-btn {
+        flex: 1 1 auto; /* Buttons resize evenly */
         padding: 8px;
-    }
-
-    button {
-        width: 90%;
+        font-size: 0.9rem;
+        max-width: 45%; /* Ensure they fit inside the chat box */
     }
 
     #volume-control {
         height: 4px;
     }
+}
 
-    #voice-controls button {
-        width: 90%;
-        margin-bottom: 10px;
+@media (max-width: 480px) {
+    header {
+        margin-top: 15px;
     }
 
-    #reset-chat-btn {
-        font-size: 0.9rem;
+    #amie-title {
+        font-size: 3.5rem;
+        margin-bottom: 15px;
+    }
+
+    #chat-container {
+        transform: scale(0.85);
+    }
+
+    #chat-history {
+        font-size: 1rem;
+        height: 200px;
+    }
+
+    #start-record-btn, #stop-record-btn {
+        font-size: 0.8rem;
+        padding: 8px;
+        max-width: 48%; /* Ensure buttons are smaller */
+        margin-bottom: 5px;
+    }
+
+    #volume-control {
+        width: 90%;
     }
 }
