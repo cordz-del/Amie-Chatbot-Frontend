@@ -1,4 +1,4 @@
-/* General styling */
+/* General Styling */
 body {
     font-family: 'Arial', sans-serif;
     background-color: #f0f4f8;
@@ -11,236 +11,232 @@ body {
     min-height: 100vh;
 }
 
-/* Header styling */
+/* Header */
 header {
     text-align: center;
-    margin-top: 50px;
+    margin-top: 30px;
 }
 
 #amie-title {
-    font-size: 5.4rem;
+    font-size: 3rem;
     margin-bottom: 20px;
     background: linear-gradient(to right, #0056b3, #007bff, #89cfff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
-/* Main container */
+/* Main Container */
 #main-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
     width: 100%;
     max-width: 1200px;
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-/* Chat container */
+/* Chat Container */
 #chat-container {
     background-color: white;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 90%;
     max-width: 600px;
-    width: 100%;
-    padding: 16px;
+    padding: 20px;
     margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-/* Desktop Chat container adjustments */
-@media (min-width: 769px) {
-    #chat-container {
-        width: 50%;
-    }
-}
-
-/* Chat history */
+/* Chat History */
 #chat-history {
-    border: 1px solid #ccc;
-    padding: 12px;
+    width: 95%;
     height: 300px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 12px;
     overflow-y: auto;
     background-color: #fff;
-    border-radius: 8px;
     margin-bottom: 16px;
-    font-size: 1.2rem;
-    width: 100%;
+    font-size: 1rem;
+    text-align: left;
 }
 
-/* Form styling */
+/* Input Container */
 #chat-form {
     display: flex;
-    gap: 10px;
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
+    gap: 10px;
 }
 
-#age-input,
-#chat-input {
-    padding: 10px;
-    font-size: 1rem;
+/* Age Dropdown */
+#age-dropdown {
+    width: 60px;
+    height: 40px;
+    padding: 5px;
+    font-size: 0.9rem;
     border: 1px solid #ccc;
     border-radius: 5px;
-    flex: 1;
+    text-align: center;
+    box-sizing: border-box;
 }
 
-button[type="submit"] {
+/* Chat Input */
+#chat-input {
+    flex: 1;
     padding: 10px;
-    font-size: 1rem;
+    font-size: 0.9rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Send Button */
+#send-button {
+    width: 60px;
+    padding: 10px;
+    font-size: 0.9rem;
+    background-color: #007bff;
+    color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    background-color: #007BFF;
-    color: white;
     transition: background-color 0.3s ease;
 }
 
-button[type="submit"]:hover {
+#send-button:hover {
     background-color: #0056b3;
-}
-
-/* Tooltip styling */
-.tooltip {
-    position: relative;
-    display: inline-block;
-    cursor: pointer;
-}
-
-.tooltip:hover::after {
-    content: attr(data-tooltip); /* Use the 'data-tooltip' attribute for the text */
-    position: absolute;
-    bottom: -25px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #555;
-    color: white;
-    padding: 5px 8px;
-    border-radius: 5px;
-    font-size: 0.9rem;
-    white-space: nowrap;
 }
 
 /* Voice Controls */
 #voice-controls {
     display: flex;
+    justify-content: space-between;
     gap: 10px;
-    justify-content: center;
-    margin-top: 10px;
+    margin-top: 15px;
+    width: 100%;
 }
 
-#start-record-btn, #stop-record-btn {
-    padding: 10px;
+#start-record-btn,
+#stop-record-btn {
     flex: 1;
-    border-radius: 5px;
-    font-size: 1rem;
+    padding: 10px;
+    font-size: 0.9rem;
     border: none;
-    transition: background-color 0.3s ease;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 #start-record-btn {
-    background-color: #007BFF;
+    background-color: #007bff;
     color: white;
 }
 
 #stop-record-btn {
-    background-color: white;
-    color: #999;
-    border: 1px solid #ccc;
-    cursor: not-allowed;
-}
-
-#start-record-btn:hover:not(:disabled),
-#stop-record-btn:hover:not(:disabled) {
-    background-color: #0056b3;
-    color: white;
+    background-color: #ccc;
+    color: #666;
 }
 
 /* Volume Control */
 #volume-control-section {
-    margin-top: 10px;
+    width: 100%;
     text-align: center;
+    margin-top: 10px;
 }
 
 #volume-control {
-    width: 100%;
-    height: 6px;
+    width: 90%;
 }
 
-/* Reset Button */
-.reset-btn {
+/* Reset Chat Button */
+#reset-chat-btn {
     margin-top: 20px;
     background-color: #007bff;
     color: white;
+    padding: 10px 15px;
     border: none;
     border-radius: 5px;
-    padding: 10px;
+    font-size: 1rem;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    width: 100%;
+    max-width: 150px;
+    text-align: center;
 }
 
-.reset-btn:hover {
+#reset-chat-btn:hover {
     background-color: #0056b3;
 }
 
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-    header {
-        margin-top: 20px;
-    }
-
-    #amie-title {
-        font-size: 4rem;
-    }
-
-    #chat-container {
-        width: 90%;
-        margin: 0 auto;
-        transform: scale(0.9);
-    }
-
-    #voice-controls {
-        flex-direction: row; /* Ensure buttons are side-by-side */
-        justify-content: space-between;
-    }
-
-    #start-record-btn, #stop-record-btn {
-        flex: 1 1 auto; /* Buttons resize evenly */
-        padding: 8px;
-        font-size: 0.9rem;
-        max-width: 45%; /* Ensure they fit inside the chat box */
-    }
-
-    #volume-control {
-        height: 4px;
-    }
+/* Footer */
+footer {
+    margin-top: 20px;
+    font-size: 0.8rem;
+    text-align: center;
+    width: calc(100% - 20px);
+    color: #555;
 }
 
-@media (max-width: 480px) {
-    header {
-        margin-top: 15px;
-    }
-
-    #amie-title {
-        font-size: 3.5rem;
-        margin-bottom: 15px;
-    }
-
+/* Responsive Adjustments for Mobile and Tablet */
+@media (max-width: 768px) {
     #chat-container {
-        transform: scale(0.85);
+        width: 88%;
     }
 
     #chat-history {
+        width: 93%;
+    }
+
+    header {
+        margin-left: 48px;
+    }
+
+    footer {
+        margin-left: 48px;
+    }
+}
+
+/* Desktop Adjustments */
+@media (min-width: 769px) {
+    #chat-container {
+        width: 108%;
+        max-width: 720px;
+    }
+
+    #chat-history {
+        width: 100%;
+        height: 360px;
+        font-size: 1.1rem;
+    }
+
+    #age-dropdown {
+        width: 90px;
         font-size: 1rem;
-        height: 200px;
+        height: 50px;
+        line-height: 1.8;
+        padding: 10px;
+        text-align: center;
     }
 
-    #start-record-btn, #stop-record-btn {
-        font-size: 0.8rem;
-        padding: 8px;
-        max-width: 48%; /* Ensure buttons are smaller */
-        margin-bottom: 5px;
+    footer {
+        margin: 20px auto;
+        text-align: center;
+        width: 100%;
     }
 
-    #volume-control {
-        width: 90%;
+    #age-dropdown,
+    #chat-input,
+    #send-button,
+    #start-record-btn,
+    #stop-record-btn {
+        font-size: 1rem;
+        padding: 12px;
+    }
+
+    #reset-chat-btn {
+        padding: 12px 18px;
+        font-size: 1.1rem;
+        max-width: 180px;
     }
 }
