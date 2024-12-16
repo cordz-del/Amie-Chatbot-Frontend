@@ -14,7 +14,8 @@ body {
 /* Header */
 header {
     text-align: center;
-    margin: 54px auto; /* Centered with 54px top margin */
+    margin-left: 54px; /* Header offset 54px on the left */
+    margin-top: 30px;
 }
 
 #amie-title {
@@ -41,7 +42,7 @@ header {
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 90%;
-    max-width: 840px; /* 40% bigger than 600px */
+    max-width: 720px; /* Default width */
     padding: 20px;
     margin: 20px auto;
     display: flex;
@@ -52,7 +53,7 @@ header {
 /* Chat History */
 #chat-history {
     width: 100%;
-    height: 420px; /* 40% taller than 300px */
+    height: 360px; /* Default height */
     border: 1px solid #ccc;
     border-radius: 8px;
     padding: 12px;
@@ -72,7 +73,6 @@ header {
     gap: 10px;
 }
 
-/* Age Dropdown */
 #age-dropdown {
     width: 60px;
     height: 40px;
@@ -84,7 +84,6 @@ header {
     box-sizing: border-box;
 }
 
-/* Chat Input */
 #chat-input {
     flex: 1;
     padding: 10px;
@@ -93,7 +92,6 @@ header {
     border-radius: 5px;
 }
 
-/* Send Button */
 #send-button {
     width: 60px;
     padding: 10px;
@@ -171,11 +169,31 @@ header {
 
 /* Footer */
 footer {
-    margin: 20px auto; /* Centered with 20px top margin */
-    font-size: 0.8rem;
     text-align: center;
+    font-size: 0.8rem;
     width: 100%;
     color: #555;
+    margin: 0; /* Removed extra space */
+}
+
+/* Desktop Adjustments */
+@media (min-width: 769px) {
+    #chat-container {
+        max-width: 864px; /* 20% larger than 720px */
+    }
+
+    #chat-history {
+        height: 432px; /* 20% larger than 360px */
+    }
+
+    #age-dropdown,
+    #chat-input,
+    #send-button,
+    #start-record-btn,
+    #stop-record-btn {
+        font-size: 1rem;
+        padding: 12px;
+    }
 }
 
 /* Responsive Adjustments for Mobile and Tablet */
@@ -187,14 +205,14 @@ footer {
     }
 
     #chat-history {
-        height: 300px; /* Fit within small screen */
+        height: 300px; /* Adjusted height for small screens */
     }
 
     header {
-        margin: 20px auto; /* Smaller margin for small screens */
+        margin: 20px auto 0; /* Remove left margin for mobile */
     }
 
     footer {
-        margin: 10px auto;
+        margin-top: 10px;
     }
 }
