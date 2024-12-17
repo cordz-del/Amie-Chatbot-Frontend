@@ -1,45 +1,46 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const BACKEND_URL = "https://462d2d49-1f98-4257-a721-46da919d929b-00-3hhfbf6wdvr1l.kirk.replit.dev/"; // Replace with your backend URL
+    const BACKEND_URL = "https://462d2d49-1f98-4257-a721-46da919d929b-00-3hhfbf6wdvr1l.kirk.replit.dev";
+    
+    // DOM Elements
     const chatForm = document.getElementById("chat-form");
     const chatInput = document.getElementById("chat-input");
     const chatHistory = document.getElementById("chat-history");
     const startRecordBtn = document.getElementById("start-record-btn");
     const stopRecordBtn = document.getElementById("stop-record-btn");
     const resetChatBtn = document.getElementById("reset-chat-btn");
+    const ageDropdown = document.getElementById("age-dropdown");
     const volumeControl = document.getElementById("volume-control");
 
     let isRecording = false;
     let mediaRecorder = null;
     let recordedChunks = [];
-    let conversationLog = [];
+    let conversationLog = []; // Keeps track of conversation history
 
-    // Append messages to the chat history
+    /**
+     * Append a message to the chat history.
+     * @param {string} sender - The sender of the message ("You" or "Amie").
+     * @param {string} message - The content of the message.
+     */
     function appendMessage(sender, message) {
         const messageElement = document.createElement("div");
+        messageElement.classList.add("chat-message", sender === "You" ? "user" : "bot");
         messageElement.innerHTML = `<strong>${sender}:</strong> ${message}`;
         chatHistory.appendChild(messageElement);
         chatHistory.scrollTop = chatHistory.scrollHeight;
     }
 
-    // Ensure volume stays between 0.0 and 1.0
-    function clampVolume(value) {
-        return Math.min(Math.max(parseFloat(value), 0.0), 1.0);
-    }
-
-    // Play audio response
+    /**
+     * Play audio from a Base64-encoded string.
+     * @param {string} base64Audio - The Base64-encoded audio data.
+     */
     function playAudio(base64Audio) {
-        if (!base64Audio) {
-            appendMessage("Error", "Audio response not available.");
-            return;
-        }
-
         try {
             const audioData = Uint8Array.from(atob(base64Audio), c => c.charCodeAt(0));
             const audioBlob = new Blob([audioData], { type: "audio/wav" });
             const audioUrl = URL.createObjectURL(audioBlob);
             const audio = new Audio(audioUrl);
 
-            audio.volume = clampVolume(volumeControl.value);
+            audio.volume = Math.min(Math.max(parseFloat(volumeControl.value), 0.5), 2.0); // Clamp volume
             audio.play().catch(error => {
                 console.error("Error playing audio:", error);
                 appendMessage("Error", "Unable to play audio response.");
@@ -50,66 +51,46 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Send message to the backend
-    async function sendMessageToChatbot(message) {
-        try {
-            const response = await fetch(`${BACKEND_URL}/chat`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    message,
-                    conversation_log: conversationLog,
-                    volume: clampVolume(volumeControl.value),
-                }),
-            });
-
-            if (!response.ok) throw new Error(`Failed to fetch chatbot response: ${response.statusText}`);
-
-            const data = await response.json();
-            appendMessage("Amie", data.response || "No response received.");
-            if (data.audio) playAudio(data.audio);
-        } catch (error) {
-            console.error("Error:", error);
-            appendMessage("Error", "Failed to connect to the server. Please try again.");
-        }
-    }
-
-    // Handle voice recording
-    async function sendVoiceMessage(audioFile) {
-        try {
-            const formData = new FormData();
-            formData.append("audio", audioFile);
-
-            const response = await fetch(`${BACKEND_URL}/voice`, {
-                method: "POST",
-                body: formData,
-            });
-
-            if (!response.ok) throw new Error("Failed to fetch voice response");
-
-            const data = await response.json();
-            appendMessage("Amie", data.response || "No response received.");
-            if (data.audio) playAudio(data.audio);
-        } catch (error) {
-            console.error("Error:", error);
-            appendMessage("Error", "Something went wrong during processing.");
-        }
-    }
-
-    // Form submission for text input
-    chatForm.addEventListener("submit", event => {
+    /**
+     * Handle chat form submission (text input).
+     */
+    chatForm.addEventListener("submit", async (event) => {
         event.preventDefault();
         const message = chatInput.value.trim();
+        const age = parseInt(ageDropdown.value, 10) || 10;
+        const volume = parseFloat(volumeControl.value);
+
         if (!message) return;
 
         appendMessage("You", message);
         chatInput.value = "";
 
         conversationLog.push({ role: "user", content: message });
-        sendMessageToChatbot(message);
+
+        try {
+            const response = await fetch(`${BACKEND_URL}/chat`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message, age, volume, conversation_log: conversationLog }),
+            });
+
+            if (!response.ok) throw new Error("Failed to fetch chatbot response.");
+
+            const data = await response.json();
+            appendMessage("Amie", data.response || "No response received.");
+            if (data.audio) playAudio(data.audio);
+
+            // Update conversation log
+            conversationLog.push({ role: "assistant", content: data.response });
+        } catch (error) {
+            console.error("Error:", error);
+            appendMessage("Error", "Failed to connect to the server.");
+        }
     });
 
-    // Start recording audio
+    /**
+     * Start recording audio using the browser's MediaRecorder API.
+     */
     startRecordBtn.addEventListener("click", async () => {
         if (isRecording) return;
 
@@ -118,28 +99,51 @@ document.addEventListener("DOMContentLoaded", () => {
             mediaRecorder = new MediaRecorder(stream);
             recordedChunks = [];
 
-            appendMessage("System", "Listening...");
+            appendMessage("System", "Recording started...");
+            mediaRecorder.start();
 
-            mediaRecorder.ondataavailable = event => {
+            mediaRecorder.ondataavailable = (event) => {
                 if (event.data.size > 0) recordedChunks.push(event.data);
             };
 
             mediaRecorder.onstop = async () => {
                 const audioBlob = new Blob(recordedChunks, { type: "audio/wav" });
-                sendVoiceMessage(audioBlob);
+                const formData = new FormData();
+                formData.append("audio", audioBlob, "recording.wav");
+                formData.append("age", ageDropdown.value || "10");
+                formData.append("volume", volumeControl.value || "1.0");
+
+                appendMessage("System", "Recording stopped. Processing...");
+
+                try {
+                    const response = await fetch(`${BACKEND_URL}/voice`, {
+                        method: "POST",
+                        body: formData,
+                    });
+
+                    if (!response.ok) throw new Error("Failed to process voice input.");
+
+                    const data = await response.json();
+                    appendMessage("Amie", data.response || "No response received.");
+                    if (data.audio) playAudio(data.audio);
+                } catch (error) {
+                    console.error("Error:", error);
+                    appendMessage("Error", "Something went wrong while processing your voice input.");
+                }
             };
 
-            mediaRecorder.start();
             isRecording = true;
             startRecordBtn.disabled = true;
             stopRecordBtn.disabled = false;
         } catch (error) {
             console.error("Microphone access error:", error);
-            appendMessage("Error", "Unable to access microphone. Please enable permissions.");
+            appendMessage("Error", "Please enable microphone access.");
         }
     });
 
-    // Stop recording audio
+    /**
+     * Stop recording audio.
+     */
     stopRecordBtn.addEventListener("click", () => {
         if (!isRecording || !mediaRecorder) return;
 
@@ -147,23 +151,16 @@ document.addEventListener("DOMContentLoaded", () => {
         isRecording = false;
         startRecordBtn.disabled = false;
         stopRecordBtn.disabled = true;
-        appendMessage("System", "Recording stopped. Processing...");
     });
 
-    // Reset chat history
+    /**
+     * Reset the chat history and conversation log.
+     */
     resetChatBtn.addEventListener("click", () => {
         chatHistory.innerHTML = "";
-        appendMessage("Amie", "Chat reset. How can I help you today?");
         conversationLog = [];
+        appendMessage("Amie", "Chat reset. How can I assist you today?");
     });
 
-    // Volume control input
-    volumeControl.addEventListener("input", () => {
-        console.log(`Volume set to: ${volumeControl.value}`);
-    });
-
-    startRecordBtn.disabled = false;
-    stopRecordBtn.disabled = true;
-
-    console.log("Frontend loaded successfully.");
+    console.log("Chatbot frontend loaded successfully.");
 });
