@@ -13,8 +13,12 @@ body {
 
 /* Header */
 header {
-    text-align: right;
-    margin-right: 54px; /* Align to the right with a 54px margin */
+    text-align: center;
+    margin: 0;
+    position: relative;
+    margin-right: -64px; /* Move 64px to the right */
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
 #amie-title {
@@ -33,6 +37,9 @@ header {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center; /* Center vertically */
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
 /* Chat Container */
@@ -41,24 +48,24 @@ header {
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 90%;
-    max-width: 600px;
-    padding: 20px;
-    margin: 20px auto;
+    max-width: 720px;
+    padding: 24px; /* Slightly larger padding */
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
+/* Chat History */
 #chat-history {
     width: 95%;
-    height: 300px;
+    height: 360px; /* 15% larger than before */
     border: 1px solid #ccc;
     border-radius: 8px;
     padding: 12px;
     overflow-y: auto;
     background-color: #fff;
     margin-bottom: 16px;
-    font-size: 1rem;
+    font-size: 1.1rem; /* Slightly larger font */
     text-align: left;
 }
 
@@ -73,7 +80,7 @@ header {
 
 /* Age Dropdown */
 #age-dropdown {
-    width: 50px; /* Adjust to fit the word "Age" */
+    width: 50px; /* Fit the word "Age" perfectly */
     height: 40px;
     padding: 5px;
     font-size: 0.9rem;
@@ -86,11 +93,10 @@ header {
 /* Chat Input */
 #chat-input {
     flex: 1;
-    padding: 8px; /* Slightly reduce padding */
+    padding: 10px;
     font-size: 0.9rem;
     border: 1px solid #ccc;
     border-radius: 5px;
-    max-width: 300px; /* Slightly smaller width on desktop */
 }
 
 /* Send Button */
@@ -139,6 +145,17 @@ header {
     color: #666;
 }
 
+/* Volume Control */
+#volume-control-section {
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+}
+
+#volume-control {
+    width: 90%;
+}
+
 /* Reset Chat Button */
 #reset-chat-btn {
     margin-top: 20px;
@@ -160,61 +177,72 @@ header {
 
 /* Footer */
 footer {
-    margin-left: 20px; /* Align footer to the left with 20px margin */
+    margin-left: 20px; /* Align to the left with 20px margin */
     font-size: 0.8rem;
-    text-align: center;
-    width: 100%;
+    text-align: left;
     color: #555;
+    margin-bottom: auto;
+    margin-top: auto;
 }
 
-/* Responsive Adjustments */
+/* Responsive Adjustments for Mobile and Tablet */
 @media (max-width: 768px) {
     #chat-container {
-        width: 88%;
+        width: 90%;
     }
 
     #chat-history {
-        width: 93%;
+        height: 300px; /* Keep consistent size for mobile */
     }
 
     header {
-        margin-right: 12px; /* Adjust for mobile */
+        margin-right: 0; /* Reset alignment for mobile */
+        text-align: center;
     }
 
     footer {
-        margin-left: 12px;
+        margin-left: 0; /* Reset alignment for mobile */
+        text-align: center;
     }
 }
 
+/* Desktop Adjustments */
 @media (min-width: 769px) {
-    /* Desktop Adjustments */
     #chat-container {
         width: 108%; /* 20% larger */
-        max-width: 720px;
+        max-width: 864px; /* Maintain proportion */
     }
 
     #chat-history {
         width: 100%;
-        height: 360px; /* 15% larger */
+        height: 414px; /* 15% larger */
+        font-size: 1.1rem;
     }
 
     #age-dropdown {
-        width: 50px; /* Fixed width for Age dropdown */
+        width: 50px; /* Narrow for "Age" */
+        font-size: 1rem;
     }
 
     #chat-input {
-        max-width: 280px; /* Slightly smaller width */
-    }
-
-    #send-button,
-    #start-record-btn,
-    #stop-record-btn,
-    #reset-chat-btn {
         font-size: 1rem;
-        padding: 12px; /* Larger buttons for desktop */
+        padding: 12px;
     }
 
-    footer {
-        margin-left: 20px; /* Align footer properly */
+    #send-button {
+        font-size: 1rem;
+        padding: 12px;
+    }
+
+    #start-record-btn,
+    #stop-record-btn {
+        font-size: 1rem;
+        padding: 12px;
+    }
+
+    #reset-chat-btn {
+        font-size: 1.1rem;
+        padding: 12px 18px;
+        max-width: 180px;
     }
 }
