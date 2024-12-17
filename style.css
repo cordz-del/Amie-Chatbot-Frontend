@@ -49,7 +49,7 @@ header {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 90%;
     max-width: 720px;
-    padding: 24px; /* Slightly larger padding */
+    padding: 24px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -58,14 +58,14 @@ header {
 /* Chat History */
 #chat-history {
     width: 95%;
-    height: 360px; /* 15% larger than before */
+    height: 360px;
     border: 1px solid #ccc;
     border-radius: 8px;
     padding: 12px;
     overflow-y: auto;
     background-color: #fff;
     margin-bottom: 16px;
-    font-size: 1.1rem; /* Slightly larger font */
+    font-size: 1.1rem;
     text-align: left;
 }
 
@@ -80,7 +80,7 @@ header {
 
 /* Age Dropdown */
 #age-dropdown {
-    width: 50px; /* Fit the word "Age" perfectly */
+    width: 80px; /* Set fixed width to 80px */
     height: 40px;
     padding: 5px;
     font-size: 0.9rem;
@@ -101,7 +101,7 @@ header {
 
 /* Send Button */
 #send-button {
-    width: 60px;
+    width: 80px; /* Set fixed width to 80px */
     padding: 10px;
     font-size: 0.9rem;
     background-color: #007bff;
@@ -220,16 +220,14 @@ footer {
     }
 
     #age-dropdown {
-        width: 50px; /* Narrow for "Age" */
-        font-size: 1rem;
-    }
-
-    #chat-input {
-        font-size: 1rem;
-        padding: 12px;
+        width: 80px; /* Fixed width for desktop */
     }
 
     #send-button {
+        width: 80px; /* Fixed width for desktop */
+    }
+
+    #chat-input {
         font-size: 1rem;
         padding: 12px;
     }
