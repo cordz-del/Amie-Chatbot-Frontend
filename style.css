@@ -186,295 +186,49 @@ footer {
     }
 
     #chat-container {
-        width: 84%; /* 4% smaller */
-        padding: 16px; /* Slightly smaller padding */
+        width: 81%; /* 3% smaller */
+        padding: 14px; /* Slightly smaller padding */
     }
 
     #chat-history {
-        width: 91%; /* 4% smaller */
-        height: 288px; /* Slightly smaller height */
-        font-size: 0.9rem; /* Slightly smaller font size */
+        width: 88%; /* 3% smaller */
+        height: 280px; /* Slightly smaller height */
+        font-size: 0.85rem; /* Slightly smaller font size */
     }
 
     #age-dropdown {
-        width: 76px; /* 4% smaller width */
-        height: 38px;
-        font-size: 0.85rem;
+        width: 74px; /* 3% smaller width */
+        height: 36px;
+        font-size: 0.8rem;
     }
 
     #chat-input {
-        width: calc(100% - 66px); /* 4% smaller overall */
+        width: calc(100% - 70px); /* 3% smaller overall */
         padding: 8px;
-        font-size: 0.85rem;
+        font-size: 0.8rem;
     }
 
     #send-button {
-        width: 76px; /* 4% smaller width */
+        width: 74px; /* 3% smaller width */
         padding: 8px;
-        font-size: 0.85rem;
+        font-size: 0.8rem;
     }
 
     #start-record-btn,
     #stop-record-btn {
         padding: 8px;
-        font-size: 0.85rem;
+        font-size: 0.8rem;
     }
 
     #reset-chat-btn {
-        font-size: 0.9rem;
-        padding: 8px 12px;
-        max-width: 144px; /* Slightly smaller */
+        font-size: 0.85rem;
+        padding: 8px 10px;
+        max-width: 140px; /* Slightly smaller */
     }
 
     footer {
         text-align: center;
         margin: 0;
-        font-size: 0.75rem;
-    }
-}
-/* General Styling */
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f0f4f8;
-    color: #333;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
-}
-
-/* Header */
-header {
-    text-align: center;
-    margin: 0;
-    position: relative;
-    margin-right: -64px; /* Move 64px to the right */
-    margin-top: auto;
-    margin-bottom: auto;
-}
-
-#amie-title {
-    font-size: 3rem;
-    margin-bottom: 20px;
-    background: linear-gradient(to right, #0056b3, #007bff, #89cfff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-/* Main Container */
-#main-container {
-    width: 100%;
-    max-width: 1200px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center; /* Center vertically */
-    margin-top: auto;
-    margin-bottom: auto;
-}
-
-/* Chat Container */
-#chat-container {
-    background-color: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 90%;
-    max-width: 720px;
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* Chat History */
-#chat-history {
-    width: 95%;
-    height: 360px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 12px;
-    overflow-y: auto;
-    background-color: #fff;
-    margin-bottom: 16px;
-    font-size: 1.1rem;
-    text-align: left;
-}
-
-/* Input Container */
-#chat-form {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    gap: 10px;
-}
-
-/* Age Dropdown */
-#age-dropdown {
-    width: 80px; /* Set fixed width to 80px */
-    height: 40px;
-    padding: 5px;
-    font-size: 0.9rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    text-align: center;
-    box-sizing: border-box;
-}
-
-/* Chat Input */
-#chat-input {
-    flex: 1;
-    padding: 10px;
-    font-size: 0.9rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-/* Send Button */
-#send-button {
-    width: 80px; /* Set fixed width to 80px */
-    padding: 10px;
-    font-size: 0.9rem;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-#send-button:hover {
-    background-color: #0056b3;
-}
-
-/* Voice Controls */
-#voice-controls {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    margin-top: 15px;
-    width: 100%;
-}
-
-#start-record-btn,
-#stop-record-btn {
-    flex: 1;
-    padding: 10px;
-    font-size: 0.9rem;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-#start-record-btn {
-    background-color: #007bff;
-    color: white;
-}
-
-#stop-record-btn {
-    background-color: #ccc;
-    color: #666;
-}
-
-/* Volume Control */
-#volume-control-section {
-    width: 100%;
-    text-align: center;
-    margin-top: 10px;
-}
-
-#volume-control {
-    width: 90%;
-}
-
-/* Reset Chat Button */
-#reset-chat-btn {
-    margin-top: 20px;
-    background-color: #007bff;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
-    cursor: pointer;
-    width: 100%;
-    max-width: 150px;
-    text-align: center;
-}
-
-#reset-chat-btn:hover {
-    background-color: #0056b3;
-}
-
-/* Footer */
-footer {
-    margin-left: 20px; /* Align to the left with 20px margin */
-    font-size: 0.8rem;
-    text-align: left;
-    color: #555;
-    margin-bottom: auto;
-    margin-top: auto;
-}
-
-/* Responsive Adjustments for Mobile and Tablet */
-@media (max-width: 768px) {
-    #chat-container {
-        width: 90%;
-    }
-
-    #chat-history {
-        height: 300px; /* Keep consistent size for mobile */
-    }
-
-    header {
-        margin-right: 0; /* Reset alignment for mobile */
-        text-align: center;
-    }
-
-    footer {
-        margin-left: 0; /* Reset alignment for mobile */
-        text-align: center;
-    }
-}
-
-/* Desktop Adjustments */
-@media (min-width: 769px) {
-    #chat-container {
-        width: 108%; /* 20% larger */
-        max-width: 864px; /* Maintain proportion */
-    }
-
-    #chat-history {
-        width: 100%;
-        height: 414px; /* 15% larger */
-        font-size: 1.1rem;
-    }
-
-    #age-dropdown {
-        width: 80px; /* Fixed width for desktop */
-    }
-
-    #send-button {
-        width: 80px; /* Fixed width for desktop */
-    }
-
-    #chat-input {
-        font-size: 1rem;
-        padding: 12px;
-    }
-
-    #start-record-btn,
-    #stop-record-btn {
-        font-size: 1rem;
-        padding: 12px;
-    }
-
-    #reset-chat-btn {
-        font-size: 1.1rem;
-        padding: 12px 18px;
-        max-width: 180px;
+        font-size: 0.7rem;
     }
 }
