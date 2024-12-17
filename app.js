@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
      * Handle chat form submission (text input).
      */
     chatForm.addEventListener("submit", async (event) => {
-        event.preventDefault();
+        event.preventDefault();  // Prevent form default submission
         const message = chatInput.value.trim();
         const age = parseInt(ageDropdown.value, 10) || 10;
         const volume = parseFloat(volumeControl.value);
@@ -68,10 +68,18 @@ document.addEventListener("DOMContentLoaded", () => {
         conversationLog.push({ role: "user", content: message });
 
         try {
+            // Ensure Content-Type is JSON
             const response = await fetch(`${BACKEND_URL}/chat`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ message, age, volume, conversation_log: conversationLog }),
+                headers: { 
+                    "Content-Type": "application/json"  // Fixed Content-Type header
+                },
+                body: JSON.stringify({ 
+                    message, 
+                    age, 
+                    volume, 
+                    conversation_log: conversationLog 
+                }),
             });
 
             if (!response.ok) throw new Error("Failed to fetch chatbot response.");
@@ -118,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 try {
                     const response = await fetch(`${BACKEND_URL}/voice`, {
                         method: "POST",
-                        body: formData,
+                        body: formData,  // Sends audio file as multipart/form-data
                     });
 
                     if (!response.ok) throw new Error("Failed to process voice input.");
