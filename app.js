@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const BACKEND_URL = "https://462d2d49-1f98-4257-a721-46da919d929b-00-3hhfbf6wdvr1l.kirk.replit.dev";
+    const BACKEND_URL = "https://my-chatbot-app-env.eba-xyz.us-east-1.elasticbeanstalk.com";
     
     // DOM Elements
     const chatForm = document.getElementById("chat-form");
