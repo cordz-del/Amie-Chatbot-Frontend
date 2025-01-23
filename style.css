@@ -17,7 +17,7 @@ header {
     justify-content: flex-start; /* Align to the left */
     align-items: center;
     width: 100%;
-    margin-left: 10px; /* Move header to the left by 10 spaces */
+    margin-left: 50px; /* Move header 50 spaces to the left */
     margin-bottom: 20px;
 }
 
@@ -121,11 +121,11 @@ header {
 /* Footer */
 footer {
     display: flex;
-    justify-content: flex-end; /* Align to the right */
+    justify-content: flex-start; /* Align to the left */
     align-items: center;
     width: 100%;
     margin-top: 20px;
-    margin-right: 20px; /* Move footer to the right by 20 spaces */
+    margin-left: 30px; /* Move footer 30 spaces to the left */
     font-size: 0.8rem;
     color: #555;
 }
@@ -161,7 +161,7 @@ footer {
 
     footer {
         justify-content: center; /* Center footer for smaller screens */
-        margin-right: 0; /* Reset margin for small devices */
+        margin-left: 0; /* Reset margin for small devices */
         font-size: 0.7rem;
     }
 }
