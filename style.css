@@ -7,15 +7,14 @@ body {
   padding: 0;
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Center content vertically */
   align-items: center;
   min-height: 100vh;
 }
 
 /* Header */
 header {
-  text-align: right;
-  margin: 0 64px 20px 0; /* Adjusted margin for spacing */
+  text-align: center;
+  margin: 0 0 20px 0; /* Centered header */
 }
 
 #amie-title {
@@ -30,10 +29,12 @@ header {
 #main-container {
   width: 100%;
   max-width: 1200px;
-  padding: 40px 20px; /* Increased padding to push elements down */
+  padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  flex-grow: 1; /* Ensures it grows to center on the page */
 }
 
 /* Chat Container */
@@ -43,7 +44,7 @@ header {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 90%;
   max-width: 600px;
-  padding: 30px 20px; /* Increased padding for more spacing */
+  padding: 20px;
   margin: 20px auto;
   display: flex;
   flex-direction: column;
@@ -52,7 +53,7 @@ header {
 
 /* Chat History */
 #chat-history {
-  width: 100%; /* Adjusted to 100% for uniform width */
+  width: 100%;
   height: 300px;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -82,7 +83,7 @@ header {
   border-radius: 5px;
 }
 
-/* Buttons */
+/* Send Button */
 #send-button,
 #connect-btn,
 #reset-chat-btn {
@@ -117,16 +118,17 @@ header {
 
 /* Footer */
 footer {
-  margin: 20px 0 0 20px; /* Adjusted margin for better spacing */
+  margin-left: calc(10px + 20px); /* Adjusted left margin for alignment */
   font-size: 0.8rem;
   text-align: left;
   color: #555;
+  width: 100%;
+  max-width: 600px; /* Matches chat-container's max-width */
 }
 
 /* Responsive Adjustments for Mobile and Tablet */
 @media (max-width: 768px) {
   header {
-    text-align: center;
     margin: 0;
   }
 
@@ -156,5 +158,13 @@ footer {
     text-align: center;
     margin: 0;
     font-size: 0.7rem;
+    margin-left: 10px; /* Mobile-specific left adjustment */
+  }
+}
+
+/* Responsive Adjustments for Larger Tablets */
+@media (min-width: 769px) and (max-width: 1024px) {
+  #chat-container {
+    width: 75%;
   }
 }
