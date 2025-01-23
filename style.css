@@ -17,7 +17,7 @@ header {
     justify-content: flex-start; /* Align to the left */
     align-items: center;
     width: 100%;
-    margin-left: 54px; /* Move header 50 spaces to the left */
+    margin-right: -64px; /* Move header 50 spaces to the left */
     margin-bottom: 20px;
 }
 
