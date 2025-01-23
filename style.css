@@ -14,9 +14,10 @@ body {
 /* Header */
 header {
     display: flex;
-    justify-content: center; /* Center the header */
+    justify-content: flex-start; /* Align to the left */
     align-items: center;
     width: 100%;
+    margin-left: 10px; /* Move header to the left by 10 spaces */
     margin-bottom: 20px;
 }
 
@@ -120,10 +121,11 @@ header {
 /* Footer */
 footer {
     display: flex;
-    justify-content: center; /* Center the footer */
+    justify-content: flex-end; /* Align to the right */
     align-items: center;
     width: 100%;
     margin-top: 20px;
+    margin-right: 20px; /* Move footer to the right by 20 spaces */
     font-size: 0.8rem;
     color: #555;
 }
@@ -131,8 +133,8 @@ footer {
 /* Responsive Adjustments for Mobile and Tablet */
 @media (max-width: 768px) {
     header {
-        text-align: center;
-        margin: 0;
+        justify-content: center; /* Center header for smaller screens */
+        margin-left: 0; /* Reset margin for small devices */
     }
 
     #chat-container {
@@ -158,8 +160,8 @@ footer {
     }
 
     footer {
-        text-align: center;
-        margin: 0;
+        justify-content: center; /* Center footer for smaller screens */
+        margin-right: 0; /* Reset margin for small devices */
         font-size: 0.7rem;
     }
 }
