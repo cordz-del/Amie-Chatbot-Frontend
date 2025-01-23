@@ -17,7 +17,7 @@ header {
     justify-content: flex-start; /* Align to the left */
     align-items: center;
     width: 100%;
-    margin-left: 50px; /* Move header 50 spaces to the left */
+    margin-left: 10px; /* Move header 50 spaces to the left */
     margin-bottom: 20px;
 }
 
@@ -125,7 +125,7 @@ footer {
     align-items: center;
     width: 100%;
     margin-top: 20px;
-    margin-left: 30px; /* Move footer 30 spaces to the left */
+    margin-left: 10px; /* Move footer 30 spaces to the left */
     font-size: 0.8rem;
     color: #555;
 }
