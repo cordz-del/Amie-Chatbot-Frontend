@@ -1,204 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Amie - AI Chatbot for Social and Emotional Learning"
+    />
     <title>Amie Chatbot</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="favicon.ico">
-    <style>
-        /* Inline styles for mobile and tablet adjustments */
-        @media (max-width: 768px) {
-            header {
-                margin-left: 12px;
-            }
-
-            footer {
-                margin-left: 0px;
-            }
-
-            #chat-container {
-                width: 88%;
-            }
-
-            #chat-history {
-                width: 93%;
-            }
-        }
-
-        @media (min-width: 769px) {
-            header {
-                margin-left: 54px;
-            }
-
-            footer {
-                margin-left: 54px;
-            }
-        }
-
-        /* Styling for button color changes */
-        #start-record-btn.white {
-            background-color: white;
-            color: #007bff;
-            border: 1px solid #007bff;
-        }
-
-        #stop-record-btn.blue {
-            background-color: #007bff;
-            color: white;
-        }
-
-        #stop-record-btn.white {
-            background-color: white;
-            color: #666;
-            border: 1px solid #ccc;
-        }
-
-        #start-record-btn.blue {
-            background-color: #007bff;
-            color: white;
-        }
-    </style>
-</head>
-<body>
+    <link rel="stylesheet" href="styles.css" />
+    <!-- Ensure correct path -->
+    <link rel="icon" href="favicon.ico" />
+  </head>
+  <body>
+    <!-- Main Container -->
     <div id="main-container">
-        <header>
-            <h1 id="amie-title">Amie</h1>
-        </header>
+      <!-- Header -->
+      <header>
+        <h1 id="amie-title">Amie</h1>
+      </header>
 
-        <main>
-            <div id="chat-container">
-                <!-- Chat History -->
-                <div id="chat-history" aria-label="Chat history" tabindex="0"></div>
+      <!-- Root Container for React App -->
+      <main>
+        <div id="root"></div>
+        <!-- React renders the app here -->
+      </main>
 
-                <!-- Input Section -->
-                <section id="input-container">
-                    <form id="chat-form" aria-label="Chat form">
-                        <!-- Age Dropdown -->
-                        <select id="age-dropdown" aria-label="Select your age">
-                            <option value="" disabled selected>Age</option>
-                            <script>
-                                for (let i = 1; i <= 30; i++) {
-                                    document.write(`<option value="${i}">${i}</option>`);
-                                }
-                            </script>
-                        </select>
-
-                        <!-- Message Input -->
-                        <input 
-                            type="text" 
-                            id="chat-input" 
-                            placeholder="Type your message here..." 
-                            required 
-                            aria-label="Enter your message"
-                        >
-
-                        <!-- Submit Button -->
-                        <button type="submit" id="send-button" aria-label="Send your message">Send</button>
-                    </form>
-                </section>
-
-                <!-- Voice Controls -->
-                <section id="voice-controls">
-                    <button id="start-record-btn" aria-label="Start voice recording">Start Recording</button>
-                    <button id="stop-record-btn" disabled aria-label="Stop voice recording">Stop Recording</button>
-                </section>
-
-                <!-- Volume Control -->
-                <section id="volume-control-section">
-                    <label for="volume-control">Volume:</label>
-                    <input type="range" id="volume-control" min="0.5" max="2.0" step="0.1" value="1.0">
-                </section>
-
-                <!-- Reset Chat -->
-                <section id="reset-chat-section">
-                    <button id="reset-chat-btn" class="reset-btn" aria-label="Reset chat history">Reset Chat</button>
-                </section>
-            </div>
-        </main>
-
-        <footer>
-            <p>Powered by Amie - AI for Social & Emotional Learning</p>
-        </footer>
+      <!-- Footer -->
+      <footer>
+        <p>Powered by Amie - AI for Social and Emotional Learning</p>
+      </footer>
     </div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const chatForm = document.getElementById("chat-form");
-            const chatInput = document.getElementById("chat-input");
-            const chatHistory = document.getElementById("chat-history");
-            const resetChatBtn = document.getElementById("reset-chat-btn");
-            const startRecordBtn = document.getElementById("start-record-btn");
-            const stopRecordBtn = document.getElementById("stop-record-btn");
-
-            // Handle form submission
-            chatForm.addEventListener("submit", (event) => {
-                event.preventDefault();
-                const message = chatInput.value.trim();
-                if (!message) return;
-
-                // Append user's message to chat history
-                const userMessage = document.createElement("div");
-                userMessage.textContent = `You: ${message}`;
-                chatHistory.appendChild(userMessage);
-
-                chatInput.value = "";
-
-                // Simulate chatbot response (replace with backend API call if necessary)
-                setTimeout(() => {
-                    const botMessage = document.createElement("div");
-                    botMessage.textContent = `Amie: I heard you say "${message}".`;
-                    chatHistory.appendChild(botMessage);
-
-                    // Scroll to the latest message
-                    chatHistory.scrollTop = chatHistory.scrollHeight;
-                }, 1000);
-            });
-
-            // Reset chat button functionality
-            resetChatBtn.addEventListener("click", () => {
-                chatHistory.innerHTML = "";
-                const resetMessage = document.createElement("div");
-                resetMessage.textContent = "Chat has been reset. How can I assist you today?";
-                chatHistory.appendChild(resetMessage);
-            });
-
-            // Start recording functionality
-            startRecordBtn.addEventListener("click", () => {
-                console.log("Start Recording clicked");
-                appendMessage("System", "Listening..."); // Feedback in chat history
-                startRecordBtn.disabled = true;
-                stopRecordBtn.disabled = false;
-
-                // Change button colors
-                startRecordBtn.classList.add("white");
-                startRecordBtn.classList.remove("blue");
-                stopRecordBtn.classList.add("blue");
-                stopRecordBtn.classList.remove("white");
-            });
-
-            // Stop recording functionality
-            stopRecordBtn.addEventListener("click", () => {
-                console.log("Stop Recording clicked");
-                appendMessage("System", "Recording stopped. Processing...");
-                stopRecordBtn.disabled = true;
-                startRecordBtn.disabled = false;
-
-                // Change button colors
-                stopRecordBtn.classList.add("white");
-                stopRecordBtn.classList.remove("blue");
-                startRecordBtn.classList.add("blue");
-                startRecordBtn.classList.remove("white");
-            });
-
-            // Append messages to chat history
-            function appendMessage(sender, message) {
-                const messageElement = document.createElement("div");
-                messageElement.innerHTML = `<strong>${sender}:</strong> ${message}`;
-                chatHistory.appendChild(messageElement);
-                chatHistory.scrollTop = chatHistory.scrollHeight; // Scroll to latest
-            }
-        });
-    </script>
-</body>
+    <!-- Include JavaScript -->
+    <script src="index.js" type="module"></script>
+  </body>
 </html>
