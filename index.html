@@ -103,14 +103,23 @@
                 userMessage.textContent = `You: ${message}`;
                 chatHistory.appendChild(userMessage);
 
-                chatInput.value = "";
-
-                // Simulate chatbot response (replace with backend API call if necessary)
-                setTimeout(() => {
-                    const botMessage = document.createElement("div");
-                    botMessage.textContent = `Amie: I heard you say "${message}".`;
-                    chatHistory.appendChild(botMessage);
-
+            fetch('http://localhost:5000/chat', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ message })
+})
+.then(response => response.json())
+.then(data => {
+    const botMessage = document.createElement('div');
+    botMessage.textContent = `Amie: ${data.response}`;
+    chatHistory.appendChild(botMessage);
+    chatHistory.scrollTop = chatHistory.scrollHeight;
+})
+.catch(error => {
+    console.error('Error:', error);
+});
                     // Scroll to the latest message
                     chatHistory.scrollTop = chatHistory.scrollHeight;
                 }, 1000);
@@ -144,6 +153,41 @@
                 chatHistory.scrollTop = chatHistory.scrollHeight; // Scroll to latest
             }
         });
+    // WebSocket connection to the backend
+    const ws = new WebSocket('ws://localhost:8000/ws/chatbot/');
+
+    ws.onopen = () => {
+        console.log('WebSocket connection established.');
+    };
+
+    ws.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        if (data.type === 'chat_message') {
+            appendMessage(data.sender, data.message);
+        }
+    };
+
+    ws.onclose = () => {
+        console.log('WebSocket connection closed.');
+    };
+
+    ws.onerror = (error) => {
+        console.error('WebSocket error:', error);
+    };
+
+    // Send message to the backend
+    sendBtn.addEventListener('click', () => {
+        const message = chatInput.value.trim();
+        if (message) {
+            ws.send(JSON.stringify({
+                type: 'chat_message',
+                message: message
+            }));
+            appendMessage('You', message);
+            chatInput.value = '';
+        }
+    });
+
     </script>
 </body>
 </html>
