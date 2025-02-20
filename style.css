@@ -23,7 +23,11 @@ header {
     background: linear-gradient(to right, #0056b3, #007bff, #89cfff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin: 0;
+      text-align: center;
+    
+    
+  margin: 0 auto; /* Ensures centered text */argin: 0;
+    
 }
 
 #amie-subtitle {
@@ -75,8 +79,9 @@ header {
     background-color: #fff;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 90%;
-    max-width: 600px;
+    width: 50%
+    max-width: 400px;
+    height: 900px;        /* triple the original 300px or 3 times what it was */
     padding: 20px;
     margin: 20px auto;
     display: flex;
@@ -159,13 +164,13 @@ footer {
     }
 
     #chat-container {
-        width: 87%;
+        width:80%
         padding: 14px;
-            height: 70vh;
+        heheight: 600px;
     }
 
     #chat-history {
-        height: 280px;
+        height70%;
         font-size: 0.85rem;
     }
 
@@ -174,12 +179,33 @@ footer {
         font-size: 0.8rem;
     }
 
-    #send-button,
-    #connect-btn,
-    #reset-chat-btn {
-        padding: 8px;
-        font-size: 0.85rem;
-    }
+    #chat-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  width: 100%;
+}
+
+#start-chat-btn, #stop-chat-btn {
+  flex: 0 0 auto;
+  padding: 10px 15px;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+}
+#start-chat-btn:hover, #stop-chat-btn:hover {
+  background-color: #0056b3;
+}
+footer {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.8rem;
+  color: #555;
+  width: 100%;
+}
 
     footer {
         justify-content: center; /* Center footer for smaller screens */
