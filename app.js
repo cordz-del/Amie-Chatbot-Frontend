@@ -159,31 +159,41 @@ drawWaveform();  const stopRecording = () => {
             ))}
           </div>
 
-          <div id="connection-section">
-            {!connected ? (
-              <button id="connect-btn" onClick={handleConnect}>
-                Connect
-              </button>
-            ) : (
-              <button id="connect-btn" onClick={handleDisconnect}>
-                Disconnect
-              </button>
-            )}
-                  <button id="record-btn" onClick={startRecording} disabled={isRecording}>
-  Start Talking
-</button>
-<button id="stop-btn" onClick={stopRecording} disabled={!isRecording}>
-  Stop
-</button>
-          </div>
-        </div>
-      </main>
-
-      <footer>
-        <p>Powered by Amie - AI for Social & Emotional Learning</p>
-      </footer>
+    {connected && (
+  <div id="chat-container">
+    <div id="chat-history" aria-label="Chat history">
+      {participants.map((participant) => (
+        <ParticipantView
+          key={participant.identity}
+          participant={participant}
+          enableVideo
+          enableAudio
+        />
+      ))}
     </div>
-  );
-};
 
+    <div id="connection-section">
+      {!connected ? (
+        <button id="connect-btn" onClick={handleConnect}>
+          Connect
+        </button>
+      ) : (
+        <button id="connect-btn" onClick={handleDisconnect}>
+          Disconnect
+        </button>
+      )}
+    </div>
+
+    <button id="record-btn" onClick={startRecording} disabled={isRecording}>
+      Start Talking
+    </button>
+    <button id="stop-btn" onClick={stopRecording} disabled={!isRecording}>
+      Stop Talking
+    </button>
+  </div>
+)}
+
+<footer>
+  <p>Powered by Amie - AI for Social & Emotional Learning</p>
+</footer>
 export default App;
