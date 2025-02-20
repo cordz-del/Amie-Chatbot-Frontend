@@ -1,15 +1,61 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>Amie Voice Chatbot</title>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amie Chatbot</title>
     <link rel="stylesheet" href="style.css">
-  </head>
-  <body>
-    <p id="status">Status: Ready</p>
-    <p id="transcript">Transcript: </p>
-    <button id="record">Start Talking</button>
-    <button id="stop" disabled>Stop</button>
-    <script src="voiceChatbot.js"></script>
-  </body>
+</head>
+<body>
+    <header>
+        <h1>Amie Chatbot</h1>
+    </header>
+
+    <main id="main-container">
+        <!-- Image Section -->
+        <div id="image-box">
+            <img src="amie_avatar_v1_720.jpg" alt="Amie Avatar">
+        </div>
+
+        <!-- Chat Section -->
+        <div id="chat-container">
+            <!-- Chat History Section -->
+            <div id="chat-container">
+                <div id="chat-history"></div>
+            </div>
+            <div id="chat-history"></div>
+
+            <!-- Input Section -->
+            <section id="input-container">
+                <form id="chat-form">
+                    <label for="age-input">Age:</label>
+                    <input type="number" id="age-input" placeholder="Age" min="3" max="18" required />
+                    <input type="number" id="age-input" placeholder="Age" min="3" max="18" required>
+
+                    <label for="chat-input">Message:</label>
+                    <input type="text" id="chat-input" placeholder="Type your message here..." autocomplete="off" required />
+                    <input type="text" id="chat-input" placeholder="Type your message here..." autocomplete="off" required>
+
+                    <button type="submit">Send</button>
+                </form>
+@@ -45,12 +50,13 @@ <h1>Amie</h1>
+
+            <!-- Hidden Audio Player -->
+            <audio id="audio-player" controls hidden></audio>
+        </main>
+        </div>
+    </main>
+
+        <footer>
+            <p>Powered by Amie Chatbot Project - AI for Social and Emotional Learning</p>
+        </footer>
+    <footer>
+        <p>Powered by Amie Chatbot Project - AI for Social and Emotional Learning</p>
+    </footer>
+
+        <script src="app.js"></script>
+    </body>
+    </html>
+    <script src="app.js"></script>
+</body>
 </html>
