@@ -159,8 +159,9 @@ footer {
     }
 
     #chat-container {
-        width: 85%;
+        width: 87%;
         padding: 14px;
+            height: 70vh;
     }
 
     #chat-history {
