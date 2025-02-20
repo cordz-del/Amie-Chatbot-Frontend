@@ -205,3 +205,16 @@ document.getElementById("record-btn").addEventListener("click", function() {
   <p>Powered by Amie - AI for Social & Emotional Learning</p>
 </footer>
 export default App;
+
+document.getElementById("start-chat-btn").addEventListener("click", startChat);
+document.getElementById("stop-chat-btn").addEventListener("click", stopChat);
+
+function startChat() {
+  // Initialize voice, STT, TTS, etc.
+  console.log("Chat started");
+}
+
+function stopChat() {
+  // Stop voice, STT, TTS
+  console.log("Chat stopped");
+}
