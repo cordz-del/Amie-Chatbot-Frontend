@@ -11,6 +11,8 @@ const App = () => {
 const [audioChunks, setAudioChunks] = useState([]);
 const [transcript, setTranscript] = useState(''););
   const startRecording = () => {
+    // Start the waveform animation when recording starts
+    drawWaveform();
   setIsRecording(true);
   setAudioChunks([]);
   navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
@@ -27,8 +29,44 @@ const [transcript, setTranscript] = useState(''););
     mediaRecorder.start(250);
   });
 };
-  const stopRecording = () => {
+
+// Initialize audio context and analyser
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+const analyser = audioCtx.createAnalyser();
+analyser.fftSize = 256;
+const bufferLength = analyser.frequencyBinCount;
+const dataArray = new Uint8Array(bufferLength);
+const canvas = document.getElementById('waveform');
+const canvasCtx = canvas.getContext('2d');
+
+function drawWaveform() {
+    requestAnimationFrame(drawWaveform);
+    analyser.getByteTimeDomainData(dataArray);
+    canvasCtx.fillStyle = '#f0f4f8';
+    canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
+    canvasCtx.lineWidth = 2;
+    canvasCtx.strokeStyle = '#007bff';
+    canvasCtx.beginPath();
+
+    let sliceWidth = canvas.width * 1.0 / bufferLength;
+    let x = 0;
+    for (let i = 0; i < bufferLength; i++) {
+        let v = dataArray[i] / 128.0;
+        let y = v * canvas.height / 2;
+        if (i === 0) {
+            canvasCtx.moveTo(x, y);
+        } else {
+            canvasCtx.lineTo(x, y);
+        }
+        x += sliceWidth;
+    }
+    canvasCtx.lineTo(canvas.width, canvas.height / 2);
+    canvasCtx.stroke();
+}
+drawWaveform();  const stopRecording = () => {
   setIsRecording(false);
+    // Stop the waveform animation when recording stops
+    cancelAnimationFrame(drawWaveform);
 };
   const speakText = async (text) => {
   const response = await fetch('https://api.deepgram.com/v1/speak', {
