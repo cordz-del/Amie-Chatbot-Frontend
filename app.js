@@ -119,18 +119,15 @@ drawWaveform();  const stopRecording = () => {
         setParticipants([]);
       });
     } catch (error) {
-      console.error("Error connecting to LiveKit:", error);
-    }
-  };
-
-  const handleDisconnect = () => {
+     const handleDisconnect = () => {
     if (room) {
-      room.disconnect();
-      setConnected(false);
-      setRoom(null);
-      setParticipants([]);
+        room.disconnect();
+        setConnected(false);
+        setRoom(null);
+        setParticipants([]);
     }
-  };
+};
+ set
 
   useEffect(() => {
     return () => {
@@ -190,7 +187,18 @@ drawWaveform();  const stopRecording = () => {
     <button id="stop-btn" onClick={stopRecording} disabled={!isRecording}>
       Stop Talking
     </button>
-  </div>
+  <
+let chatActive = false;
+document.getElementById("record-btn").addEventListener("click", function() {
+    if (!chatActive) {
+        startRecording();
+        this.textContent = "Stop Chat";
+    } else {
+        stopRecording();
+        this.textContent = "Start Chat";
+    }
+    chatActive = !chatActive;
+});/div>
 )}
 
 <footer>
