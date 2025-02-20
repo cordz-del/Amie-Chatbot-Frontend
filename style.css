@@ -56,7 +56,7 @@ header {
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 90%;
-    max-width: 600px;
+    max-width: 800;
     padding: 20px;
     margin: 20px auto;
 /* Main Container */
@@ -91,7 +91,7 @@ footer {
     margin-top: 20px;
     font-size: 0.8rem;
     color: #555;
-}   justify-content: space-between;
+}   justify-content:center
     align-items: center;
     width: 100%;
     gap: 10px;
