@@ -1,5 +1,5 @@
 // Replace with your Deepgram API key
-const DEEPGRAM_API_KEY = 5fc1624a41d5256f6e211a85a20ca268e86c0125;
+const DEEPGRAM_API_KEY process.env.DEEPGRAM_API_KEY
 
 // UI Elements
 const statusEl = document.getElementById('status');
@@ -79,7 +79,7 @@ async function speakText(text) {
     const ttsResponse = await fetch('https://api.deepgram.com/v1/speak', {
       method: 'POST',
       headers: {
-        'Authorization': 'Token ' + DEEPGRAM_API_KEY,
+        'Authorization': 'Token ' +process.env.DEEPGRAM_AAPI_KEY
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
