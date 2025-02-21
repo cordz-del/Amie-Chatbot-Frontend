@@ -1,44 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#2c3e50" />
+    <meta
+      name="description"
+      content="Amie Chatbot - Your friendly AI assistant"
+    />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <title>Amie Chatbot</title>
-    <link rel="stylesheet" href="style.css"> <!-- Ensure your styles are applied -->
-</head>
-<body>
-    <!-- Header Section -->
-    <header>
-        <h1 id="amie-title">Amie</h1>
-        <p id="amie-subtitle">Social and Emotional Learning Assistant</p>
-    </header>
-
-    <!-- Main Chat Container -->
-    <main id="main-container">
-        <div id="chat-container">
-            <!-- Chat History -->
-            <div id="chat-history">
-                <p><strong>Amie:</strong> Hello, I am Amie, your Social and Emotional Learning Assistant. May I know who I have the pleasure of speaking with?</p>
-            </div>
-
-            <!-- Status Display -->
-            <p id="status">Ready</p>
-
-            <!-- Chat Buttons -->
-            <div id="chat-buttons">
-                <button id="startButton">Start Chat</button>
-                <button id="stopButton" disabled>Stop Chat</button>
-                <button id="emojiButton">😊</button> <!-- Placeholder for future emoji feature -->
-            </div>
-        </div>
-    </main>
-
-    <!-- Footer -->
-    <footer>
-        <p>Powered by Amie Chatbot - AI for Social & Emotional Learning</p>
-    </footer>
-
-    <!-- JavaScript Imports (Ensure "type=module" for ES6 imports) -->
-    <script type="module" src="app.js"></script>
-</body>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+  </body>
 </html>
