@@ -1,7 +1,10 @@
-// Use environment variable for Deepgram API key (ensure your build process injects this value)
-const DEEPGRAM_API_KEY = process.env.REACT_APP_DEEPGRAM_API_KEY;
+// voiceChatbot.js
 
-// UI Elements
+// Environment variables (ensure these are injected at build time)
+const DEEPGRAM_API_KEY = process.env.REACT_APP_DEEPGRAM_API_KEY;
+const OPENAI_API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
+
+// UI Elements – Ensure these exist in your index.html
 const statusEl = document.getElementById('status');
 const transcriptEl = document.getElementById('transcript');
 const recordBtn = document.getElementById('record');
@@ -10,7 +13,7 @@ const stopBtn = document.getElementById('stop');
 let mediaRecorder;
 let audioChunks = [];
 
-// Request microphone access
+// Request microphone access and initialize MediaRecorder
 navigator.mediaDevices.getUserMedia({ audio: true })
   .then(stream => {
     statusEl.textContent = 'Microphone ready';
@@ -23,7 +26,27 @@ navigator.mediaDevices.getUserMedia({ audio: true })
     mediaRecorder.addEventListener('stop', () => {
       const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
       audioChunks = [];
-      transcribeAudio(audioBlob);
+      // First, transcribe the recorded audio
+      transcribeAudio(audioBlob)
+        .then(transcript => {
+          // Display the transcript in the chat history
+          transcriptEl.textContent = transcript;
+          if (transcript) {
+            // Send the transcript to OpenAI for a chatbot reply
+            return getOpenAIResponse(transcript);
+          } else {
+            throw new Error("No transcript generated");
+          }
+        })
+        .then(aiResponse => {
+          // Append AI response to the transcript area and speak it
+          transcriptEl.textContent += "\nAmie: " + aiResponse;
+          return speakText(aiResponse);
+        })
+        .catch(err => {
+          console.error(err);
+          statusEl.textContent = "Error during processing";
+        });
     });
   })
   .catch(err => {
@@ -31,13 +54,13 @@ navigator.mediaDevices.getUserMedia({ audio: true })
     statusEl.textContent = 'Error accessing microphone';
   });
 
-// Control Buttons
+// Event listeners for control buttons
 recordBtn.addEventListener('click', () => {
   if (!mediaRecorder) return;
   audioChunks = [];
   transcriptEl.textContent = '';
   statusEl.textContent = 'Recording...';
-  mediaRecorder.start(250); // Collect data every 250ms
+  mediaRecorder.start(250); // Collect audio in 250ms chunks
   recordBtn.disabled = true;
   stopBtn.disabled = false;
 });
@@ -64,14 +87,12 @@ async function transcribeAudio(audioBlob) {
     });
     const data = await response.json();
     const transcript = data?.results?.channels[0]?.alternatives[0]?.transcript || '';
-    transcriptEl.textContent = transcript;
     statusEl.textContent = transcript ? 'Transcription complete' : 'No speech detected';
-    if (transcript) {
-      speakText(transcript);
-    }
+    return transcript;
   } catch (err) {
     console.error('Transcription error:', err);
     statusEl.textContent = 'Transcription error';
+    throw err;
   }
 }
 
@@ -109,5 +130,34 @@ async function speakText(text) {
   } catch (err) {
     console.error('TTS error:', err);
     statusEl.textContent = 'TTS error';
+    throw err;
+  }
+}
+
+// Function: Get a response from OpenAI Chat API
+async function getOpenAIResponse(prompt) {
+  statusEl.textContent = 'Generating response...';
+  try {
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + OPENAI_API_KEY,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: "gpt-3.5-turbo",
+        messages: [{ role: "user", content: prompt }],
+        max_tokens: 150,
+        temperature: 0.7
+      })
+    });
+    const data = await response.json();
+    const aiReply = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+    statusEl.textContent = 'Response generated';
+    return aiReply;
+  } catch (err) {
+    console.error('OpenAI error:', err);
+    statusEl.textContent = 'OpenAI error';
+    throw err;
   }
 }
