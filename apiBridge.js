@@ -1,119 +1,97 @@
-// apiBridge.js - Handles all API calls for OpenAI and Deepgram
+import axios from 'axios';
 
-// Ensure API keys are injected during the build process
-const DEEPGRAM_API_KEY = process.env.REACT_APP_DEEPGRAM_API_KEY;
-const OPENAI_API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
+const API_URL = 'https://api.openai.com/v1/chat/completions';
+const MODEL = 'gpt-3.5-turbo';
 
-/**
- * Transcribes an audio blob using Deepgram's Speech-to-Text (STT) API.
- * @param {Blob} audioBlob - The recorded audio data.
- * @returns {Promise<string>} - The transcribed text.
- */
-export async function transcribeAudio(audioBlob) {
-  if (!DEEPGRAM_API_KEY) {
-    console.error("Deepgram API key is missing.");
-    return "Error: Deepgram API key not found.";
+class ApiBridge {
+  constructor() {
+    this.axios = axios.create({
+      baseURL: API_URL,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`
+      }
+    });
   }
 
-  try {
-    const response = await fetch('https://api.deepgram.com/v1/listen?language=en-US', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Token ${DEEPGRAM_API_KEY}`,
-        'Content-Type': 'audio/webm'
-      },
-      body: audioBlob
-    });
+  // Main chat completion method
+  async getChatCompletion(messages) {
+    try {
+      const response = await this.axios.post('', {
+        model: MODEL,
+        messages: messages,
+        temperature: 0.7,
+        max_tokens: 1000,
+      });
 
-    if (!response.ok) throw new Error(`Deepgram STT failed: ${response.statusText}`);
+      return {
+        success: true,
+        data: response.data.choices[0].message,
+        error: null
+      };
+    } catch (error) {
+      console.error('API Error:', error);
+      return {
+        success: false,
+        data: null,
+        error: this.handleError(error)
+      };
+    }
+  }
 
-    const data = await response.json();
-    const transcript = data?.results?.channels[0]?.alternatives[0]?.transcript || 'No transcription available.';
-    
-    console.log("Deepgram STT Transcript:", transcript);
-    return transcript;
-  } catch (err) {
-    console.error('Deepgram STT error:', err);
-    return "Error transcribing audio.";
+  // Error handler
+  handleError(error) {
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      switch (error.response.status) {
+        case 401:
+          return 'Authentication error. Please check your API key.';
+        case 429:
+          return 'Rate limit exceeded. Please try again later.';
+        case 500:
+          return 'OpenAI server error. Please try again later.';
+        default:
+          return `Error: ${error.response.data.error?.message || 'Unknown error occurred'}`;
+      }
+    } else if (error.request) {
+      // The request was made but no response was received
+      return 'No response from server. Please check your internet connection.';
+    } else {
+      // Something happened in setting up the request
+      return 'Error setting up the request. Please try again.';
+    }
+  }
+
+  // Method to validate API key
+  async validateApiKey() {
+    try {
+      const response = await this.getChatCompletion([
+        { role: 'user', content: 'Test' }
+      ]);
+      return response.success;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  // Method to get system status
+  async getSystemStatus() {
+    try {
+      const response = await this.axios.get('https://api.openai.com/v1/models');
+      return {
+        success: true,
+        available: true
+      };
+    } catch (error) {
+      return {
+        success: false,
+        available: false
+      };
+    }
   }
 }
 
-/**
- * Synthesizes speech from text using Deepgram's Text-to-Speech (TTS) API.
- * @param {string} text - The text to be spoken.
- * @returns {Promise<string>} - A URL for the generated audio file.
- */
-export async function speakText(text) {
-  if (!text) return;
-  if (!DEEPGRAM_API_KEY) {
-    console.error("Deepgram API key is missing.");
-    return "Error: Deepgram API key not found.";
-  }
-
-  try {
-    const response = await fetch('https://api.deepgram.com/v1/speak', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Token ${DEEPGRAM_API_KEY}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        text: text,
-        model: 'aura-asteria-en',  // Using Deepgram Alloy voice model
-        encoding: 'linear16',
-        sample_rate: 22050,
-        output: 'wav'
-      })
-    });
-
-    if (!response.ok) throw new Error(`Deepgram TTS failed: ${response.statusText}`);
-
-    const audioData = await response.blob();
-    const audioUrl = URL.createObjectURL(audioData);
-    
-    console.log("Deepgram TTS Audio URL:", audioUrl);
-    return audioUrl;
-  } catch (err) {
-    console.error('Deepgram TTS error:', err);
-    return "Error generating speech.";
-  }
-}
-
-/**
- * Sends a user's message to the OpenAI API and returns the chatbot's response.
- * @param {string} prompt - The user's message.
- * @returns {Promise<string>} - The chatbot's response.
- */
-export async function getOpenAIResponse(prompt) {
-  if (!OPENAI_API_KEY) {
-    console.error("OpenAI API key is missing.");
-    return "Error: OpenAI API key not found.";
-  }
-
-  try {
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${OPENAI_API_KEY}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: "gpt-3.5-turbo",
-        messages: [{ role: "user", content: prompt }],
-        max_tokens: 150,
-        temperature: 0.7
-      })
-    });
-
-    if (!response.ok) throw new Error(`OpenAI API call failed: ${response.statusText}`);
-
-    const data = await response.json();
-    const reply = data.choices?.[0]?.message?.content || 'No response generated.';
-    
-    console.log("OpenAI Response:", reply);
-    return reply;
-  } catch (err) {
-    console.error('OpenAI error:', err);
-    return "Error getting response from OpenAI.";
-  }
-}
+// Create and export a single instance
+const apiBridge = new ApiBridge();
+export default apiBridge;
