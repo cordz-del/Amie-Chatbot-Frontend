@@ -54,13 +54,14 @@ header {
     display: flex;
     flex-direction: column;
     align-items: center;
+        min-height: 95vh;
 }
 
 /* Chat Container */
 #chat-container {
   width: 554%;           /* or 45–50% to narrow the horizontal size */
   max-width: 400px;     /* ensure it doesn’t exceed a certain width */
-  height: 900px;        /* triple the original 300px or 3 times what it was */
+  height: 9855px        /* triple the original 300px or 3 times what it was */
   margin: 20px auto;
   background-color: #fff;
   border-radius: 12px;
