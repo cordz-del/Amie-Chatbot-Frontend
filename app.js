@@ -1,220 +1,109 @@
-import React, { useState, useEffect } from "react";
-import { connect, RoomEvent } from "livekit-client";
-import { ParticipantView } from "@livekit/react";
+import React, { useState, useEffect, useRef } from "react";
 import "./style.css"; // Ensure styles are applied
 
 const App = () => {
-  const [room, setRoom] = useState(null);
-  const [connected, setConnected] = useState(false);
-  const [participants, setParticipants] = useState([]
-                                                  const [isRecording, setIsRecording] = useState(false);
-const [audioChunks, setAudioChunks] = useState([]);
-const [transcript, setTranscript] = useState(''););
-  const startRecording = () => {
-    // Start the waveform animation when recording starts
-    drawWaveform();
-  setIsRecording(true);
-  setAudioChunks([]);
-  navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
-    const mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
-    mediaRecorder.addEventListener('dataavailable', (event) => {
-      if (event.data.size > 0) {
-        setAudioChunks((prev) => [...prev, event.data]);
-      }
-    });
-    mediaRecorder.addEventListener('stop', () => {
-      const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-      transcribeAudio(audioBlob);
-    });
-    mediaRecorder.start(250);
-  });
-};
+  const [isRecording, setIsRecording] = useState(false);
+  const [audioChunks, setAudioChunks] = useState([]);
+  const [transcript, setTranscript] = useState("");
+  const mediaRecorderRef = useRef(null);
+  const audioStreamRef = useRef(null);
 
-// Initialize audio context and analyser
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-const analyser = audioCtx.createAnalyser();
-analyser.fftSize = 256;
-const bufferLength = analyser.frequencyBinCount;
-const dataArray = new Uint8Array(bufferLength);
-const canvas = document.getElementById('waveform');
-const canvasCtx = canvas.getContext('2d');
-
-function drawWaveform() {
-    requestAnimationFrame(drawWaveform);
-    analyser.getByteTimeDomainData(dataArray);
-    canvasCtx.fillStyle = '#f0f4f8';
-    canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
-    canvasCtx.lineWidth = 2;
-    canvasCtx.strokeStyle = '#007bff';
-    canvasCtx.beginPath();
-
-    let sliceWidth = canvas.width * 1.0 / bufferLength;
-    let x = 0;
-    for (let i = 0; i < bufferLength; i++) {
-        let v = dataArray[i] / 128.0;
-        let y = v * canvas.height / 2;
-        if (i === 0) {
-            canvasCtx.moveTo(x, y);
-        } else {
-            canvasCtx.lineTo(x, y);
-        }
-        x += sliceWidth;
-    }
-    canvasCtx.lineTo(canvas.width, canvas.height / 2);
-    canvasCtx.stroke();
-}
-drawWaveform();  const stopRecording = () => {
-  setIsRecording(false);
-    // Stop the waveform animation when recording stops
-    cancelAnimationFrame(drawWaveform);
-};
-  const speakText = async (text) => {
-  const response = await fetch('https://api.deepgram.com/v1/speak', {
-    method: 'POST',
-    headers: {
-      'Authorization': 'Token 5fc1624a41d5256f6e211a85a20ca268e86c0125',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      text: text,
-      model: 'aura-asteria-en',
-      encoding: 'linear16',
-      sample_rate: 22050,
-      output: 'wav',
-    }),
-  });
-  const audioData = await response.blob();
-  const audioUrl = URL.createObjectURL(audioData);
-  const audioElement = new Audio(audioUrl);
-  audioElement.play();
-};
-
-  const LIVEKIT_URL = "wss://amiev1-b4k5uxvt.livekit.cloud";
-  const ACCESS_TOKEN = process.env.REACT_APP_LIVEKIT_ACCESS_TOKEN; // Use environment variable
-
-  const handleConnect = async () => {
+  // Function to start recording (STT)
+  const startChat = async () => {
     try {
-      const newRoom = await connect(LIVEKIT_URL, ACCESS_TOKEN, {
-        video: true,
-        audio: true,
+      // Request microphone access
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      audioStreamRef.current = stream;
+      const mediaRecorder = new MediaRecorder(stream, { mimeType: "audio/webm" });
+      mediaRecorderRef.current = mediaRecorder;
+      setAudioChunks([]);
+      
+      mediaRecorder.addEventListener("dataavailable", (event) => {
+        if (event.data.size > 0) {
+          setAudioChunks((prev) => [...prev, event.data]);
+        }
       });
-      setRoom(newRoom);
-      setConnected(true);
-
-      // Update participants on events
-      setParticipants(Array.from(newRoom.participants.values()));
-      newRoom.on(RoomEvent.ParticipantConnected, (participant) => {
-        setParticipants((prev) => [...prev, participant]);
+      
+      mediaRecorder.addEventListener("stop", () => {
+        const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
+        transcribeAudio(audioBlob);
       });
-      newRoom.on(RoomEvent.ParticipantDisconnected, (participant) => {
-        setParticipants((prev) =>
-          prev.filter((p) => p.identity !== participant.identity)
-        );
-      });
-
-      // Handle room disconnection
-      newRoom.on(RoomEvent.Disconnected, () => {
-        setConnected(false);
-        setRoom(null);
-        setParticipants([]);
-      });
-    } catch (error) {
-     const handleDisconnect = () => {
-    if (room) {
-        room.disconnect();
-        setConnected(false);
-        setRoom(null);
-        setParticipants([]);
+      
+      mediaRecorder.start(250); // Collect data in 250ms chunks
+      setIsRecording(true);
+      console.log("Chat started: recording started");
+    } catch (err) {
+      console.error("Error starting chat:", err);
     }
-};
- set
+  };
 
+  // Function to stop recording
+  const stopChat = () => {
+    if (mediaRecorderRef.current) {
+      mediaRecorderRef.current.stop();
+      // Stop all audio tracks
+      if (audioStreamRef.current) {
+        audioStreamRef.current.getTracks().forEach((track) => track.stop());
+      }
+      setIsRecording(false);
+      console.log("Chat stopped: recording stopped");
+    }
+  };
+
+  // Placeholder function to transcribe audio using Deepgram STT
+  const transcribeAudio = async (audioBlob) => {
+    console.log("Transcribing audio...");
+    // Replace with actual Deepgram API call.
+    // For testing, we'll simulate a transcription:
+    const simulatedTranscript = "Hello, this is a test transcription.";
+    setTranscript(simulatedTranscript);
+    // Once transcribed, speak the text.
+    speakText(simulatedTranscript);
+  };
+
+  // Placeholder function to perform TTS (could use Deepgram TTS or Web Speech API)
+  const speakText = async (text) => {
+    console.log("Speaking text:", text);
+    // For a simple solution, we use the Web Speech API:
+    const utterance = new SpeechSynthesisUtterance(text);
+    speechSynthesis.speak(utterance);
+  };
+
+  // Clean up audio stream on unmount
   useEffect(() => {
     return () => {
-      if (room) {
-        room.disconnect();
+      if (audioStreamRef.current) {
+        audioStreamRef.current.getTracks().forEach((track) => track.stop());
       }
     };
-  }, [room]);
+  }, []);
 
   return (
     <div id="main-container">
       <header>
         <h1 id="amie-title">Amie</h1>
+        <p id="amie-subtitle">Social and Emotional Learning Assistant</p>
       </header>
-
-      <main>
-        <div id="chat-container">
-          <div id="chat-history" aria-label="Chat history">
-            {participants.map((participant) => (
-              <ParticipantView
-                key={participant.identity}
-                participant={participant}
-                enableVideo
-                enableAudio
-              />
-            ))}
-          </div>
-
-    {connected && (
-  <div id="chat-container">
-    <div id="chat-history" aria-label="Chat history">
-      {participants.map((participant) => (
-        <ParticipantView
-          key={participant.identity}
-          participant={participant}
-          enableVideo
-          enableAudio
-        />
-      ))}
+      
+      <main id="chat-container">
+        <div id="chat-history" aria-label="Chat history">
+          {transcript && <p>{transcript}</p>}
+        </div>
+        <div id="chat-buttons">
+          <button id="start-chat-btn" onClick={startChat} disabled={isRecording}>
+            Start Chat
+          </button>
+          <button id="stop-chat-btn" onClick={stopChat} disabled={!isRecording}>
+            Stop Chat
+          </button>
+        </div>
+      </main>
+      
+      <footer>
+        <p>Powered by Amie - AI for Social &amp; Emotional Learning</p>
+      </footer>
     </div>
+  );
+};
 
-    <div id="connection-section">
-      {!connected ? (
-        <button id="connect-btn" onClick={handleConnect}>
-          Connect
-        </button>
-      ) : (
-        <button id="connect-btn" onClick={handleDisconnect}>
-          Disconnect
-        </button>
-      )}
-    </div>
-
-    <button id="record-btn" onClick={startRecording} disabled={isRecording}>
-      Start Talking
-    </button>
-    <button id="stop-btn" onClick={stopRecording} disabled={!isRecording}>
-      Stop Talking
-    </button>
-  <
-let chatActive = false;
-document.getElementById("record-btn").addEventListener("click", function() {
-    if (!chatActive) {
-        startRecording();
-        this.textContent = "Stop Chat";
-    } else {
-        stopRecording();
-        this.textContent = "Start Chat";
-    }
-    chatActive = !chatActive;
-});/div>
-)}
-
-<footer>
-  <p>Powered by Amie - AI for Social & Emotional Learning</p>
-</footer>
 export default App;
-
-document.getElementById("start-chat-btn").addEventListener("click", startChat);
-document.getElementById("stop-chat-btn").addEventListener("click", stopChat);
-
-function startChat() {
-  // Initialize voice, STT, TTS, etc.
-  console.log("Chat started");
-}
-
-function stopChat() {
-  // Stop voice, STT, TTS
-  console.log("Chat stopped");
-}
