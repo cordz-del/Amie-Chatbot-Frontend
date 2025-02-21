@@ -1,180 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Amie Chatbot</title>
-  <!-- Inline Styles for Demonstration Purposes -->
-  <style>
-    /* RESET & BODY */
-    * {
-      margin: 0; 
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      font-family: "Arial", sans-serif;
-      background: #f4f7fa;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-    }
-
-    /* HEADER */
-    header {
-      width: 100%;
-      text-align: center;
-      margin-top: 20px;
-    }
-    #amie-title {
-      font-size: 2.5rem;
-      /* Gradient from left to right (dark to lighter blue) */
-      background: linear-gradient(to right, #0056b3, #007bff, #89cfff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 6px;
-    }
-    #amie-subtitle {
-      font-size: 1rem;
-      color: #444;
-    }
-
-    /* MAIN CONTAINER */
-    main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 100%;
-      max-width: 1200px;
-      margin-top: 20px;
-    }
-
-    /* CHAT CONTAINER */
-    #chat-container {
-      width: 90%;
-      max-width: 450px;
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 20px;
-    }
-
-    /* CHAT HISTORY */
-    #chat-history {
-      flex: 1;
-      overflow-y: auto;
-      margin-bottom: 10px;
-      padding-right: 4px;
-    }
-    .message {
-      margin-bottom: 12px;
-      display: inline-block;
-      max-width: 80%;
-      line-height: 1.3;
-      position: relative;
-    }
-    .message.user {
-      background: #d8eefe;
-      color: #333;
-      padding: 8px 12px;
-      border-radius: 8px 8px 0 8px;
-      align-self: flex-end;
-    }
-    .message.amie {
-      background: #f0f0f0;
-      color: #333;
-      padding: 8px 12px;
-      border-radius: 8px 8px 8px 0;
-      align-self: flex-start;
-    }
-    .message-timestamp {
-      font-size: 0.75rem;
-      color: #999;
-      margin-top: 2px;
-    }
-
-    /* INPUT AREA WITH BUTTONS */
-    #chat-input-area {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-    }
-    /* Buttons */
-    #emoji-btn, #start-chat-btn, #stop-chat-btn {
-      background-color: #007bff;
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      padding: 8px 14px;
-      cursor: pointer;
-      font-size: 0.9rem;
-    }
-    #emoji-btn:hover, #start-chat-btn:hover, #stop-chat-btn:hover {
-      background-color: #0056b3;
-    }
-
-    /* FOOTER */
-    footer {
-      width: 100%;
-      text-align: center;
-      margin: 20px auto 10px;
-      font-size: 0.8rem;
-      color: #555;
-    }
-
-    /* RESPONSIVE */
-    @media (max-width: 768px) {
-      #chat-container {
-        width: 95%;
-      }
-      .message {
-        max-width: 100%;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amie Chatbot</title>
+    <link rel="stylesheet" href="style.css"> <!-- Ensure your styles are applied -->
 </head>
 <body>
-  <!-- HEADER -->
-  <header>
-    <h1 id="amie-title">Amie</h1>
-    <p id="amie-subtitle">Social and Emotional Learning Assistant</p>
-  </header>
+    <!-- Header Section -->
+    <header>
+        <h1 id="amie-title">Amie</h1>
+        <p id="amie-subtitle">Social and Emotional Learning Assistant</p>
+    </header>
 
-  <!-- MAIN -->
-  <main>
-    <div id="chat-container">
-      <!-- Example Chat History with Time Stamps -->
-      <div id="chat-history">
-        <div class="message amie">
-          Hello, how can I help you today?
-          <div class="message-timestamp">12:35 PM</div>
+    <!-- Main Chat Container -->
+    <main id="main-container">
+        <div id="chat-container">
+            <!-- Chat History -->
+            <div id="chat-history">
+                <p><strong>Amie:</strong> Hello, I am Amie, your Social and Emotional Learning Assistant. May I know who I have the pleasure of speaking with?</p>
+            </div>
+
+            <!-- Status Display -->
+            <p id="status">Ready</p>
+
+            <!-- Chat Buttons -->
+            <div id="chat-buttons">
+                <button id="startButton">Start Chat</button>
+                <button id="stopButton" disabled>Stop Chat</button>
+                <button id="emojiButton">😊</button> <!-- Placeholder for future emoji feature -->
+            </div>
         </div>
-        <div class="message user">
-          I'd like to talk about my day.
-          <div class="message-timestamp">12:36 PM</div>
-        </div>
-      </div>
-      <!-- Input Area with Buttons -->
-      <div id="chat-input-area">
-        <button id="emoji-btn">😊</button>
-        <button id="start-chat-btn">Start Chat</button>
-        <button id="stop-chat-btn" style="display:none;">Stop Chat</button>
-      </div>
-    </div>
-  </main>
+    </main>
 
-  <!-- FOOTER -->
-  <footer>
-    <p>Powered by Amie Chatbot - AI for Social &amp; Emotional Learning</p>
-  </footer>
+    <!-- Footer -->
+    <footer>
+        <p>Powered by Amie Chatbot - AI for Social & Emotional Learning</p>
+    </footer>
 
-  <!-- Link your JS file here (app.js) -->
-  <script src="app.js" defer></script>
+    <!-- JavaScript Imports (Ensure "type=module" for ES6 imports) -->
+    <script type="module" src="app.js"></script>
 </body>
 </html>
