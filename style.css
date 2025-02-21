@@ -1,229 +1,145 @@
-/* General Styling */
+/* RESET & BODY */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-    font-family: "Arial", sans-serif;
-    background-color: #f0f4f8;
-    color: #333;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
-}
-
-/* Header */
-header {
-    width: 100%;
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-##amie-title {
-  font-size: 3.5rem; /* Slightly larger than before */
-  background: linear-gradient(left to right, #0056b3, #007bff, #89cfff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-align: center;
-  margin: 0 auto; /* Ensures centered text */
-}
-    
-    
-  margin: 0 auto; /* Ensures centered text */argin: 0;
-    
-}
-
-#amie-subtitle {
-    font-size: 1.5rem;
-    color: #333;
-    margin-top: 10px;
-}
-
-#amie-title {
-    font-size: 3rem;
-    margin-bottom: 20px;
-    background: linear-gradient(to right, #0056b3, #007bff, #89cfff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-/* Main Container */
-#main-container {
-    width: 100%;
-    max-width: 1200px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-        min-height: 95vh;
-}
-
-/* Chat Container */
-#chat-container {
-  width:50%           /* or 45–50% to narrow the horizontal size */
-  max-width: 400px;     /* ensure it doesn’t exceed a certain width */
-  height:900pxx        /* triple the original 300px or 3 times what it was */
-  margin: 20px auto;
-  background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: "Arial", sans-serif;
+  background: #f4f7fa;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start; /* So content starts near the top */
+  min-height: 100vh;
+}
+
+/* HEADER */
+header {
+  width: 100%;
+  text-align: center;
+  margin-top: 20px;
+}
+
+#amie-title {
+  font-size: 2.5rem;
+  /* Gradient from left to right (dark to lighter blue) */
+  background: linear-gradient(to right, #0056b3, #007bff, #89cfff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 6px;
+}
+
+#amie-subtitle {
+  font-size: 1rem;
+  color: #444;
+}
+
+/* MAIN CONTAINER */
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin-top: 20px;
+}
+
+/* CHAT CONTAINER */
+#chat-container {
+  width: 90%;
+  max-width: 450px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   padding: 20px;
 }
 
+/* CHAT HISTORY */
 #chat-history {
-  width: 10105%
-  height: 70%;         /* e.g., occupy ~70% of the container’s height */
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 12px;
+  flex: 1;
   overflow-y: auto;
-  background-color: #fff;
-  margin-bottom: 16px;
-  font-size: 1rem;
-  text-align: left;
+  margin-bottom: 10px;
+  padding-right: 4px;
 }
 
-#chat-buttons {
+/* Example message styling */
+.message {
+  margin-bottom: 12px;
+  display: inline-block;
+  max-width: 80%;
+  line-height: 1.3;
+  position: relative;
+}
+
+.message.user {
+  background: #d8eefe;
+  color: #333;
+  padding: 8px 12px;
+  border-radius: 8px 8px 0 8px;
+  align-self: flex-end;
+}
+
+.message.amie {
+  background: #f0f0f0;
+  color: #333;
+  padding: 8px 12px;
+  border-radius: 8px 8px 8px 0;
+  align-self: flex-start;
+}
+
+.message-timestamp {
+  font-size: 0.75rem;
+  color: #999;
+  margin-top: 2px;
+}
+
+/* INPUT AREA WITH BUTTONS */
+#chat-input-area {
   display: flex;
-  gap: 10px;
-  justify-content: center;
-  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
 }
 
-#start-chat-btn, #stop-chat-btn {
-  flex: 0 0 auto;
-  padding: 10px 15px;
-  border-radius: 5px;
+/* Buttons (emoji, start, stop) */
+#emoji-btn,
+#start-chat-btn,
+#stop-chat-btn {
   background-color: #007bff;
   color: #fff;
   border: none;
+  border-radius: 6px;
+  padding: 8px 14px;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 0.9rem;
 }
 
-#start-chat-btn:hover, #stop-chat-btn:hover {
+#emoji-btn:hover,
+#start-chat-btn:hover,
+#stop-chat-btn:hover {
   background-color: #0056b3;
 }
+
+/* FOOTER */
 footer {
+  width: 100%;
   text-align: center;
-  margin-top: 20px;
+  margin: 20px auto 10px;
   font-size: 0.8rem;
   color: #555;
-  width: 100%;
 }
 
-/* Chat Input */
-#chat-input {
-    flex: 1;
-    padding: 10px;
-    font-size: 0.9rem;
-    border: 1px soli
-  max-width: 400px;d #ccc;
-    border-radius: 5px;
-}
-
-/* Send Button */
-#send-button,
-#connect-btn,
-#reset-chat-btn {
-    width: 80px;
-    padding: 10px;
-    font-size: 0.9rem;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-#send-button: hover,
-#connect-btn: hover,
-#reset-chat-btn:hover {
-    background-color: #0056b3;
-}
-
-/* Connect Button */
-#connect-btn {
-    max-width: 150px;
-    margin-top: 15px;
-}
-
-/* Reset Chat Button */
-#reset-chat-btn {
-    margin-top: 20px;
-    max-width: 150px;
-}
-
-/* Footer */
-footer {
-    display: flex;
-    justify-content: flex-start; /* Align to the center */
-    align-items: center;
-    width: 100%;
-    margin-top: 20px;
-    margin-left: 30px; /* Move footer 30 spaces to the left */
-    font-size: 0.8rem;
-    color: #555;
-}
-
-/* Responsive Adjustments for Mobile and Tablet */
+/* RESPONSIVE DESIGN */
 @media (max-width: 768px) {
-    header {
-        justify-content: center; /* Center header for smaller screens */
-        margin-left: 0; /* Reset margin for small devices */
-    }
-
-    #chat-container {
-        width:80%
-        padding: 14px;
-        height: 570px
-    }
-
-    #chat-history {
-        height70%;
-        font-size: 0.85rem;
-    }
-5
-    #chat-input {
-        padding: 8px;
-        font-size: 0.8rem;
-    }
-
-    #chat-buttons {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  width: 100%;
-}
-
-#start-chat-btn, #stop-chat-btn {
-  flex: 0 0 auto;
-  padding: 10px 15px;
-  border-radius: 5px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  font-size: 1rem;
-}
-#start-chat-btn:hover, #stop-chat-btn:hover {
-  background-color: #0056b3;
-}
-footer {
-  text-align: center;
-  margin-top20px auto 0
-  font-size: 0.8rem;
-  color: #555;
-  width: 100%;
-}
-
-    footer {
-        justify-content: center; /* Center footer for smaller screens */
-        margin-left: 0; /* Reset margin for small devices */
-        font-size: 0.7rem;
-    }
+  #chat-container {
+    width: 95%;
+  }
+  .message {
+    max-width: 100%;
+  }
 }
