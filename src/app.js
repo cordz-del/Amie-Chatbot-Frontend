@@ -1,102 +1,86 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 
 function App() {
+  const [messages, setMessages] = useState([]);
+  const [inputText, setInputText] = useState('');
   const [isListening, setIsListening] = useState(false);
-  const [transcript, setTranscript] = useState('');
-  const [response, setResponse] = useState('');
-  const [recognition, setRecognition] = useState(null);
 
-  useEffect(() => {
-    // Initialize speech recognition
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (SpeechRecognition) {
-      const recognition = new SpeechRecognition();
-      recognition.continuous = true;
-      recognition.interimResults = true;
-      
-      recognition.onresult = (event) => {
-        const current = event.resultIndex;
-        const transcript = event.results[current][0].transcript;
-        setTranscript(transcript);
+  // Speech Recognition setup
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const recognition = new SpeechRecognition();
+
+  recognition.onresult = (event) => {
+    const transcript = event.results[0][0].transcript;
+    setInputText(transcript);
+    setIsListening(false);
+  };
+
+  // Text-to-Speech function
+  const speak = (text) => {
+    const utterance = new SpeechSynthesisUtterance(text);
+    window.speechSynthesis.speak(utterance);
+  };
+
+  const handleSend = () => {
+    if (inputText.trim()) {
+      const newMessage = {
+        text: inputText,
+        isUser: true
       };
-
-      recognition.onerror = (event) => {
-        console.error('Speech recognition error:', event.error);
-      };
-
-      setRecognition(recognition);
+      setMessages([...messages, newMessage]);
+      setInputText('');
+      // Here you would typically call your AI backend
+      // For now, we'll just echo the message
+      setTimeout(() => {
+        const botResponse = {
+          text: `You said: ${inputText}`,
+          isUser: false
+        };
+        setMessages(prev => [...prev, botResponse]);
+        speak(botResponse.text); // Read out the response
+      }, 1000);
     }
-  }, []);
+  };
 
   const startListening = () => {
-    if (recognition) {
-      recognition.start();
-      setIsListening(true);
-    }
-  };
-
-  const stopListening = () => {
-    if (recognition) {
-      recognition.stop();
-      setIsListening(false);
-      // Send transcript to backend
-      sendToBackend(transcript);
-    }
-  };
-
-  const sendToBackend = async (text) => {
-    try {
-      const response = await fetch('https://your-backend-url/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ message: text }),
-      });
-      
-      const data = await response.json();
-      setResponse(data.response);
-      
-      // Text-to-speech for the response
-      const speech = new SpeechSynthesisUtterance(data.response);
-      window.speechSynthesis.speak(speech);
-    } catch (error) {
-      console.error('Error sending message to backend:', error);
-    }
+    setIsListening(true);
+    recognition.start();
   };
 
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>Amie Chatbot</h1>
-        <div className="chat-container">
-          <div className="transcript">
-            <h3>Your Message:</h3>
-            <p>{transcript}</p>
-          </div>
-          <div className="response">
-            <h3>Amie's Response:</h3>
-            <p>{response}</p>
-          </div>
-          <div className="controls">
-            <button 
-              onClick={startListening} 
-              disabled={isListening}
-              className="control-button"
-            >
-              Start Chat
-            </button>
-            <button 
-              onClick={stopListening} 
-              disabled={!isListening}
-              className="control-button"
-            >
-              Stop Chat
-            </button>
-          </div>
-        </div>
+      <header className="header">
+        <h1>Amie</h1>
       </header>
+
+      <div className="chat-container">
+        <div className="messages">
+          {messages.map((message, index) => (
+            <div key={index} className={`message ${message.isUser ? 'user' : 'bot'}`}>
+              {message.text}
+            </div>
+          ))}
+        </div>
+        
+        <div className="input-container">
+          <input
+            type="text"
+            value={inputText}
+            onChange={(e) => setInputText(e.target.value)}
+            placeholder="Type your message..."
+            onKeyPress={(e) => e.key === 'Enter' && handleSend()}
+          />
+          <button onClick={handleSend}>Send</button>
+          <button onClick={startListening}>
+            {isListening ? 'Listening...' : 'Start Speaking'}
+          </button>
+        </div>
+      </div>
+
+      <footer className="footer">
+        <p>© 2024 Amie Chatbot</p>
+      </footer>
     </div>
   );
 }
