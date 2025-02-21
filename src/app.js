@@ -2,84 +2,77 @@ import React, { useState } from 'react';
 import './App.css';
 
 function App() {
+  const [isChatting, setIsChatting] = useState(false);
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState('');
-  const [isListening, setIsListening] = useState(false);
 
-  // Speech Recognition setup
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  const recognition = new SpeechRecognition();
-
-  recognition.onresult = (event) => {
-    const transcript = event.results[0][0].transcript;
-    setInputText(transcript);
-    setIsListening(false);
+  const startChat = () => {
+    setIsChatting(true);
+    setMessages([{ text: "Hello! I'm Amie. How can I help you today?", sender: 'ai' }]);
   };
 
-  // Text-to-Speech function
-  const speak = (text) => {
-    const utterance = new SpeechSynthesisUtterance(text);
-    window.speechSynthesis.speak(utterance);
+  const stopChat = () => {
+    setIsChatting(false);
+    setMessages([]);
+    setInputText('');
   };
 
-  const handleSend = () => {
-    if (inputText.trim()) {
-      const newMessage = {
-        text: inputText,
-        isUser: true
-      };
-      setMessages([...messages, newMessage]);
-      setInputText('');
-      // Here you would typically call your AI backend
-      // For now, we'll just echo the message
-      setTimeout(() => {
-        const botResponse = {
-          text: `You said: ${inputText}`,
-          isUser: false
-        };
-        setMessages(prev => [...prev, botResponse]);
-        speak(botResponse.text); // Read out the response
-      }, 1000);
-    }
-  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (inputText.trim() === '') return;
 
-  const startListening = () => {
-    setIsListening(true);
-    recognition.start();
+    const newMessages = [...messages, { text: inputText, sender: 'user' }];
+    setMessages(newMessages);
+    setInputText('');
+
+    // Simulate AI response
+    setTimeout(() => {
+      setMessages([...newMessages, { 
+        text: "I'm processing your message...", 
+        sender: 'ai' 
+      }]);
+    }, 1000);
   };
 
   return (
     <div className="App">
-      <header className="header">
-        <h1>Amie</h1>
+      <header className="App-header">
+        <h1>Amie Chatbot</h1>
       </header>
 
-      <div className="chat-container">
-        <div className="messages">
-          {messages.map((message, index) => (
-            <div key={index} className={`message ${message.isUser ? 'user' : 'bot'}`}>
-              {message.text}
-            </div>
-          ))}
-        </div>
-        
-        <div className="input-container">
-          <input
-            type="text"
-            value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
-            placeholder="Type your message..."
-            onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-          />
-          <button onClick={handleSend}>Send</button>
-          <button onClick={startListening}>
-            {isListening ? 'Listening...' : 'Start Speaking'}
+      <main className="chat-container">
+        {!isChatting ? (
+          <button onClick={startChat} className="control-button start">
+            Start Chat
           </button>
-        </div>
-      </div>
+        ) : (
+          <>
+            <div className="messages">
+              {messages.map((message, index) => (
+                <div key={index} className={`message ${message.sender}`}>
+                  {message.text}
+                </div>
+              ))}
+            </div>
+            <form onSubmit={handleSubmit} className="input-form">
+              <input
+                type="text"
+                value={inputText}
+                onChange={(e) => setInputText(e.target.value)}
+                placeholder="Type your message..."
+                className="message-input"
+              />
+              <button type="submit" className="send-button">Send</button>
+            </form>
+            <button onClick={stopChat} className="control-button stop">
+              Stop Chat
+            </button>
+          </>
+        )}
+      </main>
 
-      <footer className="footer">
-        <p>© 2024 Amie Chatbot</p>
+      <footer className="App-footer">
+        <p>© 2023 Amie Chatbot</p>
       </footer>
     </div>
   );
