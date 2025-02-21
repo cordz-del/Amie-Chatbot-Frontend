@@ -73,7 +73,7 @@ header {
 }
 
 #chat-history {
-  width: 100%;
+  width: 10105%
   height: 70%;         /* e.g., occupy ~70% of the container’s height */
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -178,14 +178,14 @@ footer {
     #chat-container {
         width:80%
         padding: 14px;
-        heheight: 600px;
+        heheight: 570px
     }
 
     #chat-history {
         height70%;
         font-size: 0.85rem;
     }
-
+5
     #chat-input {
         padding: 8px;
         font-size: 0.8rem;
@@ -213,7 +213,7 @@ footer {
 }
 footer {
   text-align: center;
-  margin-top: 20px;
+  margin-top20px auto 0
   font-size: 0.8rem;
   color: #555;
   width: 100%;
