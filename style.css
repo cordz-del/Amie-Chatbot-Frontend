@@ -59,9 +59,9 @@ header {
 
 /* Chat Container */
 #chat-container {
-  width: 554%;           /* or 45–50% to narrow the horizontal size */
+  width:50%           /* or 45–50% to narrow the horizontal size */
   max-width: 400px;     /* ensure it doesn’t exceed a certain width */
-  height: 9855px        /* triple the original 300px or 3 times what it was */
+  height:900pxx        /* triple the original 300px or 3 times what it was */
   margin: 20px auto;
   background-color: #fff;
   border-radius: 12px;
@@ -120,7 +120,8 @@ footer {
     flex: 1;
     padding: 10px;
     font-size: 0.9rem;
-    border: 1px solid #ccc;
+    border: 1px soli
+  max-width: 400px;d #ccc;
     border-radius: 5px;
 }
 
