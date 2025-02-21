@@ -58,7 +58,7 @@ header {
 
 /* Chat Container */
 #chat-container {
-  width: 50%;           /* or 45–50% to narrow the horizontal size */
+  width: 554%;           /* or 45–50% to narrow the horizontal size */
   max-width: 400px;     /* ensure it doesn’t exceed a certain width */
   height: 900px;        /* triple the original 300px or 3 times what it was */
   margin: 20px auto;
