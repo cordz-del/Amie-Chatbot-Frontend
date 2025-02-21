@@ -16,20 +16,22 @@ const App = () => {
       audioStreamRef.current = stream;
       const mediaRecorder = new MediaRecorder(stream, { mimeType: "audio/webm" });
       mediaRecorderRef.current = mediaRecorder;
-      setAudioChunks([]);
+      setAudioChunks([]); // Reset previous recordings
       
+      // Collect audio data
       mediaRecorder.addEventListener("dataavailable", (event) => {
         if (event.data.size > 0) {
           setAudioChunks((prev) => [...prev, event.data]);
         }
       });
       
+      // When recording stops, process the audio
       mediaRecorder.addEventListener("stop", () => {
         const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
         transcribeAudio(audioBlob);
       });
       
-      mediaRecorder.start(250); // Collect data in 250ms chunks
+      mediaRecorder.start(250); // Collect data every 250ms
       setIsRecording(true);
       console.log("Chat started: recording started");
     } catch (err) {
@@ -41,7 +43,7 @@ const App = () => {
   const stopChat = () => {
     if (mediaRecorderRef.current) {
       mediaRecorderRef.current.stop();
-      // Stop all audio tracks
+      // Stop all audio tracks to release the mic
       if (audioStreamRef.current) {
         audioStreamRef.current.getTracks().forEach((track) => track.stop());
       }
@@ -50,26 +52,25 @@ const App = () => {
     }
   };
 
-  // Placeholder function to transcribe audio using Deepgram STT
+  // Placeholder: Transcribe audio using Deepgram STT
   const transcribeAudio = async (audioBlob) => {
     console.log("Transcribing audio...");
-    // Replace with actual Deepgram API call.
-    // For testing, we'll simulate a transcription:
+    // Replace this with your actual Deepgram API call.
+    // For now, simulate a transcription:
     const simulatedTranscript = "Hello, this is a test transcription.";
     setTranscript(simulatedTranscript);
-    // Once transcribed, speak the text.
+    // Once transcribed, speak the text
     speakText(simulatedTranscript);
   };
 
-  // Placeholder function to perform TTS (could use Deepgram TTS or Web Speech API)
+  // Placeholder: Perform TTS using the Web Speech API (or Deepgram TTS)
   const speakText = async (text) => {
     console.log("Speaking text:", text);
-    // For a simple solution, we use the Web Speech API:
     const utterance = new SpeechSynthesisUtterance(text);
     speechSynthesis.speak(utterance);
   };
 
-  // Clean up audio stream on unmount
+  // Clean up audio stream on component unmount
   useEffect(() => {
     return () => {
       if (audioStreamRef.current) {
