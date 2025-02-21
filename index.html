@@ -1,51 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amie Chatbot</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Amie Chatbot</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <header>
-        <h1><h1 id="amie-title">Amie</h1>
-    </header>
+  <!-- Header -->
+  <header>
+    <h1 id="amie-title">Amie</h1>
+    <p id="amie-subtitle">Social and Emotional Learning Assistant</p>
+  </header>
 
-    <main id="main-container">
+  <!-- Main Container -->
+  <main id="main-container">
+    <!-- Chat Container -->
+    <div id="chat-container">
+      <!-- Chat History Section -->
+      <div id="chat-history"></div>
+      <!-- Chat Buttons -->
+      <div id="chat-buttons">
+        <button id="start-chat-btn">Start Chat</button>
+        <button id="stop-chat-btn" style="display: none;">Stop Chat</button>
+      </div>
+    </div>
 
+    <!-- Hidden Audio Player -->
+    <audio id="audio-player" controls hidden></audio>
+  </main>
 
+  <!-- Footer -->
+  <footer>
+    <p>Powered by Amie Chatbot Project - AI for Social and Emotional Learning</p>
+  </footer>
 
-        <!-- Chat Section -->
-        <div id="chat-container">
-            <!-- Chat History Section -->
-            <div id="chat-container">
-                        <div id="chat-history"></div>
-           <div id="chat-buttons">
-<button i<buton id="start-chat-btn">Start Chat</button>
-        <button id="stop-chat-btn">Stop Chat
-
-                    
-  
-</div>
-
-
-
-
-
-            <!-- Hidden Audio Player -->
-            <audio id="audio-player" controls hidden></audio>
-        </main>
-        </div>
-
-
-        <footer>
-            <p>Powered by Amie Chatbot Project - AI for Social and Emotional Learning</p>
-        </footer>
-    
-        <script src="app.js"></script>
-    </body>
-    <!-- Trigger redeployment -->
-    </html>
-    
+  <script src="app.js" defer></script>
 </body>
 </html>
