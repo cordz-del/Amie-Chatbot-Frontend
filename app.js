@@ -1,110 +1,98 @@
-import React, { useState, useEffect, useRef } from "react";
-import "./style.css"; // Ensure styles are applied
+// app.js - Main script to control chat interactions
+import { transcribeAudio, speakText, getOpenAIResponse } from "./apiBridge.js";
 
-const App = () => {
-  const [isRecording, setIsRecording] = useState(false);
-  const [audioChunks, setAudioChunks] = useState([]);
-  const [transcript, setTranscript] = useState("");
-  const mediaRecorderRef = useRef(null);
-  const audioStreamRef = useRef(null);
+// Ensure DOM is fully loaded before running scripts
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("App initialized...");
+  
+  const startButton = document.getElementById("startButton");
+  const stopButton = document.getElementById("stopButton");
+  const chatWindow = document.getElementById("chatWindow");
+  const statusEl = document.getElementById("status");
+  let mediaRecorder;
+  let audioChunks = [];
 
-  // Function to start recording (STT)
-  const startChat = async () => {
+  // Check if buttons exist
+  if (!startButton || !stopButton) {
+    console.error("Start/Stop buttons not found in DOM.");
+    return;
+  }
+
+  // 🎤 Start Chat: Records audio and transcribes it
+  startButton.addEventListener("click", async () => {
+    console.log("Start Chat clicked...");
+    statusEl.textContent = "Listening...";
+
     try {
-      // Request microphone access
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      audioStreamRef.current = stream;
-      const mediaRecorder = new MediaRecorder(stream, { mimeType: "audio/webm" });
-      mediaRecorderRef.current = mediaRecorder;
-      setAudioChunks([]); // Reset previous recordings
-      
-      // Collect audio data
-      mediaRecorder.addEventListener("dataavailable", (event) => {
+      audioChunks = [];
+      mediaRecorder = new MediaRecorder(stream);
+
+      mediaRecorder.ondataavailable = (event) => {
         if (event.data.size > 0) {
-          setAudioChunks((prev) => [...prev, event.data]);
+          audioChunks.push(event.data);
         }
-      });
-      
-      // When recording stops, process the audio
-      mediaRecorder.addEventListener("stop", () => {
+      };
+
+      mediaRecorder.onstop = async () => {
+        console.log("Recording stopped. Sending to Deepgram...");
         const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
-        transcribeAudio(audioBlob);
-      });
-      
-      mediaRecorder.start(250); // Collect data every 250ms
-      setIsRecording(true);
-      console.log("Chat started: recording started");
-    } catch (err) {
-      console.error("Error starting chat:", err);
+
+        try {
+          // Step 1: Transcribe audio via Deepgram
+          const transcript = await transcribeAudio(audioBlob);
+          console.log("Transcript:", transcript);
+          statusEl.textContent = "Thinking...";
+          
+          // Step 2: Send transcript to OpenAI
+          const aiResponse = await getOpenAIResponse(transcript);
+          console.log("AI Response:", aiResponse);
+
+          // Step 3: Display chatbot response in chat
+          updateChatWindow("Amie", aiResponse);
+          
+          // Step 4: Convert AI response to speech
+          const audioUrl = await speakText(aiResponse);
+          const audioElement = new Audio(audioUrl);
+          audioElement.play();
+          statusEl.textContent = "Speaking...";
+          audioElement.onended = () => {
+            statusEl.textContent = "Ready";
+          };
+        } catch (error) {
+          console.error("Error in chat flow:", error);
+          statusEl.textContent = "Error processing chat.";
+        }
+      };
+
+      // Start recording
+      mediaRecorder.start();
+      startButton.disabled = true;
+      stopButton.disabled = false;
+    } catch (error) {
+      console.error("Microphone access error:", error);
+      statusEl.textContent = "Microphone access denied.";
     }
-  };
+  });
 
-  // Function to stop recording
-  const stopChat = () => {
-    if (mediaRecorderRef.current) {
-      mediaRecorderRef.current.stop();
-      // Stop all audio tracks to release the mic
-      if (audioStreamRef.current) {
-        audioStreamRef.current.getTracks().forEach((track) => track.stop());
-      }
-      setIsRecording(false);
-      console.log("Chat stopped: recording stopped");
+  // ⏹ Stop Chat: Stops recording and processes audio
+  stopButton.addEventListener("click", () => {
+    console.log("Stop Chat clicked...");
+    if (mediaRecorder) {
+      mediaRecorder.stop();
+      startButton.disabled = false;
+      stopButton.disabled = true;
     }
-  };
+  });
 
-  // Placeholder: Transcribe audio using Deepgram STT
-  const transcribeAudio = async (audioBlob) => {
-    console.log("Transcribing audio...");
-    // Replace this with your actual Deepgram API call.
-    // For now, simulate a transcription:
-    const simulatedTranscript = "Hello, this is a test transcription.";
-    setTranscript(simulatedTranscript);
-    // Once transcribed, speak the text
-    speakText(simulatedTranscript);
-  };
-
-  // Placeholder: Perform TTS using the Web Speech API (or Deepgram TTS)
-  const speakText = async (text) => {
-    console.log("Speaking text:", text);
-    const utterance = new SpeechSynthesisUtterance(text);
-    speechSynthesis.speak(utterance);
-  };
-
-  // Clean up audio stream on component unmount
-  useEffect(() => {
-    return () => {
-      if (audioStreamRef.current) {
-        audioStreamRef.current.getTracks().forEach((track) => track.stop());
-      }
-    };
-  }, []);
-
-  return (
-    <div id="main-container">
-      <header>
-        <h1 id="amie-title">Amie</h1>
-        <p id="amie-subtitle">Social and Emotional Learning Assistant</p>
-      </header>
-      
-      <main id="chat-container">
-        <div id="chat-history" aria-label="Chat history">
-          {transcript && <p>{transcript}</p>}
-        </div>
-        <div id="chat-buttons">
-          <button id="start-chat-btn" onClick={startChat} disabled={isRecording}>
-            Start Chat
-          </button>
-          <button id="stop-chat-btn" onClick={stopChat} disabled={!isRecording}>
-            Stop Chat
-          </button>
-        </div>
-      </main>
-      
-      <footer>
-        <p>Powered by Amie - AI for Social &amp; Emotional Learning</p>
-      </footer>
-    </div>
-  );
-};
-
-export default App;
+  // 📌 Function to update chat window UI
+  function updateChatWindow(sender, message) {
+    if (!chatWindow) {
+      console.error("Chat window not found!");
+      return;
+    }
+    const messageElement = document.createElement("p");
+    messageElement.innerHTML = `<strong>${sender}:</strong> ${message}`;
+    chatWindow.appendChild(messageElement);
+  }
+});
