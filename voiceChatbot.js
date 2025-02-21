@@ -1,5 +1,5 @@
-// Replace with your Deepgram API key
-const DEEPGRAM_API_KEY process.env.DEEPGRAM_API_KEY
+// Use environment variable for Deepgram API key (ensure your build process injects this value)
+const DEEPGRAM_API_KEY = process.env.REACT_APP_DEEPGRAM_API_KEY;
 
 // UI Elements
 const statusEl = document.getElementById('status');
@@ -16,7 +16,9 @@ navigator.mediaDevices.getUserMedia({ audio: true })
     statusEl.textContent = 'Microphone ready';
     mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
     mediaRecorder.addEventListener('dataavailable', event => {
-      if (event.data.size > 0) audioChunks.push(event.data);
+      if (event.data.size > 0) {
+        audioChunks.push(event.data);
+      }
     });
     mediaRecorder.addEventListener('stop', () => {
       const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
@@ -29,13 +31,13 @@ navigator.mediaDevices.getUserMedia({ audio: true })
     statusEl.textContent = 'Error accessing microphone';
   });
 
-// Control buttons
+// Control Buttons
 recordBtn.addEventListener('click', () => {
   if (!mediaRecorder) return;
   audioChunks = [];
   transcriptEl.textContent = '';
   statusEl.textContent = 'Recording...';
-  mediaRecorder.start(250);
+  mediaRecorder.start(250); // Collect data every 250ms
   recordBtn.disabled = true;
   stopBtn.disabled = false;
 });
@@ -64,7 +66,9 @@ async function transcribeAudio(audioBlob) {
     const transcript = data?.results?.channels[0]?.alternatives[0]?.transcript || '';
     transcriptEl.textContent = transcript;
     statusEl.textContent = transcript ? 'Transcription complete' : 'No speech detected';
-    if (transcript) speakText(transcript);
+    if (transcript) {
+      speakText(transcript);
+    }
   } catch (err) {
     console.error('Transcription error:', err);
     statusEl.textContent = 'Transcription error';
@@ -79,18 +83,20 @@ async function speakText(text) {
     const ttsResponse = await fetch('https://api.deepgram.com/v1/speak', {
       method: 'POST',
       headers: {
-        'Authorization': 'Token ' +process.env.DEEPGRAM_AAPI_KEY
+        'Authorization': 'Token ' + DEEPGRAM_API_KEY,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         text: text,
-        model: 'aura-asteria-en',  // using Deepgram Alloy voice model
+        model: 'aura-asteria-en',  // Deepgram Alloy voice model
         encoding: 'linear16',
         sample_rate: 22050,
         output: 'wav'
       })
     });
-    if (!ttsResponse.ok) throw new Error(`TTS failed: ${ttsResponse.status}`);
+    if (!ttsResponse.ok) {
+      throw new Error(`TTS failed: ${ttsResponse.status}`);
+    }
     const audioData = await ttsResponse.blob();
     const audioUrl = URL.createObjectURL(audioData);
     const audioElement = new Audio(audioUrl);
