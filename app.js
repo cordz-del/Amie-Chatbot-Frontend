@@ -1,10 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 
 function App() {
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  // Add initial greeting when component mounts
+  useEffect(() => {
+    const initialMessage = {
+      text: "Hello! I'm Amie, your AI assistant. How can I help you today?",
+      sender: 'bot'
+    };
+    setMessages([initialMessage]);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -12,7 +30,7 @@ function App() {
 
     // Add user message to chat
     const userMessage = { text: inputMessage, sender: 'user' };
-    setMessages([...messages, userMessage]);
+    setMessages(prevMessages => [...prevMessages, userMessage]);
     setInputMessage('');
     setIsLoading(true);
 
@@ -26,17 +44,25 @@ function App() {
         body: JSON.stringify({ message: inputMessage }),
       });
 
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
       const data = await response.json();
       
       // Add bot response to chat
       const botMessage = { text: data.response, sender: 'bot' };
-      setMessages(messages => [...messages, botMessage]);
+      setMessages(prevMessages => [...prevMessages, botMessage]);
     } catch (error) {
       console.error('Error:', error);
-      const errorMessage = { text: 'Sorry, I had trouble connecting. Please try again.', sender: 'bot' };
-      setMessages(messages => [...messages, errorMessage]);
+      const errorMessage = { 
+        text: 'Sorry, I had trouble connecting. Please try again.', 
+        sender: 'bot' 
+      };
+      setMessages(prevMessages => [...prevMessages, errorMessage]);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   return (
@@ -52,7 +78,16 @@ function App() {
               {message.text}
             </div>
           ))}
-          {isLoading && <div className="message bot">Thinking...</div>}
+          {isLoading && (
+            <div className="message bot loading">
+              <div className="typing-indicator">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+          )}
+          <div ref={messagesEndRef} />
         </div>
 
         <form onSubmit={handleSubmit} className="input-form">
@@ -63,7 +98,9 @@ function App() {
             placeholder="Type your message..."
             disabled={isLoading}
           />
-          <button type="submit" disabled={isLoading}>Send</button>
+          <button type="submit" disabled={isLoading}>
+            {isLoading ? 'Sending...' : 'Send'}
+          </button>
         </form>
       </div>
     </div>
