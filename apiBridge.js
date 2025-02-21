@@ -1,45 +1,60 @@
-// apiBridge.js
+// apiBridge.js - Handles all API calls for OpenAI and Deepgram
 
-// Ensure your build process injects these environment variables at build time.
+// Ensure API keys are injected during the build process
 const DEEPGRAM_API_KEY = process.env.REACT_APP_DEEPGRAM_API_KEY;
 const OPENAI_API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
 
 /**
- * Transcribes an audio blob using Deepgram's STT API.
+ * Transcribes an audio blob using Deepgram's Speech-to-Text (STT) API.
  * @param {Blob} audioBlob - The recorded audio data.
- * @returns {Promise<string>} - The transcript text.
+ * @returns {Promise<string>} - The transcribed text.
  */
 export async function transcribeAudio(audioBlob) {
+  if (!DEEPGRAM_API_KEY) {
+    console.error("Deepgram API key is missing.");
+    return "Error: Deepgram API key not found.";
+  }
+
   try {
     const response = await fetch('https://api.deepgram.com/v1/listen?language=en-US', {
       method: 'POST',
       headers: {
-        'Authorization': 'Token ' + DEEPGRAM_API_KEY,
+        'Authorization': `Token ${DEEPGRAM_API_KEY}`,
         'Content-Type': 'audio/webm'
       },
       body: audioBlob
     });
+
+    if (!response.ok) throw new Error(`Deepgram STT failed: ${response.statusText}`);
+
     const data = await response.json();
-    const transcript = data?.results?.channels[0]?.alternatives[0]?.transcript || '';
+    const transcript = data?.results?.channels[0]?.alternatives[0]?.transcript || 'No transcription available.';
+    
+    console.log("Deepgram STT Transcript:", transcript);
     return transcript;
   } catch (err) {
-    console.error('Transcription error:', err);
-    throw err;
+    console.error('Deepgram STT error:', err);
+    return "Error transcribing audio.";
   }
 }
 
 /**
- * Synthesizes speech from text using Deepgram's TTS (Alloy) API.
+ * Synthesizes speech from text using Deepgram's Text-to-Speech (TTS) API.
  * @param {string} text - The text to be spoken.
- * @returns {Promise<string>} - A URL for the synthesized audio.
+ * @returns {Promise<string>} - A URL for the generated audio file.
  */
 export async function speakText(text) {
   if (!text) return;
+  if (!DEEPGRAM_API_KEY) {
+    console.error("Deepgram API key is missing.");
+    return "Error: Deepgram API key not found.";
+  }
+
   try {
-    const ttsResponse = await fetch('https://api.deepgram.com/v1/speak', {
+    const response = await fetch('https://api.deepgram.com/v1/speak', {
       method: 'POST',
       headers: {
-        'Authorization': 'Token ' + DEEPGRAM_API_KEY,
+        'Authorization': `Token ${DEEPGRAM_API_KEY}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
@@ -50,29 +65,36 @@ export async function speakText(text) {
         output: 'wav'
       })
     });
-    if (!ttsResponse.ok) {
-      throw new Error(`TTS failed: ${ttsResponse.status}`);
-    }
-    const audioData = await ttsResponse.blob();
+
+    if (!response.ok) throw new Error(`Deepgram TTS failed: ${response.statusText}`);
+
+    const audioData = await response.blob();
     const audioUrl = URL.createObjectURL(audioData);
+    
+    console.log("Deepgram TTS Audio URL:", audioUrl);
     return audioUrl;
   } catch (err) {
-    console.error('TTS error:', err);
-    throw err;
+    console.error('Deepgram TTS error:', err);
+    return "Error generating speech.";
   }
 }
 
 /**
- * Sends a prompt to the OpenAI API (ChatGPT) and returns the response.
- * @param {string} prompt - The user's message or prompt.
- * @returns {Promise<string>} - The chatbot's reply.
+ * Sends a user's message to the OpenAI API and returns the chatbot's response.
+ * @param {string} prompt - The user's message.
+ * @returns {Promise<string>} - The chatbot's response.
  */
 export async function getOpenAIResponse(prompt) {
+  if (!OPENAI_API_KEY) {
+    console.error("OpenAI API key is missing.");
+    return "Error: OpenAI API key not found.";
+  }
+
   try {
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': 'Bearer ' + OPENAI_API_KEY,
+        'Authorization': `Bearer ${OPENAI_API_KEY}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
@@ -82,11 +104,16 @@ export async function getOpenAIResponse(prompt) {
         temperature: 0.7
       })
     });
+
+    if (!response.ok) throw new Error(`OpenAI API call failed: ${response.statusText}`);
+
     const data = await response.json();
-    const reply = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+    const reply = data.choices?.[0]?.message?.content || 'No response generated.';
+    
+    console.log("OpenAI Response:", reply);
     return reply;
   } catch (err) {
     console.error('OpenAI error:', err);
-    throw err;
+    return "Error getting response from OpenAI.";
   }
 }
