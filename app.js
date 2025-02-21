@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import axios from 'axios';
 import './App.css';
 
 function App() {
+  const [input, setInput] = useState('');
   const [messages, setMessages] = useState([]);
-  const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
 
@@ -15,51 +16,40 @@ function App() {
     scrollToBottom();
   }, [messages]);
 
-  // Add initial greeting when component mounts
-  useEffect(() => {
-    const initialMessage = {
-      text: "Hello! I'm Amie, your AI assistant. How can I help you today?",
-      sender: 'bot'
-    };
-    setMessages([initialMessage]);
-  }, []);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!inputMessage.trim()) return;
+    if (!input.trim()) return;
 
-    // Add user message to chat
-    const userMessage = { text: inputMessage, sender: 'user' };
+    // Add user message
+    const userMessage = { role: 'user', content: input };
     setMessages(prevMessages => [...prevMessages, userMessage]);
-    setInputMessage('');
+    setInput('');
     setIsLoading(true);
 
     try {
-      // Send message to backend
-      const response = await fetch('https://amie-chatbot-backend.onrender.com/chat', {
-        method: 'POST',
+      const response = await axios.post('https://api.openai.com/v1/chat/completions', {
+        model: "gpt-3.5-turbo",
+        messages: [...messages, userMessage],
+      }, {
         headers: {
+          'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
           'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ message: inputMessage }),
+        }
       });
 
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      const data = await response.json();
-      
-      // Add bot response to chat
-      const botMessage = { text: data.response, sender: 'bot' };
-      setMessages(prevMessages => [...prevMessages, botMessage]);
+      // Add AI response
+      const aiMessage = {
+        role: 'assistant',
+        content: response.data.choices[0].message.content
+      };
+      setMessages(prevMessages => [...prevMessages, aiMessage]);
     } catch (error) {
       console.error('Error:', error);
-      const errorMessage = { 
-        text: 'Sorry, I had trouble connecting. Please try again.', 
-        sender: 'bot' 
-      };
-      setMessages(prevMessages => [...prevMessages, errorMessage]);
+      // Add error message
+      setMessages(prevMessages => [...prevMessages, {
+        role: 'system',
+        content: 'Sorry, I encountered an error. Please try again.'
+      }]);
     } finally {
       setIsLoading(false);
     }
@@ -71,19 +61,26 @@ function App() {
         <h1>Amie Chatbot</h1>
       </header>
       
-      <div className="chat-container">
+      <main className="chat-container">
         <div className="messages">
           {messages.map((message, index) => (
-            <div key={index} className={`message ${message.sender}`}>
-              {message.text}
+            <div 
+              key={index} 
+              className={`message ${message.role === 'user' ? 'user-message' : 'ai-message'}`}
+            >
+              <div className="message-content">
+                {message.content}
+              </div>
             </div>
           ))}
           {isLoading && (
-            <div className="message bot loading">
-              <div className="typing-indicator">
-                <span></span>
-                <span></span>
-                <span></span>
+            <div className="message ai-message">
+              <div className="message-content loading">
+                <div className="typing-indicator">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
               </div>
             </div>
           )}
@@ -93,16 +90,16 @@ function App() {
         <form onSubmit={handleSubmit} className="input-form">
           <input
             type="text"
-            value={inputMessage}
-            onChange={(e) => setInputMessage(e.target.value)}
-            placeholder="Type your message..."
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Type your message here..."
             disabled={isLoading}
           />
-          <button type="submit" disabled={isLoading}>
-            {isLoading ? 'Sending...' : 'Send'}
+          <button type="submit" disabled={isLoading || !input.trim()}>
+            Send
           </button>
         </form>
-      </div>
+      </main>
     </div>
   );
 }
