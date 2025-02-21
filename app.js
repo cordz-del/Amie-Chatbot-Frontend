@@ -1,98 +1,100 @@
-// app.js - Main script to control chat interactions
-import { transcribeAudio, speakText, getOpenAIResponse } from "./apiBridge.js";
+import React, { useState, useEffect, useRef } from 'react';
+import './App.css';
 
-// Ensure DOM is fully loaded before running scripts
-document.addEventListener("DOMContentLoaded", () => {
-  console.log("App initialized...");
-  
-  const startButton = document.getElementById("startButton");
-  const stopButton = document.getElementById("stopButton");
-  const chatWindow = document.getElementById("chatWindow");
-  const statusEl = document.getElementById("status");
-  let mediaRecorder;
-  let audioChunks = [];
+function App() {
+  const [messages, setMessages] = useState([]);
+  const [inputMessage, setInputMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef(null);
 
-  // Check if buttons exist
-  if (!startButton || !stopButton) {
-    console.error("Start/Stop buttons not found in DOM.");
-    return;
-  }
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
-  // 🎤 Start Chat: Records audio and transcribes it
-  startButton.addEventListener("click", async () => {
-    console.log("Start Chat clicked...");
-    statusEl.textContent = "Listening...";
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!inputMessage.trim()) return;
+
+    const userMessage = inputMessage.trim();
+    setMessages(prev => [...prev, { text: userMessage, type: 'user' }]);
+    setInputMessage('');
+    setIsLoading(true);
 
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      audioChunks = [];
-      mediaRecorder = new MediaRecorder(stream);
+      const response = await fetch('https://amie-chatbot-backend.onrender.com/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: userMessage }),
+      });
 
-      mediaRecorder.ondataavailable = (event) => {
-        if (event.data.size > 0) {
-          audioChunks.push(event.data);
-        }
-      };
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
 
-      mediaRecorder.onstop = async () => {
-        console.log("Recording stopped. Sending to Deepgram...");
-        const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
-
-        try {
-          // Step 1: Transcribe audio via Deepgram
-          const transcript = await transcribeAudio(audioBlob);
-          console.log("Transcript:", transcript);
-          statusEl.textContent = "Thinking...";
-          
-          // Step 2: Send transcript to OpenAI
-          const aiResponse = await getOpenAIResponse(transcript);
-          console.log("AI Response:", aiResponse);
-
-          // Step 3: Display chatbot response in chat
-          updateChatWindow("Amie", aiResponse);
-          
-          // Step 4: Convert AI response to speech
-          const audioUrl = await speakText(aiResponse);
-          const audioElement = new Audio(audioUrl);
-          audioElement.play();
-          statusEl.textContent = "Speaking...";
-          audioElement.onended = () => {
-            statusEl.textContent = "Ready";
-          };
-        } catch (error) {
-          console.error("Error in chat flow:", error);
-          statusEl.textContent = "Error processing chat.";
-        }
-      };
-
-      // Start recording
-      mediaRecorder.start();
-      startButton.disabled = true;
-      stopButton.disabled = false;
+      const data = await response.json();
+      setMessages(prev => [...prev, { text: data.response, type: 'bot' }]);
     } catch (error) {
-      console.error("Microphone access error:", error);
-      statusEl.textContent = "Microphone access denied.";
+      console.error('Error:', error);
+      setMessages(prev => [...prev, { 
+        text: "Sorry, I'm having trouble connecting right now. Please try again later.", 
+        type: 'bot' 
+      }]);
+    } finally {
+      setIsLoading(false);
     }
-  });
+  };
 
-  // ⏹ Stop Chat: Stops recording and processes audio
-  stopButton.addEventListener("click", () => {
-    console.log("Stop Chat clicked...");
-    if (mediaRecorder) {
-      mediaRecorder.stop();
-      startButton.disabled = false;
-      stopButton.disabled = true;
-    }
-  });
+  return (
+    <div className="App">
+      <header className="App-header">
+        <h1>Amie Chatbot</h1>
+        <p>Your AI Assistant</p>
+      </header>
+      <main className="chat-container">
+        <div className="messages">
+          {messages.length === 0 && (
+            <div className="welcome-message">
+              Hello! I'm Amie. How can I help you today?
+            </div>
+          )}
+          {messages.map((message, index) => (
+            <div key={index} className={`message ${message.type}`}>
+              <span className="message-label">{message.type === 'user' ? 'You' : 'Amie'}:</span>
+              {message.text}
+            </div>
+          ))}
+          {isLoading && (
+            <div className="message bot loading">
+              <div className="typing-indicator">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+          )}
+          <div ref={messagesEndRef} />
+        </div>
+        <form onSubmit={handleSubmit} className="input-form">
+          <input
+            type="text"
+            value={inputMessage}
+            onChange={(e) => setInputMessage(e.target.value)}
+            placeholder="Type your message..."
+            disabled={isLoading}
+          />
+          <button type="submit" disabled={isLoading || !inputMessage.trim()}>
+            Send
+          </button>
+        </form>
+      </main>
+    </div>
+  );
+}
 
-  // 📌 Function to update chat window UI
-  function updateChatWindow(sender, message) {
-    if (!chatWindow) {
-      console.error("Chat window not found!");
-      return;
-    }
-    const messageElement = document.createElement("p");
-    messageElement.innerHTML = `<strong>${sender}:</strong> ${message}`;
-    chatWindow.appendChild(messageElement);
-  }
-});
+export default App;
