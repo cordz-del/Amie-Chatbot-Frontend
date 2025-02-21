@@ -1,57 +1,68 @@
-import React, { useState, useRef, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 
 function App() {
-  const [input, setInput] = useState('');
-  const [messages, setMessages] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const messagesEndRef = useRef(null);
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  const [isListening, setIsListening] = useState(false);
+  const [transcript, setTranscript] = useState('');
+  const [response, setResponse] = useState('');
+  const [recognition, setRecognition] = useState(null);
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!input.trim()) return;
-
-    // Add user message
-    const userMessage = { role: 'user', content: input };
-    setMessages(prevMessages => [...prevMessages, userMessage]);
-    setInput('');
-    setIsLoading(true);
-
-    try {
-      const response = await axios.post('https://api.openai.com/v1/chat/completions', {
-        model: "gpt-3.5-turbo",
-        messages: [...messages, userMessage],
-      }, {
-        headers: {
-          'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
-          'Content-Type': 'application/json',
-        }
-      });
-
-      // Add AI response
-      const aiMessage = {
-        role: 'assistant',
-        content: response.data.choices[0].message.content
+    // Initialize speech recognition
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      const recognition = new SpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      
+      recognition.onresult = (event) => {
+        const current = event.resultIndex;
+        const transcript = event.results[current][0].transcript;
+        setTranscript(transcript);
       };
-      setMessages(prevMessages => [...prevMessages, aiMessage]);
+
+      recognition.onerror = (event) => {
+        console.error('Speech recognition error:', event.error);
+      };
+
+      setRecognition(recognition);
+    }
+  }, []);
+
+  const startListening = () => {
+    if (recognition) {
+      recognition.start();
+      setIsListening(true);
+    }
+  };
+
+  const stopListening = () => {
+    if (recognition) {
+      recognition.stop();
+      setIsListening(false);
+      // Send transcript to backend
+      sendToBackend(transcript);
+    }
+  };
+
+  const sendToBackend = async (text) => {
+    try {
+      const response = await fetch('https://your-backend-url/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: text }),
+      });
+      
+      const data = await response.json();
+      setResponse(data.response);
+      
+      // Text-to-speech for the response
+      const speech = new SpeechSynthesisUtterance(data.response);
+      window.speechSynthesis.speak(speech);
     } catch (error) {
-      console.error('Error:', error);
-      // Add error message
-      setMessages(prevMessages => [...prevMessages, {
-        role: 'system',
-        content: 'Sorry, I encountered an error. Please try again.'
-      }]);
-    } finally {
-      setIsLoading(false);
+      console.error('Error sending message to backend:', error);
     }
   };
 
@@ -59,47 +70,33 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h1>Amie Chatbot</h1>
-      </header>
-      
-      <main className="chat-container">
-        <div className="messages">
-          {messages.map((message, index) => (
-            <div 
-              key={index} 
-              className={`message ${message.role === 'user' ? 'user-message' : 'ai-message'}`}
+        <div className="chat-container">
+          <div className="transcript">
+            <h3>Your Message:</h3>
+            <p>{transcript}</p>
+          </div>
+          <div className="response">
+            <h3>Amie's Response:</h3>
+            <p>{response}</p>
+          </div>
+          <div className="controls">
+            <button 
+              onClick={startListening} 
+              disabled={isListening}
+              className="control-button"
             >
-              <div className="message-content">
-                {message.content}
-              </div>
-            </div>
-          ))}
-          {isLoading && (
-            <div className="message ai-message">
-              <div className="message-content loading">
-                <div className="typing-indicator">
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                </div>
-              </div>
-            </div>
-          )}
-          <div ref={messagesEndRef} />
+              Start Chat
+            </button>
+            <button 
+              onClick={stopListening} 
+              disabled={!isListening}
+              className="control-button"
+            >
+              Stop Chat
+            </button>
+          </div>
         </div>
-
-        <form onSubmit={handleSubmit} className="input-form">
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Type your message here..."
-            disabled={isLoading}
-          />
-          <button type="submit" disabled={isLoading || !input.trim()}>
-            Send
-          </button>
-        </form>
-      </main>
+      </header>
     </div>
   );
 }
