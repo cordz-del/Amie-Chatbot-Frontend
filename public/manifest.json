@@ -1,13 +1,13 @@
 {
   "short_name": "Amie Chatbot",
   "name": "Amie AI Chatbot",
-  "start_url": ".",
+  "start_url": "/Amie-Chatbot-Frontend/",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "/Amie-Chatbot-Frontend/favicon.ico",
       "sizes": "64x64",
       "type": "image/x-icon"
     }
