@@ -1,112 +1,197 @@
-// voiceChatbot.js - Handles voice interaction with Deepgram STT & TTS, and OpenAI
-import { transcribeAudio, speakText, getOpenAIResponse } from "./apiBridge.js";
+import React, { useState, useEffect, useRef } from 'react';
+import { IconButton, Paper, TextField, Typography } from '@mui/material';
+import MicIcon from '@mui/icons-material/Mic';
+import MicOffIcon from '@mui/icons-material/MicOff';
+import SendIcon from '@mui/icons-material/Send';
+import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 
-let mediaRecorder;
-let audioChunks = [];
+const VoiceChatbot = () => {
+  const [messages, setMessages] = useState([]);
+  const [inputText, setInputText] = useState('');
+  const [isListening, setIsListening] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [speechSupported] = useState('speechSynthesis' in window);
+  const messagesEndRef = useRef(null);
+  const recognition = useRef(null);
 
-/**
- * Starts voice recording for Speech-to-Text processing.
- */
-export function startVoiceChat() {
-    console.log("Start Chat clicked...");
-    const statusEl = document.getElementById("status");
-    const startButton = document.getElementById("startButton");
-    const stopButton = document.getElementById("stopButton");
+  // Initialize speech recognition
+  useEffect(() => {
+    if ('webkitSpeechRecognition' in window) {
+      recognition.current = new window.webkitSpeechRecognition();
+      recognition.current.continuous = true;
+      recognition.current.interimResults = true;
 
-    statusEl.textContent = "Listening...";
+      recognition.current.onresult = (event) => {
+        const transcript = Array.from(event.results)
+          .map(result => result[0])
+          .map(result => result.transcript)
+          .join('');
+        
+        setInputText(transcript);
+      };
 
-    navigator.mediaDevices.getUserMedia({ audio: true })
-        .then(stream => {
-            audioChunks = [];
-            mediaRecorder = new MediaRecorder(stream);
-            
-            mediaRecorder.ondataavailable = (event) => {
-                if (event.data.size > 0) {
-                    audioChunks.push(event.data);
-                }
-            };
-
-            mediaRecorder.onstop = async () => {
-                console.log("Recording stopped. Processing audio...");
-                const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
-
-                try {
-                    // Step 1: Transcribe audio via Deepgram STT
-                    statusEl.textContent = "Transcribing...";
-                    const transcript = await transcribeAudio(audioBlob);
-                    console.log("Transcript:", transcript);
-
-                    if (!transcript) {
-                        statusEl.textContent = "No speech detected.";
-                        return;
-                    }
-
-                    // Step 2: Get OpenAI chatbot response
-                    statusEl.textContent = "Thinking...";
-                    const aiResponse = await getOpenAIResponse(transcript);
-                    console.log("AI Response:", aiResponse);
-
-                    // Step 3: Display chatbot response
-                    updateChatWindow("You", transcript);
-                    updateChatWindow("Amie", aiResponse);
-
-                    // Step 4: Convert response to speech using Deepgram TTS
-                    statusEl.textContent = "Speaking...";
-                    const audioUrl = await speakText(aiResponse);
-                    const audioElement = new Audio(audioUrl);
-                    audioElement.play();
-                    audioElement.onended = () => {
-                        statusEl.textContent = "Ready";
-                    };
-
-                } catch (error) {
-                    console.error("Error in voice chat flow:", error);
-                    statusEl.textContent = "Error processing chat.";
-                }
-            };
-
-            // Start recording
-            mediaRecorder.start();
-            startButton.disabled = true;
-            stopButton.disabled = false;
-        })
-        .catch(error => {
-            console.error("Microphone access error:", error);
-            statusEl.textContent = "Microphone access denied.";
-        });
-}
-
-/**
- * Stops voice recording and processes the recorded audio.
- */
-export function stopVoiceChat() {
-    console.log("Stop Chat clicked...");
-    const startButton = document.getElementById("startButton");
-    const stopButton = document.getElementById("stopButton");
-
-    if (!mediaRecorder) {
-        console.warn("No active recording session.");
-        return;
+      recognition.current.onerror = (event) => {
+        console.error('Speech recognition error:', event.error);
+        setIsListening(false);
+      };
     }
 
-    mediaRecorder.stop();
-    startButton.disabled = false;
-    stopButton.disabled = true;
-}
+    return () => {
+      if (recognition.current) {
+        recognition.current.stop();
+      }
+    };
+  }, []);
 
-/**
- * Updates the chat window with a new message.
- * @param {string} sender - The sender of the message ("You" or "Amie").
- * @param {string} message - The message content.
- */
-function updateChatWindow(sender, message) {
-    const chatHistory = document.getElementById("chat-history");
-    if (!chatHistory) {
-        console.error("Chat history container not found.");
-        return;
+  // Auto-scroll to bottom of messages
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const toggleListening = () => {
+    if (isListening) {
+      recognition.current?.stop();
+    } else {
+      recognition.current?.start();
+    }
+    setIsListening(!isListening);
+  };
+
+  const handleSend = async () => {
+    if (!inputText.trim()) return;
+
+    const userMessage = {
+      text: inputText,
+      sender: 'user',
+      timestamp: new Date().toISOString(),
+    };
+
+    setMessages(prev => [...prev, userMessage]);
+    setInputText('');
+
+    try {
+      // Replace with your actual API endpoint
+      const response = await fetch('YOUR_API_ENDPOINT', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: inputText }),
+      });
+
+      const data = await response.json();
+      const botMessage = {
+        text: data.response,
+        sender: 'bot',
+        timestamp: new Date().toISOString(),
+      };
+
+      setMessages(prev => [...prev, botMessage]);
+
+      if (isSpeaking && speechSupported) {
+        speak(data.response);
+      }
+    } catch (error) {
+      console.error('Error sending message:', error);
+    }
+  };
+
+  const speak = (text) => {
+    if (!speechSupported) return;
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = 1.0;
+    utterance.pitch = 1.0;
+    utterance.volume = 1.0;
+    
+    // Optional: Use a specific voice
+    const voices = window.speechSynthesis.getVoices();
+    const preferredVoice = voices.find(voice => voice.lang === 'en-US');
+    if (preferredVoice) {
+      utterance.voice = preferredVoice;
     }
 
-    const messageElement = document.createElement("p");
-    messageElement.innerHTML = `<strong>${sender}:</strong> ${message}`;
-    chatHistory.appendChild(messageElement);
-}
+    window.speechSynthesis.speak(utterance);
+  };
+
+  const toggleSpeaking = () => {
+    setIsSpeaking(!isSpeaking);
+    if (isSpeaking) {
+      window.speechSynthesis.cancel();
+    }
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
+    }
+  };
+
+  return (
+    <Paper elevation={3} className="chat-container">
+      <div className="chat-header">
+        <Typography variant="h6">AI Voice Assistant</Typography>
+        <div className="chat-controls">
+          <IconButton 
+            onClick={toggleSpeaking}
+            color={isSpeaking ? 'primary' : 'default'}
+          >
+            {isSpeaking ? <VolumeUpIcon /> : <VolumeOffIcon />}
+          </IconButton>
+        </div>
+      </div>
+
+      <div className="chat-messages">
+        {messages.map((message, index) => (
+          <div
+            key={index}
+            className={`message ${message.sender === 'user' ? 'message-user' : 'message-ai'}`}
+          >
+            <Typography variant="body1">{message.text}</Typography>
+            <Typography variant="caption" className="message-timestamp">
+              {new Date(message.timestamp).toLocaleTimeString()}
+            </Typography>
+          </div>
+        ))}
+        <div ref={messagesEndRef} />
+      </div>
+
+      <div className="chat-input">
+        <TextField
+          fullWidth
+          multiline
+          maxRows={4}
+          value={inputText}
+          onChange={(e) => setInputText(e.target.value)}
+          onKeyPress={handleKeyPress}
+          placeholder="Type your message..."
+          variant="outlined"
+        />
+        <div className="input-controls">
+          <IconButton
+            onClick={toggleListening}
+            color={isListening ? 'secondary' : 'default'}
+            disabled={!('webkitSpeechRecognition' in window)}
+          >
+            {isListening ? <MicOffIcon /> : <MicIcon />}
+          </IconButton>
+          <IconButton
+            onClick={handleSend}
+            color="primary"
+            disabled={!inputText.trim()}
+          >
+            <SendIcon />
+          </IconButton>
+        </div>
+      </div>
+    </Paper>
+  );
+};
+
+export default VoiceChatbot;
