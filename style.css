@@ -6,36 +6,56 @@ body {
 }
 
 .container {
-    max-width: 800px;
+    max-width: 1200px;
     margin: 0 auto;
+    text-align: center;
 }
 
-h1 {
+.main-title {
+    font-size: 4rem;
     text-align: center;
-    color: #1a1a1a;
+    margin-bottom: 10px;
+    background: linear-gradient(to right, #00264d, #0059b3, #3399ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: inline-block;
+}
+
+.subtitle {
+    font-size: 1.5rem;
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+    font-weight: normal;
 }
 
 #chat-container {
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    margin-top: 20px;
+    background: linear-gradient(to right, #00264d, #0059b3);
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    padding: 30px;
+    margin: 0 auto;
+    width: 90%;
+    max-width: 1000px;
 }
 
 #chat-history {
-    height: 300px;
+    height: 500px;
+    width: 75%;
+    margin: 0 auto 20px auto;
     overflow-y: auto;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 10px;
-    margin-bottom: 20px;
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .message {
     margin: 10px 0;
     padding: 10px;
     border-radius: 5px;
+    text-align: left;
 }
 
 .message.you {
@@ -48,36 +68,26 @@ h1 {
     margin-left: 20%;
 }
 
-.message-text {
-    margin: 0;
-    line-height: 1.4;
-}
-
-.message-timestamp {
-    font-size: 0.8em;
-    color: #666;
-    margin-top: 5px;
-}
-
 #controls {
     display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
 }
 
 button {
-    padding: 10px 20px;
+    padding: 12px 30px;
     border: none;
-    border-radius: 5px;
+    border-radius: 25px;
     cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    color: white;
 }
 
 #startButton {
-    background-color: #4CAF50;
-    color: white;
+    background-color: #0059b3;
 }
 
 #startButton:disabled {
@@ -85,9 +95,12 @@ button {
     cursor: not-allowed;
 }
 
+#startButton:not(:disabled):hover {
+    background-color: #003d80;
+}
+
 #stopButton {
-    background-color: #f44336;
-    color: white;
+    background-color: #666;
 }
 
 #stopButton:disabled {
@@ -95,52 +108,38 @@ button {
     cursor: not-allowed;
 }
 
-#recording-indicator {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background-color: #ccc;
+#stopButton:not(:disabled) {
+    background-color: #0059b3;
 }
 
-#recording-indicator.active {
-    background-color: #f44336;
-    animation: pulse 1.5s infinite;
+#stopButton:not(:disabled):hover {
+    background-color: #003d80;
 }
 
-#status {
-    margin-left: auto;
-    color: #666;
-}
-
-#audio-visualizer {
-    width: 100%;
-    height: 100px;
-    background-color: #000;
-    border-radius: 5px;
-}
-
-@keyframes pulse {
-    0% {
-        opacity: 1;
+@media (max-width: 768px) {
+    .main-title {
+        font-size: 3rem;
     }
-    50% {
-        opacity: 0.5;
-    }
-    100% {
-        opacity: 1;
-    }
-}
 
-@media (max-width: 600px) {
-    .container {
-        padding: 10px;
+    .subtitle {
+        font-size: 1.2rem;
     }
-    
+
+    #chat-container {
+        width: 95%;
+        padding: 15px;
+    }
+
+    #chat-history {
+        width: 90%;
+    }
+
     #controls {
         flex-direction: column;
+        align-items: center;
     }
-    
-    #status {
-        margin: 10px 0;
+
+    button {
+        width: 200px;
     }
 }
