@@ -1,0 +1,103 @@
+.chat-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.messages {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  background-color: #f5f5f5;
+}
+
+.message {
+  margin-bottom: 15px;
+  max-width: 70%;
+}
+
+.message.user {
+  margin-left: auto;
+}
+
+.message.ai {
+  margin-right: auto;
+}
+
+.message-content {
+  padding: 10px 15px;
+  border-radius: 15px;
+  display: inline-block;
+}
+
+.user .message-content {
+  background-color: #007bff;
+  color: white;
+}
+
+.ai .message-content {
+  background-color: #e9ecef;
+  color: black;
+}
+
+.system .message-content {
+  background-color: #ffc107;
+  color: black;
+  font-style: italic;
+}
+
+.input-form {
+  display: flex;
+  gap: 10px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+}
+
+.message-input {
+  flex-grow: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.send-button, .record-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.send-button {
+  background-color: #007bff;
+  color: white;
+}
+
+.send-button:hover {
+  background-color: #0056b3;
+}
+
+.record-button {
+  background-color: #28a745;
+  color: white;
+}
+
+.record-button:hover {
+  background-color: #218838;
+}
+
+.record-button.recording {
+  background-color: #dc3545;
+}
+
+.record-button.recording:hover {
+  background-color: #c82333;
+}
