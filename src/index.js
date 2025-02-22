@@ -1,9 +1,10 @@
 const express = require('express');
 const cors = require('cors');
-const { OpenAI } = require('openai');
+const OpenAI = require('openai');
 const { Deepgram } = require('@deepgram/sdk');
 const multer = require('multer');
 const dotenv = require('dotenv');
+const bodyParser = require('body-parser');
 
 // Load environment variables
 dotenv.config();
@@ -19,9 +20,9 @@ app.use(cors({
 }));
 
 // Middleware
-app.use(express.json());
+app.use(bodyParser.json());
 
-// Initialize OpenAI
+// Initialize OpenAI (v3 syntax)
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 });
@@ -43,7 +44,7 @@ app.post('/chat', async (req, res) => {
   try {
     const userMessage = req.body.message;
     
-    const completion = await openai.chat.completions.create({
+    const completion = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
       messages: [
         {
@@ -59,7 +60,7 @@ app.post('/chat', async (req, res) => {
     });
 
     res.json({
-      response: completion.choices[0].message.content
+      response: completion.data.choices[0].message.content
     });
   } catch (error) {
     console.error('Error in chat endpoint:', error);
