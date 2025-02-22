@@ -1,11 +1,8 @@
 const express = require('express');
-const { Configuration, OpenAIApi } = require('openai');
 const { Deepgram } = require('@deepgram/sdk');
 const multer = require('multer');
 
 const app = express();
-
-// Removed CORS configuration because it was causing errors.
 
 // Use built-in middleware to parse JSON bodies
 app.use(express.json());
