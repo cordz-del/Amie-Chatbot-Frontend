@@ -21,6 +21,7 @@
   max-width: 70%;
 }
 
+/* Align user messages to the right and AI messages to the left */
 .message.user {
   margin-left: auto;
 }
@@ -34,6 +35,7 @@
   text-align: center;
 }
 
+/* Message bubble styling */
 .message-content {
   padding: 12px 16px;
   border-radius: 15px;
@@ -41,22 +43,24 @@
   position: relative;
 }
 
-.user .message-content {
+/* Adjusted selectors for clarity */
+.message.user .message-content {
   background-color: #007bff;
   color: white;
 }
 
-.ai .message-content {
+.message.ai .message-content {
   background-color: #e9ecef;
   color: black;
 }
 
-.system .message-content {
+.message.system .message-content {
   background-color: #ffc107;
   color: black;
   font-style: italic;
 }
 
+/* Label for AI messages */
 .ai-label {
   position: absolute;
   top: -20px;
@@ -66,13 +70,14 @@
   font-weight: bold;
 }
 
+/* Input form styling */
 .input-form {
   display: flex;
   gap: 10px;
   padding: 20px;
   background-color: white;
   border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .message-input {
@@ -81,78 +86,4 @@
   border: 1px solid #ddd;
   border-radius: 25px;
   font-size: 16px;
-  outline: none;
-  transition: border-color 0.3s;
-}
-
-.message-input:focus {
-  border-color: #007bff;
-}
-
-.send-button, .record-button {
-  width: 40px;
-  height: 40px;
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-}
-
-.send-button {
-  background-color: #007bff;
-  color: white;
-}
-
-.send-button:hover {
-  background-color: #0056b3;
-  transform: scale(1.05);
-}
-
-.record-button {
-  background-color: #28a745;
-  color: white;
-}
-
-.record-button:hover {
-  background-color: #218838;
-  transform: scale(1.05);
-}
-
-.record-button.recording {
-  background-color: #dc3545;
-  animation: pulse 1.5s infinite;
-}
-
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-/* Scrollbar styling */
-.messages::-webkit-scrollbar {
-  width: 8px;
-}
-
-.messages::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 4px;
-}
-
-.messages::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 4px;
-}
-
-.messages::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
+ 
