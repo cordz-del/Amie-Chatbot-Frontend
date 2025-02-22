@@ -1,8 +1,8 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Comic Sans MS', 'Rounded Mplus 1c', sans-serif;
     margin: 0;
     padding: 20px;
-    background-color: #f0f2f5;
+    background: linear-gradient(135deg, #e0f7fa, #b2ebf2, #80deea);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -20,37 +20,39 @@ body {
     text-align: center;
     margin-bottom: 10px;
     background: linear-gradient(to right, 
-        #001f3f,
-        #003366,
-        #004080,
-        #0059b3
+        #FF6B6B,
+        #4ECDC4,
+        #45B7D1,
+        #96CEB4
     );
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
     display: inline-block;
     font-weight: bold;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
 }
 
 .subtitle {
     font-size: 1.8rem;
     text-align: center;
-    color: #004080;
+    color: #2C3E50;
     margin-bottom: 30px;
-    font-weight: normal;
+    font-weight: bold;
     position: relative;
     top: -20px;
 }
 
 #chat-container {
-    background: linear-gradient(135deg, #001f3f, #004080);
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(135deg, #FFFFFF, #F8F9FA);
+    border-radius: 25px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
     padding: 30px;
     margin: 0 auto;
-    width: 76%; /* Reduced by another 5% */
+    width: 76%;
     max-width: 1000px;
     height: 110%;
+    border: 3px solid #4ECDC4;
 }
 
 #chat-history {
@@ -59,67 +61,90 @@ body {
     margin: 0 auto 20px auto;
     overflow-y: auto;
     background-color: white;
-    border-radius: 10px;
+    border-radius: 20px;
     padding: 20px;
     box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+    border: 2px solid #B2EBF2;
 }
 
 .message {
-    margin: 10px 0;
-    padding: 10px;
-    border-radius: 5px;
+    margin: 15px 0;
+    padding: 15px;
+    border-radius: 15px;
     text-align: left;
+    font-size: 1.1rem;
 }
 
 .message.you {
-    background-color: #e3f2fd;
+    background-color: #FFE5E5;
     margin-right: 20%;
+    border-bottom-left-radius: 5px;
 }
 
 .message.amie {
-    background-color: #f5f5f5;
+    background-color: #E5F9F7;
     margin-left: 20%;
+    border-bottom-right-radius: 5px;
 }
 
 #controls {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 30px;
     padding: 20px;
     margin-top: 20px;
 }
 
 button {
-    padding: 12px 30px;
+    padding: 15px 35px;
     border: none;
     border-radius: 25px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: bold;
     transition: all 0.3s ease;
     color: white;
-    background-color: #1e90ff;
+    background-color: #4ECDC4;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+button i {
+    font-size: 20px;
 }
 
 #startButton:disabled, #stopButton:disabled {
-    background-color: #444444; /* Even darker grey for disabled buttons */
+    background-color: #444444;
     cursor: not-allowed;
+    opacity: 0.7;
 }
 
 #startButton:not(:disabled):hover, #stopButton:not(:disabled):hover {
-    background-color: #007bff;
+    background-color: #45B7D1;
+    transform: translateY(-2px);
+}
+
+#startButton {
+    background-color: #FF6B6B;
+}
+
+#stopButton {
+    background-color: #2C3E50;
 }
 
 footer {
     text-align: center;
     padding: 20px;
-    color: #004080;
-    margin-top: 80px; /* Increased margin to move footer down */
-    font-size: 0.9rem;
+    color: #2C3E50;
+    margin-top: 80px;
+    font-size: 1rem;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    font-weight: bold;
 }
 
 @media (max-width: 768px) {
