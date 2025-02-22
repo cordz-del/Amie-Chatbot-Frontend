@@ -10,9 +10,12 @@ export class AudioRecorder {
       this.mediaRecorder = new MediaRecorder(stream);
       this.audioChunks = [];
 
-      this.mediaRecorder.ondataavailable = (event) => {
-        this.audioChunks.push(event.data);
-      };
+      // Listen for available data and push to audioChunks array
+      this.mediaRecorder.addEventListener('dataavailable', (event) => {
+        if (event.data && event.data.size > 0) {
+          this.audioChunks.push(event.data);
+        }
+      });
 
       this.mediaRecorder.start();
     } catch (error) {
@@ -22,14 +25,23 @@ export class AudioRecorder {
   }
 
   async stopRecording() {
+    if (!this.mediaRecorder) {
+      throw new Error('No media recorder available. Please start recording first.');
+    }
+
     return new Promise((resolve, reject) => {
       try {
-        this.mediaRecorder.onstop = () => {
+        // When recording stops, create a blob from audio chunks
+        this.mediaRecorder.addEventListener('stop', () => {
           const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
           resolve(audioBlob);
-        };
+        });
+
         this.mediaRecorder.stop();
-        this.mediaRecorder.stream.getTracks().forEach(track => track.stop());
+
+        // Stop all tracks to release the microphone
+        const tracks = this.mediaRecorder.stream.getTracks();
+        tracks.forEach((track) => track.stop());
       } catch (error) {
         reject(error);
       }
