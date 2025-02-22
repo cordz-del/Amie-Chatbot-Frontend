@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Amie</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Add Font Awesome for icons if needed -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
@@ -15,18 +18,26 @@
             <div id="chat-history"></div>
             
             <div id="controls">
-                <button id="startButton">Start Chat</button>
-                <button id="stopButton" disabled>Stop Chat</button>
+                <button id="startButton">
+                    <i class="fas fa-microphone"></i> Start Chat
+                </button>
+                <button id="stopButton" disabled>
+                    <i class="fas fa-stop"></i> Stop Chat
+                </button>
             </div>
         </div>
     </div>
 
-    <script type="module" src="voiceChatbot.js"></script>
-    <script type="module" src="apiBridge.js"></script>
+    <!-- Essential third-party libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    
+    <!-- Application scripts -->
+    <script type="module" src="./voiceChatbot.js"></script>
+    <script type="module" src="./apiBridge.js"></script>
     <script type="module">
-        import voiceChatbot from './voiceChatbot.js';
+        import { initializeVoiceChatbot } from './voiceChatbot.js';
         document.addEventListener('DOMContentLoaded', () => {
-            voiceChatbot.initialize();
+            initializeVoiceChatbot();
         });
     </script>
 </body>
