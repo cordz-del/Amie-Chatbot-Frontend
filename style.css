@@ -1,176 +1,116 @@
 body {
-    font-family: 'Comic Sans MS', 'Rounded Mplus 1c', sans-serif;
     margin: 0;
     padding: 20px;
-    background: linear-gradient(135deg, #e0f7fa, #b2ebf2, #80deea);
+    font-family: 'Comic Sans MS', cursive;
+    background-color: #f0f0f0;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 800px;
     margin: 0 auto;
     text-align: center;
-    flex: 1;
 }
 
 .main-title {
-    font-size: 8rem;
-    text-align: center;
+    color: #87CEEB; /* Lighter shade of blue for Amie */
+    font-size: 3em;
     margin-bottom: 10px;
-    background: linear-gradient(to right, 
-        #FF6B6B,
-        #4ECDC4,
-        #45B7D1,
-        #96CEB4
-    );
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    display: inline-block;
-    font-weight: bold;
-    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
-}
-
-.subtitle {
-    font-size: 1.8rem;
-    text-align: center;
-    color: #2C3E50;
-    margin-bottom: 30px;
-    font-weight: bold;
-    position: relative;
-    top: -20px;
+    font-family: 'Bubblegum Sans', cursive;
 }
 
 #chat-container {
-    background: linear-gradient(135deg, #FFFFFF, #F8F9FA);
-    border-radius: 25px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-    padding: 30px;
-    margin: 0 auto;
-    width: 76%;
-    max-width: 1000px;
-    height: 110%;
-    border: 3px solid #4ECDC4;
+    background-color: #E6F3FF; /* Lighter shade of blue for chat container */
+    border-radius: 15px;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 600px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 #chat-history {
-    height: 550px;
-    width: 75%;
-    margin: 0 auto 20px auto;
+    height: 400px;
     overflow-y: auto;
-    background-color: white;
-    border-radius: 20px;
-    padding: 20px;
-    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
-    border: 2px solid #B2EBF2;
+    margin-bottom: 20px;
+    padding: 10px;
 }
 
 .message {
-    margin: 15px 0;
-    padding: 15px;
+    margin: 10px;
+    padding: 10px 15px;
     border-radius: 15px;
+    max-width: 70%;
+    word-wrap: break-word;
+}
+
+.amie {
+    background-color: #FFE6F0;
+    margin-right: auto;
     text-align: left;
-    font-size: 1.1rem;
 }
 
-.message.you {
-    background-color: #FFE5E5;
-    margin-right: 20%;
-    border-bottom-left-radius: 5px;
+.you {
+    background-color: #E6FFE6;
+    margin-left: auto;
+    text-align: right;
 }
 
-.message.amie {
-    background-color: #E5F9F7;
-    margin-left: 20%;
-    border-bottom-right-radius: 5px;
+.typing {
+    font-style: italic;
+    opacity: 0.7;
 }
 
 #controls {
     display: flex;
+    gap: 10px;
     justify-content: center;
-    gap: 30px;
-    padding: 20px;
-    margin-top: 20px;
 }
 
 button {
-    padding: 15px 35px;
+    padding: 10px 20px;
+    font-size: 1.1em;
     border: none;
     border-radius: 25px;
     cursor: pointer;
-    font-size: 18px;
-    font-weight: bold;
-    transition: all 0.3s ease;
+    background-color: #FFB6C1;
     color: white;
-    background-color: #4ECDC4;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    transition: background-color 0.3s;
+    font-family: 'Comic Sans MS', cursive;
 }
 
-button i {
-    font-size: 20px;
+button:hover {
+    background-color: #FF69B4;
 }
 
-#startButton:disabled, #stopButton:disabled {
-    background-color: #444444;
+button:disabled {
+    background-color: #ccc;
     cursor: not-allowed;
-    opacity: 0.7;
-}
-
-#startButton:not(:disabled):hover, #stopButton:not(:disabled):hover {
-    background-color: #45B7D1;
-    transform: translateY(-2px);
-}
-
-#startButton {
-    background-color: #FF6B6B;
-}
-
-#stopButton {
-    background-color: #2C3E50;
 }
 
 footer {
+    margin-top: auto;
     text-align: center;
     padding: 20px;
-    color: #2C3E50;
-    margin-top: 80px;
-    font-size: 1rem;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: bold;
+    color: #666;
 }
 
-@media (max-width: 768px) {
-    .main-title {
-        font-size: 4rem;
-    }
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 8px;
+}
 
-    .subtitle {
-        font-size: 1.2rem;
-    }
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
 
-    #chat-container {
-        width: 90%;
-        padding: 15px;
-    }
+::-webkit-scrollbar-thumb {
+    background: #FFB6C1;
+    border-radius: 10px;
+}
 
-    #chat-history {
-        width: 90%;
-    }
-
-    #controls {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    button {
-        width: 200px;
-    }
+::-webkit-scrollbar-thumb:hover {
+    background: #FF69B4;
 }
