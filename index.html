@@ -1,47 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Amie Chatbot - Your AI Assistant"
-    />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!-- Add Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <!-- Add Font Awesome for icons -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Amie - AI Assistant for Social and Emotional Learning">
+    <meta name="theme-color" content="#ffffff">
+    
+    <title>Amie - AI Assistant</title>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <title>Amie Chatbot</title>
-    <style>
-      body {
-        margin: 0;
-        padding: 0;
-        font-family: 'Roboto', sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        background-color: #f5f5f5;
-      }
-      
-      #root {
-        min-height: 100vh;
-      }
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <header class="app-header">
+            <h1>Amie</h1>
+            <p class="subtitle">AI Assistant for Social and Emotional Learning</p>
+        </header>
 
-      /* Ensure proper display on mobile devices */
-      @media (max-width: 768px) {
-        body {
-          overflow-x: hidden;
+        <!-- Main Chat Container -->
+        <main class="chat-container">
+            <!-- Chat Messages Area -->
+            <div id="chat-messages" class="messages-container" role="log" aria-live="polite">
+                <!-- Welcome message -->
+                <div class="message bot-message">
+                    <span class="message-text">
+                        Hello! I'm Amie, your AI assistant for social and emotional learning. How can I help you today?
+                    </span>
+                    <span class="message-timestamp"></span>
+                </div>
+            </div>
+
+            <!-- Chat Controls -->
+            <div class="chat-controls">
+                <!-- Recording Status -->
+                <div id="recording-status" class="recording-status" aria-live="polite">
+                    <span id="status-text">Click 'Start Chat' to begin</span>
+                    <span id="recording-indicator" class="recording-indicator" aria-hidden="true"></span>
+                </div>
+
+                <!-- Control Buttons -->
+                <div class="controls">
+                    <button id="startChat" class="btn primary-btn" aria-label="Start recording">
+                        <i class="fas fa-microphone" aria-hidden="true"></i>
+                        <span>Start Chat</span>
+                    </button>
+                    <button id="stopChat" class="btn secondary-btn" disabled aria-label="Stop recording">
+                        <i class="fas fa-stop" aria-hidden="true"></i>
+                        <span>Stop Chat</span>
+                    </button>
+                </div>
+
+                <!-- Audio Visualization -->
+                <div id="audio-visualizer" class="audio-visualizer" aria-hidden="true">
+                    <canvas id="visualizer"></canvas>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer Section -->
+        <footer class="app-footer">
+            <p>&copy; 2024 Amie AI Assistant. All rights reserved.</p>
+            <nav class="footer-links">
+                <a href="#privacy" class="footer-link">Privacy Policy</a>
+                <span class="separator">|</span>
+                <a href="#terms" class="footer-link">Terms of Use</a>
+                <span class="separator">|</span>
+                <a href="#contact" class="footer-link">Contact</a>
+            </nav>
+        </footer>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay hidden" role="alert" aria-busy="true">
+        <div class="loader" aria-hidden="true"></div>
+        <p>Processing your message...</p>
+    </div>
+
+    <!-- Error Modal -->
+    <div id="error-modal" class="modal hidden" role="dialog" aria-labelledby="error-title">
+        <div class="modal-content">
+            <h2 id="error-title">Error</h2>
+            <p id="error-message"></p>
+            <button onclick="closeErrorModal()" class="btn error-btn" aria-label="Close error message">
+                Close
+            </button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="app.js" defer></script>
+
+    <!-- Browser Support Check -->
+    <script>
+        if (!window.MediaRecorder) {
+            document.getElementById('error-modal').classList.remove('hidden');
+            document.getElementById('error-message').textContent = 
+                'Your browser does not support audio recording. Please use a modern browser like Chrome, Firefox, or Edge.';
         }
-      }
-    </style>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <!-- Speech Recognition Polyfill -->
-    <script src="https://cdn.jsdelivr.net/npm/web-speech-cognitive-services@7.1.3/dist/webspeech.cognitive.js"></script>
-  </body>
+    </script>
+</body>
 </html>
