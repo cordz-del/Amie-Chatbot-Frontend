@@ -1,89 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#000000">
-    <meta name="description" content="Amie - Social and Emotional Learning Assistant">
-    
-    <!-- Favicon and App Icons -->
-    <link rel="icon" href="/favicon.ico">
-    <link rel="apple-touch-icon" href="/logo192.png">
-    <link rel="manifest" href="/manifest.json">
-    
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="/src/styles.css">
-    
+  <head>
+    <meta charset="utf-8" />
+    <!-- Favicon and Web App Manifest -->
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <!-- Viewport and Theme -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Amie - Social and Emotional Learning Assistant"
+    />
+    <!-- Google Fonts and Material Icons -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
     <title>Amie - Social and Emotional Learning Assistant</title>
-</head>
-<body>
-    <div class="container">
-        <div class="chat-container">
-            <div class="chat-header">
-                <h1 class="main-title">Amie</h1>
-                <p class="subtitle">Social and Emotional Learning Assistant</p>
-            </div>
-
-            <div id="chat-messages" class="chat-messages">
-                <div class="welcome-message">
-                    Welcome! I am Amie! I hope to help you on your journey of Social and Emotional Learning. 
-                    Please press the Start button when you are ready to begin.
-                </div>
-                <!-- Chat messages will be dynamically added here -->
-            </div>
-
-            <div class="chat-input-container">
-                <input type="text" id="user-input" placeholder="Type your message...">
-                <div class="input-buttons">
-                    <button id="mic-button" class="input-button">
-                        <span class="material-icons">mic</span>
-                    </button>
-                    <button id="send-button" class="input-button">
-                        <span class="material-icons">send</span>
-                    </button>
-                    <button id="speak-button" class="input-button">
-                        <span class="material-icons">volume_up</span>
-                    </button>
-                </div>
-            </div>
-
-            <div class="controls">
-                <button id="startChat">Start</button>
-                <button id="stopChat">Stop</button>
-            </div>
-
-            <div class="status">
-                <div id="recording-indicator"></div>
-                <p id="status-text">Ready</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Loading Overlay -->
-    <div id="loading-overlay" class="loading-overlay">
-        <div class="loading-spinner"></div>
-    </div>
-
-    <!-- Error Modal -->
-    <div id="error-modal" class="error-modal">
-        <h2>Error</h2>
-        <p id="error-message"></p>
-        <button id="close-error" class="close-button">Close</button>
-    </div>
-
-    <footer>
-        <div class="footer-text">
-            © 2023 Amie. All rights reserved.
-        </div>
-    </footer>
-
-    <!-- Scripts -->
-    <script type="module" src="/src/main.jsx"></script>
-    <script src="/src/app.js"></script>
-</body>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+  </body>
 </html>
