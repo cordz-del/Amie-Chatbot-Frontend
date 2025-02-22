@@ -1,13 +1,11 @@
 const express = require('express');
-const cors = require('cors');
 const { Configuration, OpenAIApi } = require('openai');
 const { Deepgram } = require('@deepgram/sdk');
 const multer = require('multer');
 
 const app = express();
 
-// Configure CORS to allow your frontend domains
-app.use(cors({
+
   origin: ['https://cordz-del.github.io', 'http://localhost:3000'],
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type']
