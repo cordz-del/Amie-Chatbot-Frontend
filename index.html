@@ -3,109 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Amie - AI Assistant for Social and Emotional Learning">
-    <meta name="theme-color" content="#ffffff">
-    
-    <title>Amie - AI Assistant</title>
-    
-    <!-- Stylesheets -->
+    <title>Amie Voice Chatbot</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-    
-    <!-- Web App Manifest -->
-    <link rel="manifest" href="manifest.json">
 </head>
 <body>
     <div class="container">
-        <!-- Header Section -->
-        <header class="app-header">
-            <h1>Amie</h1>
-            <p class="subtitle">AI Assistant for Social and Emotional Learning</p>
-        </header>
-
-        <!-- Main Chat Container -->
-        <main class="chat-container">
-            <!-- Chat Messages Area -->
-            <div id="chat-messages" class="messages-container" role="log" aria-live="polite">
-                <!-- Welcome message -->
-                <div class="message bot-message">
-                    <span class="message-text">
-                        Hello! I'm Amie, your AI assistant for social and emotional learning. How can I help you today?
-                    </span>
-                    <span class="message-timestamp"></span>
-                </div>
+        <h1>Amie Voice Chatbot</h1>
+        
+        <div id="chat-container">
+            <div id="chat-history"></div>
+            
+            <div id="controls">
+                <button id="startButton">Start Recording</button>
+                <button id="stopButton" disabled>Stop Recording</button>
+                <div id="recording-indicator"></div>
+                <div id="status">Ready</div>
             </div>
-
-            <!-- Chat Controls -->
-            <div class="chat-controls">
-                <!-- Recording Status -->
-                <div id="recording-status" class="recording-status" aria-live="polite">
-                    <span id="status-text">Click 'Start Chat' to begin</span>
-                    <span id="recording-indicator" class="recording-indicator" aria-hidden="true"></span>
-                </div>
-
-                <!-- Control Buttons -->
-                <div class="controls">
-                    <button id="startChat" class="btn primary-btn" aria-label="Start recording">
-                        <i class="fas fa-microphone" aria-hidden="true"></i>
-                        <span>Start Chat</span>
-                    </button>
-                    <button id="stopChat" class="btn secondary-btn" disabled aria-label="Stop recording">
-                        <i class="fas fa-stop" aria-hidden="true"></i>
-                        <span>Stop Chat</span>
-                    </button>
-                </div>
-
-                <!-- Audio Visualization -->
-                <div id="audio-visualizer" class="audio-visualizer" aria-hidden="true">
-                    <canvas id="visualizer"></canvas>
-                </div>
-            </div>
-        </main>
-
-        <!-- Footer Section -->
-        <footer class="app-footer">
-            <p>&copy; 2024 Amie AI Assistant. All rights reserved.</p>
-            <nav class="footer-links">
-                <a href="#privacy" class="footer-link">Privacy Policy</a>
-                <span class="separator">|</span>
-                <a href="#terms" class="footer-link">Terms of Use</a>
-                <span class="separator">|</span>
-                <a href="#contact" class="footer-link">Contact</a>
-            </nav>
-        </footer>
-    </div>
-
-    <!-- Loading Overlay -->
-    <div id="loading-overlay" class="loading-overlay hidden" role="alert" aria-busy="true">
-        <div class="loader" aria-hidden="true"></div>
-        <p>Processing your message...</p>
-    </div>
-
-    <!-- Error Modal -->
-    <div id="error-modal" class="modal hidden" role="dialog" aria-labelledby="error-title">
-        <div class="modal-content">
-            <h2 id="error-title">Error</h2>
-            <p id="error-message"></p>
-            <button onclick="closeErrorModal()" class="btn error-btn" aria-label="Close error message">
-                Close
-            </button>
+            
+            <canvas id="audio-visualizer"></canvas>
         </div>
     </div>
 
-    <!-- Scripts -->
-    <script src="app.js" defer></script>
-
-    <!-- Browser Support Check -->
-    <script>
-        if (!window.MediaRecorder) {
-            document.getElementById('error-modal').classList.remove('hidden');
-            document.getElementById('error-message').textContent = 
-                'Your browser does not support audio recording. Please use a modern browser like Chrome, Firefox, or Edge.';
-        }
+    <script type="module" src="voiceChatbot.js"></script>
+    <script type="module" src="apiBridge.js"></script>
+    <script type="module">
+        import voiceChatbot from './voiceChatbot.js';
+        document.addEventListener('DOMContentLoaded', () => {
+            voiceChatbot.initialize();
+        });
     </script>
 </body>
 </html>
