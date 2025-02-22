@@ -1,17 +1,20 @@
 {
   "name": "amie-chatbot-frontend",
-  "homepage": "https://cordz-del.github.io/Amie-Chatbot-Frontend-clean",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://cordz-del.github.io/Amie-Chatbot-Frontend",
   "dependencies": {
-    "@testing-library/jest-dom": "^5.16.5",
+    "@fortawesome/fontawesome-svg-core": "^6.4.2",
+    "@fortawesome/free-solid-svg-icons": "^6.4.2",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.5.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4",
-    "axios": "^1.4.0"
+    "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -40,6 +43,6 @@
     ]
   },
   "devDependencies": {
-    "gh-pages": "^5.0.0"
+    "gh-pages": "^6.0.0"
   }
 }
