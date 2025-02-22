@@ -6,13 +6,16 @@ const handleSendMessage = async (e) => {
   e.preventDefault();
   if (inputMessage.trim() === '') return;
 
+  // Capture the current input message before clearing
+  const messageToSend = inputMessage;
+
   const userMessage = {
-    text: inputMessage,
+    text: messageToSend,
     sender: 'user',
     timestamp: new Date().toISOString()
   };
   setMessages(prev => [...prev, userMessage]);
-  setInputMessage('');
+  setInputMessage(''); // Clear input field immediately
   setIsLoading(true);
 
   try {
@@ -21,7 +24,7 @@ const handleSendMessage = async (e) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ message: inputMessage })
+      body: JSON.stringify({ message: messageToSend })
     });
 
     if (!response.ok) throw new Error('Network response was not ok');
@@ -35,7 +38,7 @@ const handleSendMessage = async (e) => {
     setMessages(prev => [...prev, botResponse]);
   } catch (error) {
     console.error('Error:', error);
-    // Add error handling UI if needed
+    // Optionally, update the UI to show an error message
   } finally {
     setIsLoading(false);
   }
@@ -46,22 +49,23 @@ const handleVoiceInput = async () => {
   if (!isRecording) {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      // Start recording logic
+      // TODO: Implement MediaRecorder setup to start recording with this stream.
+      // e.g., mediaRecorder.start() and capture audio chunks.
       setIsRecording(true);
     } catch (err) {
       console.error('Error accessing microphone:', err);
     }
   } else {
-    // Stop recording logic
+    // TODO: Implement logic to stop MediaRecorder and generate audioBlob from recorded chunks.
     setIsRecording(false);
-    // Send audio to backend
+    
     try {
       const response = await fetch(`${BACKEND_URL}/transcribe`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'audio/wav', // Adjust content type as needed
+          'Content-Type': 'audio/wav', // Adjust content type if needed
         },
-        body: audioBlob // You'll need to implement audio recording to get this blob
+        body: audioBlob // Ensure audioBlob is correctly created from your recording logic
       });
       
       if (!response.ok) throw new Error('Network response was not ok');
