@@ -1,240 +1,155 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // DOM Elements
-    const elements = {
-        startButton: document.getElementById('startChat'),
-        stopButton: document.getElementById('stopChat'),
-        chatMessages: document.getElementById('chat-messages'),
-        recordingStatus: document.getElementById('status-text'),
-        recordingIndicator: document.getElementById('recording-indicator'),
-        loadingOverlay: document.getElementById('loading-overlay'),
-        errorModal: document.getElementById('error-modal'),
-        errorMessage: document.getElementById('error-message')
-    };
+let recognition;
+let isListening = false;
 
-    // State management
-    const state = {
-        mediaRecorder: null,
-        audioChunks: [],
-        isRecording: false,
-        isProcessing: false
-    };
+// Initialize speech recognition
+if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+    recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    recognition.continuous = true;
+    recognition.interimResults = false;
+}
 
-    // Configuration
-    const config = {
-        audio: { 
-            sampleRate: 44100,
-            channelCount: 1,
-            echoCancellation: true,
-            noiseSuppression: true
-        },
-        maxRecordingDuration: 60000 // 60 seconds
-    };
+document.addEventListener('DOMContentLoaded', function() {
+    const chatbox = document.querySelector('.chatbox');
+    const inputField = document.querySelector('.input-field');
+    const sendButton = document.querySelector('.send-btn');
+    const micButton = document.querySelector('.mic-btn');
 
-    /**
-     * Initialize the application
-     */
-    function init() {
-        if (!navigator.mediaDevices?.getUserMedia) {
-            showError('Your browser does not support audio recording');
-            elements.startButton.disabled = true;
-            return;
-        }
-
-        setupEventListeners();
-        updateUIState();
-    }
-
-    /**
-     * Set up event listeners
-     */
-    function setupEventListeners() {
-        elements.startButton.addEventListener('click', startRecording);
-        elements.stopButton.addEventListener('click', stopRecording);
-        window.closeErrorModal = closeErrorModal;
-    }
-
-    /**
-     * Start audio recording
-     */
-    async function startRecording() {
-        if (state.isProcessing || state.isRecording) return;
-
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia({ 
-                audio: config.audio 
-            });
-            
-            state.mediaRecorder = new MediaRecorder(stream);
-            state.audioChunks = [];
-            state.isRecording = true;
-
-            state.mediaRecorder.ondataavailable = handleDataAvailable;
-            state.mediaRecorder.onstop = processRecording;
-
-            // Set recording timeout
-            setTimeout(() => {
-                if (state.isRecording) {
-                    stopRecording();
-                }
-            }, config.maxRecordingDuration);
-
-            // Start recording
-            state.mediaRecorder.start();
-            updateUIState('recording');
-            addMessage('Recording started...', 'user');
-
-        } catch (error) {
-            console.error('Recording error:', error);
-            showError('Error accessing microphone. Please ensure you have granted permission.');
-        }
-    }
-
-    /**
-     * Stop audio recording
-     */
-    function stopRecording() {
-        if (!state.mediaRecorder || !state.isRecording) return;
-
-        state.isRecording = false;
-        state.mediaRecorder.stop();
-        state.mediaRecorder.stream.getTracks().forEach(track => track.stop());
-        updateUIState('processing');
-    }
-
-    /**
-     * Handle audio data availability
-     * @param {BlobEvent} event 
-     */
-    function handleDataAvailable(event) {
-        if (event.data.size > 0) {
-            state.audioChunks.push(event.data);
-        }
-    }
-
-    /**
-     * Process recorded audio
-     */
-    async function processRecording() {
-        showLoading(true);
-        state.isProcessing = true;
-
-        try {
-            const audioBlob = new Blob(state.audioChunks, { type: 'audio/webm' });
-            const response = await sendAudioToServer(audioBlob);
-            
-            if (response?.text) {
-                addMessage(response.text, 'bot');
-            }
-
-        } catch (error) {
-            console.error('Processing error:', error);
-            showError('Error processing audio. Please try again.');
-        } finally {
-            state.isProcessing = false;
-            showLoading(false);
-            updateUIState('ready');
-        }
-    }
-
-    /**
-     * Send audio to server for processing
-     * @param {Blob} audioBlob 
-     * @returns {Promise<Object>}
-     */
-    async function sendAudioToServer(audioBlob) {
-        // TODO: Implement actual server communication
-        // This is a placeholder that simulates server processing
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        
-        const responses = [
-            "I understand how you're feeling. Would you like to talk more about that?",
-            "That sounds challenging. How does that make you feel?",
-            "I'm here to listen and help. Can you tell me more?",
-            "Your emotions are valid. Let's explore this together.",
-            "Thank you for sharing that with me. How can I support you?"
-        ];
-
-        return {
-            text: responses[Math.floor(Math.random() * responses.length)]
-        };
-    }
-
-    /**
-     * Add message to chat window
-     * @param {string} text 
-     * @param {string} type 
-     */
-    function addMessage(text, type) {
+    // Function to add messages to the chatbox
+    function addMessage(text, isUser = false) {
         const messageDiv = document.createElement('div');
-        messageDiv.classList.add('message', `${type}-message`);
-        
-        const timestamp = new Date().toLocaleTimeString();
-        messageDiv.innerHTML = `
-            <span class="message-text">${text}</span>
-            <span class="message-timestamp">${timestamp}</span>
-        `;
-        
-        elements.chatMessages.appendChild(messageDiv);
-        elements.chatMessages.scrollTop = elements.chatMessages.scrollHeight;
+        messageDiv.className = isUser ? 'message user-message' : 'message bot-message';
+        messageDiv.textContent = text;
+        chatbox.appendChild(messageDiv);
+        chatbox.scrollTop = chatbox.scrollHeight;
     }
 
-    /**
-     * Update UI state
-     * @param {string} state 
-     */
-    function updateUIState(state = 'ready') {
-        const states = {
-            ready: {
-                startButton: false,
-                stopButton: true,
-                statusText: 'Click \'Start Chat\' to begin',
-                indicator: false
-            },
-            recording: {
-                startButton: true,
-                stopButton: false,
-                statusText: 'Recording...',
-                indicator: true
-            },
-            processing: {
-                startButton: true,
-                stopButton: true,
-                statusText: 'Processing...',
-                indicator: false
+    // Function to handle sending messages to OpenAI and getting responses
+    async function handleMessage(userInput) {
+        if (!userInput.trim()) return;
+
+        // Display user message
+        addMessage(userInput, true);
+        inputField.value = '';
+
+        try {
+            // Send message to OpenAI
+            const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
+                },
+                body: JSON.stringify({
+                    model: "gpt-3.5-turbo",
+                    messages: [
+                        {
+                            role: "system",
+                            content: "You are Amie, a Social and Emotional Learning Assistant. Provide helpful, empathetic responses."
+                        },
+                        {
+                            role: "user",
+                            content: userInput
+                        }
+                    ]
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to get response from OpenAI');
             }
+
+            const data = await response.json();
+            const aiResponse = data.choices[0].message.content;
+
+            // Display AI response
+            addMessage(aiResponse, false);
+
+            // Speak the response using Deepgram
+            await speakResponse(aiResponse);
+
+        } catch (error) {
+            console.error('Error:', error);
+            addMessage("I'm sorry, I'm having trouble connecting to my services.", false);
+        }
+    }
+
+    // Function to handle text-to-speech using Deepgram
+    async function speakResponse(text) {
+        try {
+            const response = await fetch('https://api.deepgram.com/v1/speak', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Token ${process.env.DEEPGRAM_API_KEY}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    text: text,
+                    voice: "alloy",
+                    rate: 1.0,
+                    pitch: 1.0
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to get audio response');
+            }
+
+            const audioBlob = await response.blob();
+            const audioUrl = URL.createObjectURL(audioBlob);
+            const audio = new Audio(audioUrl);
+            await audio.play();
+        } catch (error) {
+            console.error('TTS Error:', error);
+        }
+    }
+
+    // Send button click handler
+    sendButton.addEventListener('click', () => {
+        handleMessage(inputField.value);
+    });
+
+    // Enter key handler
+    inputField.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            handleMessage(inputField.value);
+        }
+    });
+
+    // Speech recognition handlers
+    if (recognition) {
+        recognition.onresult = (event) => {
+            const last = event.results.length - 1;
+            const text = event.results[last][0].transcript;
+            handleMessage(text);
         };
 
-        const currentState = states[state];
-        elements.startButton.disabled = currentState.startButton;
-        elements.stopButton.disabled = currentState.stopButton;
-        elements.recordingStatus.textContent = currentState.statusText;
-        elements.recordingIndicator.classList.toggle('active', currentState.indicator);
+        recognition.onerror = (event) => {
+            console.error('Speech recognition error:', event.error);
+            isListening = false;
+            micButton.classList.remove('listening');
+        };
+
+        recognition.onend = () => {
+            isListening = false;
+            micButton.classList.remove('listening');
+        };
+
+        // Microphone button handler
+        micButton.addEventListener('click', () => {
+            if (!isListening) {
+                recognition.start();
+                isListening = true;
+                micButton.classList.add('listening');
+            } else {
+                recognition.stop();
+                isListening = false;
+                micButton.classList.remove('listening');
+            }
+        });
     }
 
-    /**
-     * Show/hide loading overlay
-     * @param {boolean} show 
-     */
-    function showLoading(show) {
-        elements.loadingOverlay.classList.toggle('hidden', !show);
-    }
-
-    /**
-     * Show error message
-     * @param {string} message 
-     */
-    function showError(message) {
-        elements.errorMessage.textContent = message;
-        elements.errorModal.classList.remove('hidden');
-    }
-
-    /**
-     * Close error modal
-     */
-    function closeErrorModal() {
-        elements.errorModal.classList.add('hidden');
-    }
-
-    // Initialize the application
-    init();
+    // Initial greeting
+    const initialGreeting = "Hello! I'm Amie, your Social and Emotional Learning Assistant. How can I help you today?";
+    addMessage(initialGreeting, false);
+    speakResponse(initialGreeting);
 });
