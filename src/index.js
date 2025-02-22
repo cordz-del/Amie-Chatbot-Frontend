@@ -1,5 +1,4 @@
 const express = require('express');
-const { Deepgram } = require('@deepgram/sdk');
 
 const app = express();
 
