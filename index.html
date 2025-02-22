@@ -3,42 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amie</title>
-    
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Comic+Sans+MS&family=Bubblegum+Sans&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome for icons -->
+    <title>Amie - Professional AI Assistant</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <h1 class="main-title">Amie</h1>
-        <h2 class="subtitle">Social and Emotional AI Assistant</h2>
+        <h2 class="subtitle">Professional AI Assistant</h2>
         
         <div id="chat-container">
             <div id="chat-history">
+                <div class="welcome-message">
+                    Welcome to Amie, your professional AI assistant. I'm here to help you with your questions and tasks. To begin our conversation, please click the "Start Chatting" button below.
+                </div>
                 <!-- Messages will be dynamically added here -->
             </div>
             <div id="controls">
                 <button id="startButton">
-                    🎤 Start Chatting
+                    Start Chatting
                 </button>
                 <button id="stopButton" disabled>
-                    🎵 Stop Chatting
+                    Stop Chatting
                 </button>
             </div>
         </div>
     </div>
 
     <footer>
-        2024 Amie SEL
+        <div class="footer-text">
+            © 2024 Amie Professional AI Assistant. All rights reserved. 
+            Designed to provide efficient and reliable assistance for your professional needs.
+        </div>
     </footer>
 
-    <!-- Rest of the JavaScript remains the same -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <!-- ... (keep existing JavaScript) ... -->
 </body>
