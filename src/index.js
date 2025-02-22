@@ -1,62 +1,57 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const OpenAI = require('openai');
+const { Configuration, OpenAIApi } = require('openai');
 const { Deepgram } = require('@deepgram/sdk');
 const multer = require('multer');
-const dotenv = require('dotenv');
-const bodyParser = require('body-parser');
 
-// Load environment variables
-dotenv.config();
-
-// Initialize Express app
 const app = express();
 
-// Configure CORS
+// Configure CORS to allow your frontend domains
 app.use(cors({
   origin: ['https://cordz-del.github.io', 'http://localhost:3000'],
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type']
 }));
 
-// Middleware
-app.use(bodyParser.json());
+// Use built-in middleware to parse JSON bodies
+app.use(express.json());
 
-// Initialize OpenAI (v3 syntax)
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
+// Initialize OpenAI using the new SDK syntax
+const configuration = new Configuration({
+  apiKey: process.env.OPENAI_API_KEY,
 });
+const openai = new OpenAIApi(configuration);
 
 // Initialize Deepgram
 const deepgram = new Deepgram(process.env.DEEPGRAM_API_KEY);
 
-// Configure multer for handling audio files
+// Configure multer for in-memory storage for audio uploads
 const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
+const upload = multer({ storage });
 
-// Routes
+// Root endpoint to verify the backend is running
 app.get('/', (req, res) => {
   res.send('Amie Chatbot Backend is running!');
 });
 
-// Chat endpoint
+// Chat endpoint: receives a message from the frontend and returns the AI response
 app.post('/chat', async (req, res) => {
   try {
     const userMessage = req.body.message;
-    
     const completion = await openai.createChatCompletion({
-      model: "gpt-3.5-turbo",
+      model: 'gpt-3.5-turbo',
       messages: [
         {
-          role: "system",
-          content: "You are Amie, a helpful and friendly AI assistant. Provide clear and concise responses."
+          role: 'system',
+          content: 'You are Amie, a helpful and friendly AI assistant. Provide clear and concise responses.'
         },
         {
-          role: "user",
+          role: 'user',
           content: userMessage
         }
       ],
-      max_tokens: 150
+      max_tokens: 150,
     });
 
     res.json({
@@ -68,7 +63,7 @@ app.post('/chat', async (req, res) => {
   }
 });
 
-// Voice transcription endpoint
+// Transcribe endpoint: receives an audio file and returns the transcription using Deepgram
 app.post('/transcribe', upload.single('audio'), async (req, res) => {
   try {
     if (!req.file) {
@@ -87,23 +82,20 @@ app.post('/transcribe', upload.single('audio'), async (req, res) => {
     });
 
     const transcription = response.results.channels[0].alternatives[0].transcript;
-
-    res.json({
-      transcription: transcription
-    });
+    res.json({ transcription });
   } catch (error) {
     console.error('Error in transcribe endpoint:', error);
     res.status(500).json({ error: 'Failed to transcribe audio' });
   }
 });
 
-// Error handling middleware
+// Global error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Something went wrong!' });
 });
 
-// Start server
+// Start the server on the specified PORT or default to 3000
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
