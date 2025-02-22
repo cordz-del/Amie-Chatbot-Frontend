@@ -17,21 +17,35 @@ function App() {
     setInputText('');
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (inputText.trim() === '') return;
 
+    // Add user message
     const newMessages = [...messages, { text: inputText, sender: 'user' }];
     setMessages(newMessages);
     setInputText('');
 
-    // Simulate AI response
-    setTimeout(() => {
-      setMessages([...newMessages, { 
-        text: "I'm processing your message...", 
-        sender: 'ai' 
-      }]);
-    }, 1000);
+    try {
+      // Add loading message
+      setMessages([...newMessages, { text: "Thinking...", sender: 'ai' }]);
+
+      // Make API call to your backend
+      const response = await fetch('https://your-backend-url/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: inputText }),
+      });
+
+      const data = await response.json();
+      
+      // Update with AI response
+      setMessages([...newMessages, { text: data.response, sender: 'ai' }]);
+    } catch (error) {
+      setMessages([...newMessages, { text: "Sorry, I'm having trouble connecting right now.", sender: 'ai' }]);
+    }
   };
 
   return (
