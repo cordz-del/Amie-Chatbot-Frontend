@@ -48,7 +48,7 @@ body {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     padding: 30px;
     margin: 0 auto;
-    width: 81%; /* Reduced by 5% from previous 86% */
+    width: 76%; /* Reduced by another 5% */
     max-width: 1000px;
     height: 110%;
 }
@@ -102,7 +102,7 @@ button {
 }
 
 #startButton:disabled, #stopButton:disabled {
-    background-color: #666666; /* Darker grey for disabled buttons */
+    background-color: #444444; /* Even darker grey for disabled buttons */
     cursor: not-allowed;
 }
 
@@ -114,12 +114,12 @@ footer {
     text-align: center;
     padding: 20px;
     color: #004080;
-    margin-top: 40px;
+    margin-top: 80px; /* Increased margin to move footer down */
     font-size: 0.9rem;
     width: 100%;
-    position: relative;
-    left: 50%;
-    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 @media (max-width: 768px) {
