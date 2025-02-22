@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/Amie-Chatbot-Frontend-clean/static/css/main.5fb0d34d.css",
-    "main.js": "/Amie-Chatbot-Frontend-clean/static/js/main.1e3fa763.js",
-    "static/js/453.dd610bd2.chunk.js": "/Amie-Chatbot-Frontend-clean/static/js/453.dd610bd2.chunk.js",
-    "index.html": "/Amie-Chatbot-Frontend-clean/index.html",
-    "main.5fb0d34d.css.map": "/Amie-Chatbot-Frontend-clean/static/css/main.5fb0d34d.css.map",
-    "main.1e3fa763.js.map": "/Amie-Chatbot-Frontend-clean/static/js/main.1e3fa763.js.map",
-    "453.dd610bd2.chunk.js.map": "/Amie-Chatbot-Frontend-clean/static/js/453.dd610bd2.chunk.js.map"
+    "main.css": "/Amie-Chatbot-Frontend/static/css/main.d840f8df.css",
+    "main.js": "/Amie-Chatbot-Frontend/static/js/main.d1717fca.js",
+    "static/js/453.dd610bd2.chunk.js": "/Amie-Chatbot-Frontend/static/js/453.dd610bd2.chunk.js",
+    "index.html": "/Amie-Chatbot-Frontend/index.html",
+    "main.d840f8df.css.map": "/Amie-Chatbot-Frontend/static/css/main.d840f8df.css.map",
+    "main.d1717fca.js.map": "/Amie-Chatbot-Frontend/static/js/main.d1717fca.js.map",
+    "453.dd610bd2.chunk.js.map": "/Amie-Chatbot-Frontend/static/js/453.dd610bd2.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.5fb0d34d.css",
-    "static/js/main.1e3fa763.js"
+    "static/css/main.d840f8df.css",
+    "static/js/main.d1717fca.js"
   ]
 }
