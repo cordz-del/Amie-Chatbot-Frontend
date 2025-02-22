@@ -43,8 +43,8 @@ body {
     margin: 0 auto;
     width: 55%;
     max-width: 650px;
-    height: calc(100vh - 300px);
-    min-height: 280px;
+    height: calc(100vh - 380px); /* Reduced height */
+    min-height: 200px; /* Reduced min-height */
     display: flex;
     flex-direction: column;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -64,8 +64,8 @@ body {
 .welcome-message {
     text-align: center;
     color: #495057;
-    padding: 15px;
-    margin: 15px auto;
+    padding: 12px;
+    margin: 10px auto;
     max-width: 80%;
     line-height: 1.5;
     font-size: 1em;
@@ -98,21 +98,15 @@ body {
     color: white;
 }
 
-.typing {
-    font-style: italic;
-    color: #6c757d;
-    font-size: 0.9em;
-}
-
 #controls {
     display: flex;
     gap: 12px;
     justify-content: center;
-    padding: 10px 0;
+    padding: 8px 0;
 }
 
 button {
-    padding: 10px 24px;
+    padding: 8px 24px;
     font-size: 0.95em;
     border: none;
     border-radius: 6px;
@@ -123,6 +117,7 @@ button {
     font-weight: 500;
     letter-spacing: 0.3px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100px;
 }
 
 button:hover {
@@ -133,7 +128,6 @@ button:hover {
 
 button:disabled {
     background: #666666;
-    color: #ffffff;
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
@@ -141,7 +135,7 @@ button:disabled {
 
 footer {
     background-color: #ffffff;
-    padding: 15px;
+    padding: 12px;
     text-align: center;
     border-top: 1px solid #e6e9ec;
     color: #495057;
@@ -178,7 +172,7 @@ footer {
 @media (max-width: 1200px) {
     #chat-container {
         width: 60%;
-        height: calc(100vh - 280px);
+        height: calc(100vh - 360px);
     }
 }
 
@@ -189,7 +183,7 @@ footer {
 
     #chat-container {
         width: 70%;
-        height: calc(100vh - 260px);
+        height: calc(100vh - 340px);
     }
 
     .main-title {
@@ -204,17 +198,12 @@ footer {
         padding: 8px 20px;
         font-size: 0.9em;
     }
-
-    .welcome-message {
-        font-size: 0.95em;
-        padding: 12px;
-    }
 }
 
 @media (max-width: 480px) {
     #chat-container {
         width: 85%;
-        height: calc(100vh - 240px);
+        height: calc(100vh - 320px);
     }
 
     .main-title {
