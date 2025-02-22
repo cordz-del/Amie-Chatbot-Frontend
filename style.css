@@ -3,45 +3,58 @@ body {
     margin: 0;
     padding: 20px;
     background-color: #f0f2f5;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .container {
     max-width: 1200px;
     margin: 0 auto;
     text-align: center;
+    flex: 1;
 }
 
 .main-title {
-    font-size: 4rem;
+    font-size: 8rem; /* 2 times larger */
     text-align: center;
     margin-bottom: 10px;
-    background: linear-gradient(to right, #00264d, #0059b3, #3399ff);
+    background: linear-gradient(to right, 
+        #001f3f, /* Dark blue for 'A' */
+        #003366, /* Lighter for 'm' */
+        #004080, /* Lighter for 'i' */
+        #0059b3  /* Lightest for 'e' */
+    );
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
     display: inline-block;
+    font-weight: bold;
 }
 
 .subtitle {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     text-align: center;
-    color: #333;
+    color: #004080; /* Blue color */
     margin-bottom: 30px;
     font-weight: normal;
+    position: relative;
+    top: -20px; /* Moves it up closer to title */
 }
 
 #chat-container {
-    background: linear-gradient(to right, #00264d, #0059b3);
+    background: linear-gradient(135deg, #001f3f, #004080); /* Dark blue to blue gradient */
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     padding: 30px;
     margin: 0 auto;
-    width: 90%;
+    width: 86%; /* Decreased by 4% from 90% */
     max-width: 1000px;
+    height: 110%; /* Increased by 10% */
 }
 
 #chat-history {
-    height: 500px;
+    height: 550px; /* Increased height */
     width: 75%;
     margin: 0 auto 20px auto;
     overflow-y: auto;
@@ -73,6 +86,7 @@ body {
     justify-content: center;
     gap: 20px;
     padding: 20px;
+    margin-top: 20px;
 }
 
 button {
@@ -84,10 +98,7 @@ button {
     font-weight: bold;
     transition: all 0.3s ease;
     color: white;
-}
-
-#startButton {
-    background-color: #0059b3;
+    background-color: #1e90ff; /* Brighter blue for buttons */
 }
 
 #startButton:disabled {
@@ -96,11 +107,7 @@ button {
 }
 
 #startButton:not(:disabled):hover {
-    background-color: #003d80;
-}
-
-#stopButton {
-    background-color: #666;
+    background-color: #007bff;
 }
 
 #stopButton:disabled {
@@ -109,16 +116,24 @@ button {
 }
 
 #stopButton:not(:disabled) {
-    background-color: #0059b3;
+    background-color: #1e90ff;
 }
 
 #stopButton:not(:disabled):hover {
-    background-color: #003d80;
+    background-color: #007bff;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #004080;
+    margin-top: 40px; /* 4 spaces below container */
+    font-size: 0.9rem;
 }
 
 @media (max-width: 768px) {
     .main-title {
-        font-size: 3rem;
+        font-size: 4rem;
     }
 
     .subtitle {
