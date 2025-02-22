@@ -6,7 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Amie</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Add Font Awesome for icons if needed -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -28,10 +27,14 @@
         </div>
     </div>
 
-    <!-- Essential third-party libraries -->
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <footer>
+        © 2023 Amie AI Assistant. All rights reserved.
+    </footer>
+
+    <!-- Add this BEFORE your module scripts -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     
-    <!-- Application scripts -->
+    <!-- Then your module scripts -->
     <script type="module" src="./voiceChatbot.js"></script>
     <script type="module" src="./apiBridge.js"></script>
     <script type="module">
