@@ -12,18 +12,35 @@
         <p class="subtitle">Social and Emotional Learning Assistant</p>
         
         <div id="chat-container">
-            <div id="chat-history">
+            <div id="chat-messages">
                 <div class="welcome-message">
                     Welcome! I am Amie! I hope to help you on your journey of Social and Emotional Learning. Please press the Start button when you are ready to begin.
                 </div>
                 <!-- Chat messages will be dynamically added here -->
             </div>
             
-            <div id="controls">
-                <button id="startBtn">Start</button>
-                <button id="stopBtn">Stop</button>
+            <div class="controls">
+                <button id="startChat">Start</button>
+                <button id="stopChat">Stop</button>
+            </div>
+
+            <div class="status">
+                <div id="recording-indicator"></div>
+                <p id="status-text">Ready</p>
             </div>
         </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Error Modal -->
+    <div id="error-modal" class="error-modal">
+        <h2>Error</h2>
+        <p id="error-message"></p>
+        <button id="close-error" class="close-button">Close</button>
     </div>
 
     <footer>
@@ -32,6 +49,6 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
