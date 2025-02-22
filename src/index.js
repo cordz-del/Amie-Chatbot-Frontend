@@ -1,7 +1,3 @@
-const express = require('express');
-
-const app = express();
-
 // Use built-in middleware to parse JSON bodies
 app.use(express.json());
 
