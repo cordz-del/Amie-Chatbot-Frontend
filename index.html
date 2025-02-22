@@ -3,44 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Amie</title>
+    <title>Amie - Your Friendly Chat Buddy!</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Sans+MS&family=Bubblegum+Sans&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
-        <h1 class="main-title">Amie</h1>
-        <h2 class="subtitle">AI Assistant in Social and Emotional Learning</h2>
+        <h1 class="main-title">Amie 🎀</h1>
+        <p class="subtitle">Your Friendly Chat Buddy! ✨</p>
         
         <div id="chat-container">
-            <div id="chat-history"></div>
-            
+            <div id="chat-history">
+                <!-- Messages will be dynamically added here -->
+            </div>
             <div id="controls">
                 <button id="startButton">
-                    <i class="fas fa-microphone"></i> Start Chat
+                    🎤 Start Chatting
                 </button>
                 <button id="stopButton" disabled>
-                    <i class="fas fa-stop"></i> Stop Chat
+                    🎵 Stop Chatting
                 </button>
             </div>
         </div>
     </div>
 
     <footer>
-        © 2023 Amie AI Assistant. All rights reserved.
+        Made with 💖 by Your Friends
     </footer>
 
-    <!-- Add this BEFORE your module scripts -->
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    
-    <!-- Then your module scripts -->
-    <script type="module" src="./voiceChatbot.js"></script>
-    <script type="module" src="./apiBridge.js"></script>
-    <script type="module">
-        import { initializeVoiceChatbot } from './voiceChatbot.js';
-        document.addEventListener('DOMContentLoaded', () => {
-            initializeVoiceChatbot();
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        // DOM Elements
+        const chatHistory = document.getElementById('chat-history');
+        const startButton = document.getElementById('startButton');
+        const stopButton = document.getElementById('stopButton');
+
+        // Variables for handling speech recognition
+        let recognition;
+        let isListening = false;
+
+        // Initialize speech recognition
+        if ('webkitSpeechRecognition' in window) {
+            recognition = new webkitSpeechRecognition();
+            recognition.continuous = true;
+            recognition.interimResults = true;
+
+            recognition.onstart = () => {
+                isListening = true;
+                startButton.disabled = true;
+                stopButton.disabled = false;
+                addMessage('Listening...', 'amie typing');
+            };
+
+            recognition.onend = () => {
+                isListening = false;
+                startButton.disabled = false;
+                stopButton.disabled = true;
+                // Remove the typing message
+                const typingMessage = chatHistory.querySelector('.typing');
+                if (typingMessage) {
+                    typingMessage.remove();
+                }
+            };
+
+            recognition.onresult = (event) => {
+                const last = event.results.length - 1;
+                const text = event.results[last][0].transcript;
+
+                // Remove typing message if exists
+                const typingMessage = chatHistory.querySelector('.typing');
+                if (typingMessage) {
+                    typingMessage.remove();
+                }
+
+                // Add user's message
+                addMessage(text, 'you');
+
+                // Simulate Amie's response (replace with actual API call)
+                setTimeout(() => {
+                    addMessage("I'm here to help! What would you like to talk about?", 'amie');
+                }, 1000);
+            };
+
+            recognition.onerror = (event) => {
+                console.error('Speech recognition error:', event.error);
+                isListening = false;
+                startButton.disabled = false;
+                stopButton.disabled = true;
+            };
+        } else {
+            // Browser doesn't support speech recognition
+            startButton.disabled = true;
+            addMessage("Sorry, your browser doesn't support speech recognition.", 'amie');
+        }
+
+        // Event Listeners
+        startButton.addEventListener('click', () => {
+            if (!isListening && recognition) {
+                recognition.start();
+            }
+        });
+
+        stopButton.addEventListener('click', () => {
+            if (isListening && recognition) {
+                recognition.stop();
+            }
+        });
+
+        // Helper function to add messages to chat
+        function addMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message', sender);
+            messageDiv.textContent = text;
+            chatHistory.appendChild(messageDiv);
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+        }
+
+        // Add welcome message
+        window.addEventListener('load', () => {
+            addMessage("Hi! I'm Amie, your friendly chat buddy! Click the Start Chatting button to talk with me! 🌟", 'amie');
         });
     </script>
 </body>
