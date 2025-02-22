@@ -15,14 +15,21 @@ body {
 }
 
 .main-title {
-    color: #87CEEB; /* Lighter shade of blue for Amie */
+    color: #4B9CD3; /* Lighter blue for Amie */
     font-size: 3em;
     margin-bottom: 10px;
     font-family: 'Bubblegum Sans', cursive;
 }
 
+.subtitle {
+    color: #4B9CD3; /* Same blue as Amie */
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    font-family: 'Comic Sans MS', cursive;
+}
+
 #chat-container {
-    background-color: #E6F3FF; /* Lighter shade of blue for chat container */
+    background-color: #E6F3FF;
     border-radius: 15px;
     padding: 20px;
     margin: 20px auto;
@@ -74,14 +81,14 @@ button {
     border: none;
     border-radius: 25px;
     cursor: pointer;
-    background-color: #FFB6C1;
+    background-color: #4B9CD3; /* Changed to blue */
     color: white;
     transition: background-color 0.3s;
     font-family: 'Comic Sans MS', cursive;
 }
 
 button:hover {
-    background-color: #FF69B4;
+    background-color: #3D7DAA; /* Darker blue on hover */
 }
 
 button:disabled {
@@ -107,10 +114,10 @@ footer {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #FFB6C1;
+    background: #4B9CD3; /* Changed to blue */
     border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #FF69B4;
+    background: #3D7DAA; /* Darker blue on hover */
 }
