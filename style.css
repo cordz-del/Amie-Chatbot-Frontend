@@ -16,14 +16,14 @@ body {
 }
 
 .main-title {
-    font-size: 8rem; /* 2 times larger */
+    font-size: 8rem;
     text-align: center;
     margin-bottom: 10px;
     background: linear-gradient(to right, 
-        #001f3f, /* Dark blue for 'A' */
-        #003366, /* Lighter for 'm' */
-        #004080, /* Lighter for 'i' */
-        #0059b3  /* Lightest for 'e' */
+        #001f3f,
+        #003366,
+        #004080,
+        #0059b3
     );
     -webkit-background-clip: text;
     background-clip: text;
@@ -35,26 +35,26 @@ body {
 .subtitle {
     font-size: 1.8rem;
     text-align: center;
-    color: #004080; /* Blue color */
+    color: #004080;
     margin-bottom: 30px;
     font-weight: normal;
     position: relative;
-    top: -20px; /* Moves it up closer to title */
+    top: -20px;
 }
 
 #chat-container {
-    background: linear-gradient(135deg, #001f3f, #004080); /* Dark blue to blue gradient */
+    background: linear-gradient(135deg, #001f3f, #004080);
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     padding: 30px;
     margin: 0 auto;
-    width: 86%; /* Decreased by 4% from 90% */
+    width: 81%; /* Reduced by 5% from previous 86% */
     max-width: 1000px;
-    height: 110%; /* Increased by 10% */
+    height: 110%;
 }
 
 #chat-history {
-    height: 550px; /* Increased height */
+    height: 550px;
     width: 75%;
     margin: 0 auto 20px auto;
     overflow-y: auto;
@@ -98,28 +98,15 @@ button {
     font-weight: bold;
     transition: all 0.3s ease;
     color: white;
-    background-color: #1e90ff; /* Brighter blue for buttons */
-}
-
-#startButton:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
-}
-
-#startButton:not(:disabled):hover {
-    background-color: #007bff;
-}
-
-#stopButton:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
-}
-
-#stopButton:not(:disabled) {
     background-color: #1e90ff;
 }
 
-#stopButton:not(:disabled):hover {
+#startButton:disabled, #stopButton:disabled {
+    background-color: #666666; /* Darker grey for disabled buttons */
+    cursor: not-allowed;
+}
+
+#startButton:not(:disabled):hover, #stopButton:not(:disabled):hover {
     background-color: #007bff;
 }
 
@@ -127,8 +114,12 @@ footer {
     text-align: center;
     padding: 20px;
     color: #004080;
-    margin-top: 40px; /* 4 spaces below container */
+    margin-top: 40px;
     font-size: 0.9rem;
+    width: 100%;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 @media (max-width: 768px) {
@@ -141,7 +132,7 @@ footer {
     }
 
     #chat-container {
-        width: 95%;
+        width: 90%;
         padding: 15px;
     }
 
