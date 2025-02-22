@@ -1,155 +1,178 @@
-let recognition;
-let isListening = false;
+document.addEventListener('DOMContentLoaded', () => {
+    // DOM Elements
+    const startButton = document.getElementById('startChat');
+    const stopButton = document.getElementById('stopChat');
+    const chatMessages = document.getElementById('chat-messages');
+    const recordingStatus = document.getElementById('status-text');
+    const recordingIndicator = document.getElementById('recording-indicator');
+    const loadingOverlay = document.getElementById('loading-overlay');
+    const errorModal = document.getElementById('error-modal');
+    const errorMessage = document.getElementById('error-message');
+    const closeErrorButton = document.getElementById('close-error');
 
-// Initialize speech recognition
-if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-    recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-    recognition.continuous = true;
-    recognition.interimResults = false;
-}
+    let mediaRecorder;
+    let audioChunks = [];
+    let isRecording = false;
 
-document.addEventListener('DOMContentLoaded', function() {
-    const chatbox = document.querySelector('.chatbox');
-    const inputField = document.querySelector('.input-field');
-    const sendButton = document.querySelector('.send-btn');
-    const micButton = document.querySelector('.mic-btn');
-
-    // Function to add messages to the chatbox
-    function addMessage(text, isUser = false) {
-        const messageDiv = document.createElement('div');
-        messageDiv.className = isUser ? 'message user-message' : 'message bot-message';
-        messageDiv.textContent = text;
-        chatbox.appendChild(messageDiv);
-        chatbox.scrollTop = chatbox.scrollHeight;
-    }
-
-    // Function to handle sending messages to OpenAI and getting responses
-    async function handleMessage(userInput) {
-        if (!userInput.trim()) return;
-
-        // Display user message
-        addMessage(userInput, true);
-        inputField.value = '';
-
-        try {
-            // Send message to OpenAI
-            const response = await fetch('https://api.openai.com/v1/chat/completions', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
-                },
-                body: JSON.stringify({
-                    model: "gpt-3.5-turbo",
-                    messages: [
-                        {
-                            role: "system",
-                            content: "You are Amie, a Social and Emotional Learning Assistant. Provide helpful, empathetic responses."
-                        },
-                        {
-                            role: "user",
-                            content: userInput
-                        }
-                    ]
-                })
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to get response from OpenAI');
-            }
-
-            const data = await response.json();
-            const aiResponse = data.choices[0].message.content;
-
-            // Display AI response
-            addMessage(aiResponse, false);
-
-            // Speak the response using Deepgram
-            await speakResponse(aiResponse);
-
-        } catch (error) {
-            console.error('Error:', error);
-            addMessage("I'm sorry, I'm having trouble connecting to my services.", false);
-        }
-    }
-
-    // Function to handle text-to-speech using Deepgram
-    async function speakResponse(text) {
-        try {
-            const response = await fetch('https://api.deepgram.com/v1/speak', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Token ${process.env.DEEPGRAM_API_KEY}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    text: text,
-                    voice: "alloy",
-                    rate: 1.0,
-                    pitch: 1.0
-                })
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to get audio response');
-            }
-
-            const audioBlob = await response.blob();
-            const audioUrl = URL.createObjectURL(audioBlob);
-            const audio = new Audio(audioUrl);
-            await audio.play();
-        } catch (error) {
-            console.error('TTS Error:', error);
-        }
-    }
-
-    // Send button click handler
-    sendButton.addEventListener('click', () => {
-        handleMessage(inputField.value);
-    });
-
-    // Enter key handler
-    inputField.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            handleMessage(inputField.value);
-        }
-    });
-
-    // Speech recognition handlers
-    if (recognition) {
-        recognition.onresult = (event) => {
-            const last = event.results.length - 1;
-            const text = event.results[last][0].transcript;
-            handleMessage(text);
-        };
-
-        recognition.onerror = (event) => {
-            console.error('Speech recognition error:', event.error);
-            isListening = false;
-            micButton.classList.remove('listening');
-        };
-
-        recognition.onend = () => {
-            isListening = false;
-            micButton.classList.remove('listening');
-        };
-
-        // Microphone button handler
-        micButton.addEventListener('click', () => {
-            if (!isListening) {
-                recognition.start();
-                isListening = true;
-                micButton.classList.add('listening');
-            } else {
-                recognition.stop();
-                isListening = false;
-                micButton.classList.remove('listening');
-            }
+    // Close error modal when clicking the close button
+    if (closeErrorButton) {
+        closeErrorButton.addEventListener('click', () => {
+            errorModal.style.display = 'none';
         });
     }
 
-    // Initial greeting
-    const initialGreeting = "Hello! I'm Amie, your Social and Emotional Learning Assistant. How can I help you today?";
-    addMessage(initialGreeting, false);
-    speakResponse(initialGreeting);
+    // Function to show loading overlay
+    const showLoading = () => {
+        if (loadingOverlay) {
+            loadingOverlay.style.display = 'flex';
+        }
+    };
+
+    // Function to hide loading overlay
+    const hideLoading = () => {
+        if (loadingOverlay) {
+            loadingOverlay.style.display = 'none';
+        }
+    };
+
+    // Function to show error message
+    const showError = (message) => {
+        if (errorModal && errorMessage) {
+            errorMessage.textContent = message;
+            errorModal.style.display = 'block';
+        }
+    };
+
+    // Function to add message to chat
+    const addMessageToChat = (message, isUser = false) => {
+        if (chatMessages) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = isUser ? 'user-message' : 'ai-message';
+            messageDiv.textContent = message;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+    };
+
+    // Function to send message to chat endpoint
+    const sendMessage = async (message) => {
+        try {
+            const response = await fetch('/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+            return data.response;
+        } catch (error) {
+            console.error('Error:', error);
+            showError('Failed to get response from server');
+            return null;
+        }
+    };
+
+    // Function to start recording
+    const startRecording = async () => {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+            audioChunks = [];
+            isRecording = true;
+
+            mediaRecorder.ondataavailable = (event) => {
+                audioChunks.push(event.data);
+            };
+
+            mediaRecorder.onstop = async () => {
+                const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                await processAudio(audioBlob);
+            };
+
+            mediaRecorder.start();
+            if (recordingStatus) recordingStatus.textContent = 'Recording...';
+            if (recordingIndicator) recordingIndicator.style.display = 'block';
+            if (startButton) startButton.disabled = true;
+            if (stopButton) stopButton.disabled = false;
+        } catch (error) {
+            console.error('Error starting recording:', error);
+            showError('Could not access microphone. Please ensure you have granted permission.');
+        }
+    };
+
+    // Function to stop recording
+    const stopRecording = () => {
+        if (mediaRecorder && isRecording) {
+            mediaRecorder.stop();
+            mediaRecorder.stream.getTracks().forEach(track => track.stop());
+            isRecording = false;
+            if (recordingStatus) recordingStatus.textContent = 'Processing...';
+            if (recordingIndicator) recordingIndicator.style.display = 'none';
+            if (startButton) startButton.disabled = false;
+            if (stopButton) stopButton.disabled = true;
+        }
+    };
+
+    // Function to process recorded audio
+    const processAudio = async (audioBlob) => {
+        try {
+            showLoading();
+            const formData = new FormData();
+            formData.append('audio', audioBlob);
+
+            const response = await fetch('/transcribe', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error('Transcription failed');
+            }
+
+            const data = await response.json();
+            if (data.success && data.transcript) {
+                addMessageToChat(data.transcript, true);
+                const aiResponse = await sendMessage(data.transcript);
+                if (aiResponse) {
+                    addMessageToChat(aiResponse, false);
+                }
+            }
+        } catch (error) {
+            console.error('Error processing audio:', error);
+            showError('Failed to process audio');
+        } finally {
+            hideLoading();
+            if (recordingStatus) recordingStatus.textContent = 'Ready';
+        }
+    };
+
+    // Initialize buttons and event listeners
+    if (startButton && stopButton) {
+        startButton.addEventListener('click', () => {
+            if (!isRecording) {
+                startRecording();
+            }
+        });
+
+        stopButton.addEventListener('click', () => {
+            if (isRecording) {
+                stopRecording();
+            }
+        });
+
+        // Initially disable stop button
+        stopButton.disabled = true;
+    }
+
+    // Check if browser supports required APIs
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        showError('Your browser does not support audio recording');
+        if (startButton) startButton.disabled = true;
+    }
 });
