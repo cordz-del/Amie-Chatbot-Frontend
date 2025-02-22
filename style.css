@@ -41,10 +41,10 @@ body {
     border-radius: 10px;
     padding: 25px;
     margin: 0 auto;
-    width: 95%;
-    max-width: 1200px;
+    width: 61.75%;
+    max-width: 780px;
     height: calc(100vh - 250px);
-    min-height: 500px;
+    min-height: 325px;
     display: flex;
     flex-direction: column;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -132,7 +132,8 @@ button:hover {
 }
 
 button:disabled {
-    background: #e0e0e0;
+    background: #666666;
+    color: #ffffff;
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
@@ -176,7 +177,7 @@ footer {
 /* Responsive Design */
 @media (max-width: 1200px) {
     #chat-container {
-        width: 90%;
+        width: 65%;
         height: calc(100vh - 220px);
     }
     
@@ -191,7 +192,7 @@ footer {
     }
 
     #chat-container {
-        width: 95%;
+        width: 75%;
         padding: 15px;
         height: calc(100vh - 200px);
     }
@@ -217,7 +218,7 @@ footer {
 
 @media (max-width: 480px) {
     #chat-container {
-        width: 100%;
+        width: 90%;
         height: calc(100vh - 180px);
     }
 
