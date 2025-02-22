@@ -1,6 +1,5 @@
 const express = require('express');
 const { Deepgram } = require('@deepgram/sdk');
-const multer = require('multer');
 
 const app = express();
 
