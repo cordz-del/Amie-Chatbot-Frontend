@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import './Chat.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMicrophone, faStop, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 
 const Chat = () => {
   const [messages, setMessages] = useState([]);
@@ -31,7 +33,10 @@ const Chat = () => {
       setMessages(prev => [...prev, { text: response.data.response, sender: 'ai' }]);
     } catch (error) {
       console.error('Error sending message:', error);
-      setMessages(prev => [...prev, { text: 'Sorry, I encountered an error.', sender: 'ai' }]);
+      setMessages(prev => [...prev, { 
+        text: 'Sorry, I encountered an error connecting to the server.', 
+        sender: 'ai' 
+      }]);
     }
   };
 
@@ -63,6 +68,10 @@ const Chat = () => {
       setIsRecording(true);
     } catch (error) {
       console.error('Error starting recording:', error);
+      setMessages(prev => [...prev, { 
+        text: 'Sorry, I encountered an error accessing the microphone.', 
+        sender: 'system' 
+      }]);
     }
   };
 
@@ -76,7 +85,6 @@ const Chat = () => {
 
   const handleAudioSubmit = async (audioBlob) => {
     try {
-      // Create form data
       const formData = new FormData();
       formData.append('audio', audioBlob);
 
@@ -104,7 +112,10 @@ const Chat = () => {
     } catch (error) {
       console.error('Error sending audio:', error);
       setMessages(prev => prev.filter(msg => msg.text !== 'Transcribing...'));
-      setMessages(prev => [...prev, { text: 'Sorry, I had trouble processing the audio.', sender: 'ai' }]);
+      setMessages(prev => [...prev, { 
+        text: 'Sorry, I had trouble processing the audio.', 
+        sender: 'system' 
+      }]);
     }
   };
 
@@ -113,7 +124,10 @@ const Chat = () => {
       <div className="messages">
         {messages.map((message, index) => (
           <div key={index} className={`message ${message.sender}`}>
-            <div className="message-content">{message.text}</div>
+            <div className="message-content">
+              {message.sender === 'ai' && <div className="ai-label">AMIE</div>}
+              {message.text}
+            </div>
           </div>
         ))}
         <div ref={messagesEndRef} />
@@ -128,14 +142,14 @@ const Chat = () => {
           className="message-input"
         />
         <button type="submit" className="send-button">
-          Send
+          <FontAwesomeIcon icon={faPaperPlane} />
         </button>
         <button
           type="button"
           onClick={isRecording ? stopRecording : startRecording}
           className={`record-button ${isRecording ? 'recording' : ''}`}
         >
-          {isRecording ? 'Stop Recording' : 'Start Recording'}
+          <FontAwesomeIcon icon={isRecording ? faStop : faMicrophone} />
         </button>
       </form>
     </div>
