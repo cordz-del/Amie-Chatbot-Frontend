@@ -4,7 +4,7 @@
   "private": true,
   // The homepage tells Create React App where the app is hosted
   // so it can generate correct paths for bundled assets.
-  "homepage": "https://cordz-del.github.io/Amie-Chatbot-Frontend/",
+  "homepage": "https://cordz-del.github.io/Amie-Chatbot-Frontend/"
 
   "scripts": {
     "start": "react-scripts start",
