@@ -12,8 +12,6 @@
       "sizes": "64x64 32x32 16x16",
       "type": "image/x-icon"
     }
-    /* 
-       You can add additional icon sizes here if needed (e.g., PNG or SVG for better device coverage):
        {
          "src": "icons/icon-192.png",
          "type": "image/png",
