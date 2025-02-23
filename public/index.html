@@ -2,16 +2,26 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="./favicon.ico" />
+    
+    <!-- Primary Meta Tags -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
-    <meta name="description" content="Amie Chatbot - Your AI Assistant" />
-    <link rel="apple-touch-icon" href="./logo192.png" />
-    <link rel="manifest" href="./manifest.json" />
+
+    <!-- The favicon & manifest references use the %PUBLIC_URL% prefix in CRA. -->
+    <!-- This ensures that when you deploy to GitHub Pages at /Amie-Chatbot-Frontend/,
+         it will correctly find /Amie-Chatbot-Frontend/favicon.ico and so on. -->
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+
+    <!-- Adjust the <title> to whatever you prefer for your site: -->
     <title>Amie Chatbot</title>
   </head>
+
   <body>
+    <!-- This message appears if the user has JavaScript disabled. -->
     <noscript>You need to enable JavaScript to run this app.</noscript>
+    
+    <!-- The React app mounts on the #root element. Don't remove this. -->
     <div id="root"></div>
   </body>
 </html>
