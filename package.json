@@ -2,31 +2,17 @@
   "name": "amie-chatbot-frontend",
   "version": "1.0.0",
   "private": true,
-
-  // This field tells Create React App the sub-path where your site is hosted.
-  "homepage": "https://<your-username>.github.io/<your-repo>/",
-
+  "homepage": "https://cordz-del.github.io/Amie-Chatbot-Frontend/",
   "scripts": {
-    // Standard CRA scripts
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-
-    // Optional: If using gh-pages for deployment,
-    // add a deploy script:
-    // "deploy": "gh-pages -d build"
+    "eject": "react-scripts eject"
   },
-
   "dependencies": {
-    // your existing dependencies
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-scripts": "^5.0.1",
-    // etc...
+    "react-scripts": "^5.0.1"
   },
-  "devDependencies": {
-    // any dev dependencies
-  }
-  // ...any other fields remain unchanged...
+  "devDependencies": {}
 }
