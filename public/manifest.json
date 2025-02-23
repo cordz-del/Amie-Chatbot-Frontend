@@ -13,8 +13,17 @@
       "type": "image/x-icon"
     }
     /* 
-       You can list additional icon sizes here, 
-       e.g. png icons for better PWA support
-    */
+       You can add additional icon sizes here if needed (e.g., PNG or SVG for better device coverage):
+       {
+         "src": "icons/icon-192.png",
+         "type": "image/png",
+         "sizes": "192x192"
+       },
+       {
+         "src": "icons/icon-512.png",
+         "type": "image/png",
+         "sizes": "512x512"
+       }
+     */
   ]
 }
