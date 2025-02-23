@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './components/App.css';
+import './App.css';  // Updated import path
 
 function App() {
   const [inputMessage, setInputMessage] = useState('');
@@ -7,7 +7,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
 
   // Get the backend URL from environment variables
-  const backendUrl = process.env.REACT_APP_BACKEND_URL;
+  const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
 
   // Function to send a text message to the backend
   const handleSendMessage = async (e) => {
