@@ -2,26 +2,31 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    
-    <!-- Primary Meta Tags -->
+
+    <!-- Mobile-friendly viewport -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
 
-    <!-- The favicon & manifest references use the %PUBLIC_URL% prefix in CRA. -->
-    <!-- This ensures that when you deploy to GitHub Pages at /Amie-Chatbot-Frontend/,
-         it will correctly find /Amie-Chatbot-Frontend/favicon.ico and so on. -->
+    <!-- Title (Customize as you wish) -->
+    <title>Amie Chatbot</title>
+
+    <!-- Favicon and Manifest (avoid 404 by having them in /public) -->
+    <!-- %PUBLIC_URL% will be replaced by the 'homepage' value in package.json -->
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
 
-    <!-- Adjust the <title> to whatever you prefer for your site: -->
-    <title>Amie Chatbot</title>
+    <!-- You can add a custom description or other meta tags here if desired -->
+    <meta
+      name="description"
+      content="Amie is a social and emotional learning chatbot!"
+    />
   </head>
 
   <body>
-    <!-- This message appears if the user has JavaScript disabled. -->
+    <!-- Graceful message for no-JS scenario -->
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    
-    <!-- The React app mounts on the #root element. Don't remove this. -->
+
+    <!-- The root element that React will render into -->
     <div id="root"></div>
   </body>
 </html>
