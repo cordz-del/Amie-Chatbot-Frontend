@@ -1,36 +1,28 @@
 {
-  "name": "Amie-Chatbot-Frontend",
-  "version": "0.1.0",
+  "name": "amie",
+  "version": "1.0.0",
   "private": true,
-  "homepage": "https://cordz-del.github.io/Amie-Chatbot-Frontend",
-  "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4"
-  },
+  // The homepage tells Create React App where the app is hosted
+  // so it can generate correct paths for bundled assets.
+  "homepage": "https://cordz-del.github.io/Amie-Chatbot-Frontend/",
+
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "test": "react-scripts test",
     "eject": "react-scripts eject"
+    // If you eventually use gh-pages for deployment, you'd add:
+    // "deploy": "gh-pages -d build"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+  "dependencies": {
+    // your existing dependencies...
+    "react": "^18.x",
+    "react-dom": "^18.x",
+    "react-scripts": "5.x",
+    // etc...
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
+  "devDependencies": {
+    // your existing devDependencies...
+  },
+  // ... any other fields ...
 }
