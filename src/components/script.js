@@ -10,7 +10,6 @@ class ChatAssistant {
     this.sendButton = null;
     this.micButton = null;
 
-    // Initialize speech recognition
     if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       this.recognition = new SpeechRecognition();
@@ -23,29 +22,6 @@ class ChatAssistant {
     this.handleMessage = this.handleMessage.bind(this);
     this.speakWithDeepgram = this.speakWithDeepgram.bind(this);
     this.speakWithBrowser = this.speakWithBrowser.bind(this);
-  }
-
-  init() {
-    this.chatbox = document.querySelector('.chatbox');
-    this.inputField = document.querySelector('.input-field');
-    this.sendButton = document.querySelector('.send-btn');
-    this.micButton = document.querySelector('.mic-btn');
-
-    if (!this.chatbox || !this.inputField || !this.sendButton || !this.micButton) {
-      console.error('Required elements not found');
-      return;
-    }
-
-    this.setupEventListeners();
-    this.showInitialGreeting();
-  }
-
-  addMessage(text, isUser = false) {
-    const messageDiv = document.createElement('div');
-    messageDiv.className = isUser ? 'message user-message' : 'message bot-message';
-    messageDiv.textContent = text;
-    this.chatbox.appendChild(messageDiv);
-    this.chatbox.scrollTop = this.chatbox.scrollHeight;
   }
 
   async handleMessage(userInput) {
@@ -115,96 +91,15 @@ class ChatAssistant {
       const audioUrl = URL.createObjectURL(audioBlob);
       const audio = new Audio(audioUrl);
       await audio.play();
-      URL.revokeObjectURL(audioUrl); // Clean up the URL after playing
+      URL.revokeObjectURL(audioUrl);
 
     } catch (error) {
       console.error('TTS Error:', error);
       this.speakWithBrowser(text);
     }
   }
-
-  speakWithBrowser(text) {
-    if (!this.synth) return;
-
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = 1.0;
-    utterance.pitch = 1.0;
-    utterance.volume = 1.0;
-
-    // Wait for voices to be loaded
-    const setVoice = () => {
-      const voices = this.synth.getVoices();
-      if (voices.length > 0) {
-        const preferredVoice = voices.find(voice =>
-          voice.lang.includes('en') && voice.name.includes('Female')
-        ) || voices[0];
-        utterance.voice = preferredVoice;
-      }
-    };
-
-    if (this.synth.onvoiceschanged !== undefined) {
-      this.synth.onvoiceschanged = setVoice;
-    }
-
-    setVoice();
-    this.synth.speak(utterance);
-  }
-
-  setupEventListeners() {
-    this.sendButton.addEventListener('click', () => {
-      this.handleMessage(this.inputField.value);
-    });
-
-    this.inputField.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        this.handleMessage(this.inputField.value);
-      }
-    });
-
-    if (this.recognition) {
-      this.setupSpeechRecognition();
-    }
-  }
-
-  setupSpeechRecognition() {
-    this.recognition.addEventListener('result', (event) => {
-      const lastResultIndex = event.results.length - 1;
-      const text = event.results[lastResultIndex][0].transcript;
-      this.handleMessage(text);
-    });
-
-    this.recognition.addEventListener('error', (event) => {
-      console.error('Speech recognition error:', event.error);
-      this.isListening = false;
-      this.micButton.classList.remove('listening');
-    });
-
-    this.recognition.addEventListener('end', () => {
-      this.isListening = false;
-      this.micButton.classList.remove('listening');
-    });
-
-    this.micButton.addEventListener('click', () => {
-      if (!this.isListening) {
-        this.recognition.start();
-        this.isListening = true;
-        this.micButton.classList.add('listening');
-      } else {
-        this.recognition.stop();
-        this.isListening = false;
-        this.micButton.classList.remove('listening');
-      }
-    });
-  }
-
-  showInitialGreeting() {
-    const initialGreeting = "Hello! I'm Amie, your Social and Emotional Learning Assistant. How can I help you today?";
-    this.addMessage(initialGreeting, false);
-    this.speakWithDeepgram(initialGreeting);
-  }
 }
 
-// Initialize the chat assistant when the DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
   const chatAssistant = new ChatAssistant();
   chatAssistant.init();
