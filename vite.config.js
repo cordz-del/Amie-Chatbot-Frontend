@@ -4,8 +4,9 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   base: '/Amie-Chatbot-Frontend/',
   plugins: [react()],
+  root: '.',
   build: {
-    outDir: 'docs',
+    outDir: 'docs', // Using 'docs' for GitHub Pages compatibility
     sourcemap: true,
   },
   server: {
