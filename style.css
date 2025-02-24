@@ -1,15 +1,31 @@
-/* Reset and Base Styles */
-body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-  background-color: #f8f9fa;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+:root {
+  --primary-gradient: linear-gradient(135deg, #0046b8 0%, #00a6ff 100%);
+  --primary-hover-gradient: linear-gradient(135deg, #0046b8 20%, #00a6ff 100%);
+  --text-primary: #2c3e50;
+  --text-secondary: #495057;
+  --bg-primary: #f8f9fa;
+  --bg-secondary: #ffffff;
+  --border-color: #e6e9ec;
 }
 
-/* Container for centering content (if used) */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  background-color: var(--bg-primary);
+  min-height: 100vh;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -20,9 +36,8 @@ body {
   flex-direction: column;
 }
 
-/* Header Titles */
 .main-title {
-  background: linear-gradient(135deg, #0046b8 0%, #00a6ff 100%);
+  background: var(--primary-gradient);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -33,30 +48,28 @@ body {
 }
 
 .subtitle {
-  color: #2c3e50;
+  color: var(--text-primary);
   font-size: 1em;
   margin-bottom: 15px;
   font-weight: 400;
 }
 
-/* Chat Container */
-#chat-container {
-  background-color: #ffffff;
+.chat-container {
+  background-color: var(--bg-secondary);
   border-radius: 8px;
   padding: 20px;
   margin: 0 auto;
-  width: 70%; /* Adjust width as needed */
+  width: 70%;
   max-width: 800px;
   height: calc(100vh - 460px);
   min-height: 160px;
   display: flex;
   flex-direction: column;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e6e9ec;
+  border: 1px solid var(--border-color);
 }
 
-/* Chat History */
-#chat-history {
+.chat-history {
   flex-grow: 1;
   overflow-y: auto;
   margin-bottom: 15px;
@@ -66,19 +79,17 @@ body {
   border: 1px solid #eef0f2;
 }
 
-/* Welcome Message Styling */
 .welcome-message {
   text-align: center;
-  color: #495057;
+  color: var(--text-secondary);
   padding: 12px;
   margin: 10px auto;
   max-width: 80%;
   line-height: 1.5;
   font-size: 1em;
-  border-bottom: 1px solid #e9ecef;
+  border-bottom: 1px solid var(--border-color);
 }
 
-/* Message Bubbles */
 .message {
   margin: 8px;
   padding: 10px 15px;
@@ -90,39 +101,35 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-/* Bot (Amie) Messages */
-.amie {
-  background-color: #f8f9fa;
+.message.amie {
+  background-color: var(--bg-primary);
   margin-right: auto;
   text-align: left;
-  border: 1px solid #e9ecef;
-  color: #2c3e50;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
 }
 
-/* User Messages */
-.you {
-  background: linear-gradient(135deg, #0046b8 0%, #00a6ff 100%);
+.message.user {
+  background: var(--primary-gradient);
   margin-left: auto;
   text-align: right;
   color: white;
 }
 
-/* Controls for buttons */
-#controls {
+.controls {
   display: flex;
   gap: 12px;
   justify-content: center;
   padding: 8px 0;
 }
 
-/* Button Styling */
-button {
+.button {
   padding: 8px 24px;
   font-size: 0.95em;
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  background: linear-gradient(135deg, #0046b8 0%, #00a6ff 100%);
+  background: var(--primary-gradient);
   color: white;
   transition: all 0.3s ease;
   font-weight: 500;
@@ -131,26 +138,25 @@ button {
   width: 100px;
 }
 
-button:hover {
+.button:hover {
   transform: translateY(-1px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  background: linear-gradient(135deg, #0046b8 20%, #00a6ff 100%);
+  background: var(--primary-hover-gradient);
 }
 
-button:disabled {
+.button:disabled {
   background: #666666;
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
 }
 
-/* Footer Styling */
-footer {
-  background-color: #ffffff;
+.footer {
+  background-color: var(--bg-secondary);
   padding: 12px;
   text-align: center;
-  border-top: 1px solid #e6e9ec;
-  color: #495057;
+  border-top: 1px solid var(--border-color);
+  color: var(--text-secondary);
   font-size: 0.9em;
   margin-top: 15px;
 }
@@ -167,22 +173,22 @@ footer {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f8f9fa;
+  background: var(--bg-primary);
   border-radius: 8px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #0046b8 0%, #00a6ff 100%);
+  background: var(--primary-gradient);
   border-radius: 8px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #0046b8 20%, #00a6ff 100%);
+  background: var(--primary-hover-gradient);
 }
 
 /* Responsive Design */
 @media (max-width: 1200px) {
-  #chat-container {
+  .chat-container {
     width: 75%;
     height: calc(100vh - 440px);
   }
@@ -192,7 +198,7 @@ footer {
   .container {
     padding: 12px;
   }
-  #chat-container {
+  .chat-container {
     width: 85%;
     height: calc(100vh - 420px);
   }
@@ -202,14 +208,14 @@ footer {
   .subtitle {
     font-size: 0.95em;
   }
-  button {
+  .button {
     padding: 8px 20px;
     font-size: 0.9em;
   }
 }
 
 @media (max-width: 480px) {
-  #chat-container {
+  .chat-container {
     width: 95%;
     height: calc(100vh - 400px);
   }
