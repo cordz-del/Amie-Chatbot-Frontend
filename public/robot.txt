@@ -1,5 +1,4 @@
 User-agent: *
-Disallow:
+Allow: /
 
 Sitemap: https://cordz-del.github.io/Amie-Chatbot-Frontend/sitemap.xml
-
