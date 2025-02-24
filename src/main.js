@@ -1,4 +1,6 @@
-import './style.css'
+import './style.css';
+import { validateEnvironmentVariables } from './utils/validateEnv';
+import { config } from './config/env';
 
 class ChatApp {
   constructor() {
@@ -6,8 +8,18 @@ class ChatApp {
     this.chatHistory = [];
     this.isLoading = false;
     
-    this.initializeElements();
-    this.attachEventListeners();
+    this.initialize();
+  }
+
+  async initialize() {
+    try {
+      validateEnvironmentVariables();
+      this.initializeElements();
+      this.attachEventListeners();
+    } catch (error) {
+      console.error('Initialization failed:', error.message);
+      this.displayErrorState(error.message);
+    }
   }
 
   initializeElements() {
@@ -31,8 +43,9 @@ class ChatApp {
             type="text"
             id="messageInput"
             placeholder="Type your message..."
+            autocomplete="off"
           />
-          <button type="submit">Send</button>
+          <button type="submit" disabled>Send</button>
         </form>
       </div>
     `;
@@ -41,16 +54,20 @@ class ChatApp {
     this.messagesContainer = document.getElementById('messages');
     this.chatForm = document.getElementById('chatForm');
     this.messageInput = document.getElementById('messageInput');
+    this.submitButton = this.chatForm.querySelector('button');
   }
 
   attachEventListeners() {
     this.chatForm.addEventListener('submit', (e) => this.handleSubmit(e));
-    this.messageInput.addEventListener('input', (e) => this.message = e.target.value);
+    this.messageInput.addEventListener('input', (e) => {
+      this.message = e.target.value;
+      this.submitButton.disabled = !this.message.trim();
+    });
   }
 
   async handleSubmit(e) {
     e.preventDefault();
-    if (!this.message.trim()) return;
+    if (!this.message.trim() || this.isLoading) return;
 
     const userMessage = this.message.trim();
     this.messageInput.value = '';
@@ -58,29 +75,29 @@ class ChatApp {
     this.isLoading = true;
     this.updateUI();
 
-    // Add user message to chat
     this.chatHistory.push({ type: 'user', content: userMessage });
     this.updateUI();
 
     try {
-      const response = await fetch('/api/chat', {
+      const response = await fetch(`${config.BACKEND_URL}/api/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ message: userMessage }),
+        body: JSON.stringify({ 
+          message: userMessage,
+          timestamp: new Date().toISOString()
+        }),
       });
 
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error(`Server responded with ${response.status}`);
       }
 
       const data = await response.json();
-      
-      // Add AI response to chat
       this.chatHistory.push({ type: 'bot', content: data.response });
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Chat error:', error);
       this.chatHistory.push({ 
         type: 'error', 
         content: 'Sorry, I encountered an error. Please try again.' 
@@ -92,13 +109,11 @@ class ChatApp {
   }
 
   updateUI() {
-    // Clear messages container
     this.messagesContainer.innerHTML = '';
 
-    // Add all messages
     this.chatHistory.forEach(chat => {
       const messageDiv = document.createElement('div');
-      messageDiv.className = `message ${chat.type === 'user' ? 'user-message' : 'bot-message'}`;
+      messageDiv.className = `message ${chat.type}-message`;
       
       const contentDiv = document.createElement('div');
       contentDiv.className = 'message-content';
@@ -108,7 +123,6 @@ class ChatApp {
       this.messagesContainer.appendChild(messageDiv);
     });
 
-    // Add loading indicator if needed
     if (this.isLoading) {
       const loadingDiv = document.createElement('div');
       loadingDiv.className = 'message bot-message';
@@ -122,15 +136,23 @@ class ChatApp {
       this.messagesContainer.appendChild(loadingDiv);
     }
 
-    // Scroll to bottom
     this.chatContainer.scrollTop = this.chatContainer.scrollHeight;
-
-    // Update input state
     this.messageInput.disabled = this.isLoading;
-    const submitButton = this.chatForm.querySelector('button');
-    submitButton.disabled = this.isLoading || !this.message.trim();
+    this.submitButton.disabled = this.isLoading || !this.message.trim();
+  }
+
+  displayErrorState(errorMessage) {
+    this.app.innerHTML = `
+      <div class="error-container">
+        <h2>⚠️ Initialization Error</h2>
+        <p>${errorMessage}</p>
+        <p>Please check your environment configuration and reload the page.</p>
+      </div>
+    `;
   }
 }
 
-// Initialize the app
-new ChatApp();
+// Initialize the app when DOM is fully loaded
+document.addEventListener('DOMContentLoaded', () => {
+  new ChatApp();
+});
