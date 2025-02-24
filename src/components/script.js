@@ -1,43 +1,65 @@
-let recognition;
-let isListening = false;
-const synth = window.speechSynthesis;
+import { OPENAI_API_KEY, DEEPGRAM_API_KEY } from '../config/keys';
 
-// Initialize speech recognition if available
-if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  recognition = new SpeechRecognition();
-  recognition.continuous = true;
-  recognition.interimResults = false;
-}
+class ChatAssistant {
+  constructor() {
+    this.recognition = null;
+    this.isListening = false;
+    this.synth = window.speechSynthesis;
+    this.chatbox = null;
+    this.inputField = null;
+    this.sendButton = null;
+    this.micButton = null;
 
-document.addEventListener('DOMContentLoaded', () => {
-  const chatbox = document.querySelector('.chatbox');
-  const inputField = document.querySelector('.input-field');
-  const sendButton = document.querySelector('.send-btn');
-  const micButton = document.querySelector('.mic-btn');
+    // Initialize speech recognition
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      this.recognition = new SpeechRecognition();
+      this.recognition.continuous = true;
+      this.recognition.interimResults = false;
+    }
 
-  // Function to add messages to the chatbox
-  function addMessage(text, isUser = false) {
+    this.init = this.init.bind(this);
+    this.addMessage = this.addMessage.bind(this);
+    this.handleMessage = this.handleMessage.bind(this);
+    this.speakWithDeepgram = this.speakWithDeepgram.bind(this);
+    this.speakWithBrowser = this.speakWithBrowser.bind(this);
+  }
+
+  init() {
+    this.chatbox = document.querySelector('.chatbox');
+    this.inputField = document.querySelector('.input-field');
+    this.sendButton = document.querySelector('.send-btn');
+    this.micButton = document.querySelector('.mic-btn');
+
+    if (!this.chatbox || !this.inputField || !this.sendButton || !this.micButton) {
+      console.error('Required elements not found');
+      return;
+    }
+
+    this.setupEventListeners();
+    this.showInitialGreeting();
+  }
+
+  addMessage(text, isUser = false) {
     const messageDiv = document.createElement('div');
     messageDiv.className = isUser ? 'message user-message' : 'message bot-message';
     messageDiv.textContent = text;
-    chatbox.appendChild(messageDiv);
-    chatbox.scrollTop = chatbox.scrollHeight;
+    this.chatbox.appendChild(messageDiv);
+    this.chatbox.scrollTop = this.chatbox.scrollHeight;
   }
 
-  // Handle sending a message to the OpenAI API
-  async function handleMessage(userInput) {
+  async handleMessage(userInput) {
     if (!userInput.trim()) return;
-    addMessage(userInput, true);
-    inputField.value = '';
+    
+    this.addMessage(userInput, true);
+    this.inputField.value = '';
 
     try {
       const response = await fetch('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          // Adjust based on your build system; for Vite use import.meta.env
-          'Authorization': `Bearer ${process.env.VITE_OPENAI_API_KEY}`
+          'Authorization': `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`
         },
         body: JSON.stringify({
           model: "gpt-3.5-turbo",
@@ -57,112 +79,135 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       if (!response.ok) {
-        throw new Error('OpenAI API error');
+        throw new Error(`OpenAI API error: ${response.status}`);
       }
 
       const data = await response.json();
       const aiResponse = data.choices[0].message.content;
-      addMessage(aiResponse, false);
-
-      // Use Deepgram TTS for speaking the response
-      await speakWithDeepgram(aiResponse);
+      this.addMessage(aiResponse, false);
+      await this.speakWithDeepgram(aiResponse);
 
     } catch (error) {
       console.error('Error:', error);
-      addMessage("I apologize, but I'm having trouble connecting right now. Please try again.", false);
+      this.addMessage("I apologize, but I'm having trouble connecting right now. Please try again.", false);
     }
   }
 
-  // Use Deepgram's TTS endpoint to speak text
-  async function speakWithDeepgram(text) {
+  async speakWithDeepgram(text) {
     try {
       const response = await fetch('https://api.deepgram.com/v1/speak', {
         method: 'POST',
         headers: {
-          'Authorization': `Token ${process.env.VITE_DEEPGRAM_API_KEY}`,
+          'Authorization': `Token ${import.meta.env.VITE_DEEPGRAM_API_KEY}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          text: text,
+          text,
           voice: "alloy"
         })
       });
 
       if (!response.ok) {
-        throw new Error('Deepgram API error');
+        throw new Error(`Deepgram API error: ${response.status}`);
       }
 
       const audioBlob = await response.blob();
       const audioUrl = URL.createObjectURL(audioBlob);
       const audio = new Audio(audioUrl);
       await audio.play();
+      URL.revokeObjectURL(audioUrl); // Clean up the URL after playing
+
     } catch (error) {
       console.error('TTS Error:', error);
-      speakWithBrowser(text);
+      this.speakWithBrowser(text);
     }
   }
 
-  // Fallback: use browser's SpeechSynthesis for TTS
-  function speakWithBrowser(text) {
+  speakWithBrowser(text) {
+    if (!this.synth) return;
+
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.rate = 1.0;
     utterance.pitch = 1.0;
     utterance.volume = 1.0;
-    const voices = synth.getVoices();
-    if (voices.length > 0) {
-      const preferredVoice = voices.find(voice =>
-        voice.lang.includes('en') && voice.name.includes('Female')
-      ) || voices[0];
-      utterance.voice = preferredVoice;
+
+    // Wait for voices to be loaded
+    const setVoice = () => {
+      const voices = this.synth.getVoices();
+      if (voices.length > 0) {
+        const preferredVoice = voices.find(voice =>
+          voice.lang.includes('en') && voice.name.includes('Female')
+        ) || voices[0];
+        utterance.voice = preferredVoice;
+      }
+    };
+
+    if (this.synth.onvoiceschanged !== undefined) {
+      this.synth.onvoiceschanged = setVoice;
     }
-    synth.speak(utterance);
+
+    setVoice();
+    this.synth.speak(utterance);
   }
 
-  // Event listeners for sending messages
-  sendButton.addEventListener('click', () => {
-    handleMessage(inputField.value);
-  });
+  setupEventListeners() {
+    this.sendButton.addEventListener('click', () => {
+      this.handleMessage(this.inputField.value);
+    });
 
-  inputField.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-      handleMessage(inputField.value);
+    this.inputField.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        this.handleMessage(this.inputField.value);
+      }
+    });
+
+    if (this.recognition) {
+      this.setupSpeechRecognition();
     }
-  });
+  }
 
-  // Setup speech recognition events if available
-  if (recognition) {
-    recognition.addEventListener('result', (event) => {
+  setupSpeechRecognition() {
+    this.recognition.addEventListener('result', (event) => {
       const lastResultIndex = event.results.length - 1;
       const text = event.results[lastResultIndex][0].transcript;
-      handleMessage(text);
+      this.handleMessage(text);
     });
 
-    recognition.addEventListener('error', (event) => {
+    this.recognition.addEventListener('error', (event) => {
       console.error('Speech recognition error:', event.error);
-      isListening = false;
-      micButton.classList.remove('listening');
+      this.isListening = false;
+      this.micButton.classList.remove('listening');
     });
 
-    recognition.addEventListener('end', () => {
-      isListening = false;
-      micButton.classList.remove('listening');
+    this.recognition.addEventListener('end', () => {
+      this.isListening = false;
+      this.micButton.classList.remove('listening');
     });
 
-    micButton.addEventListener('click', () => {
-      if (!isListening) {
-        recognition.start();
-        isListening = true;
-        micButton.classList.add('listening');
+    this.micButton.addEventListener('click', () => {
+      if (!this.isListening) {
+        this.recognition.start();
+        this.isListening = true;
+        this.micButton.classList.add('listening');
       } else {
-        recognition.stop();
-        isListening = false;
-        micButton.classList.remove('listening');
+        this.recognition.stop();
+        this.isListening = false;
+        this.micButton.classList.remove('listening');
       }
     });
   }
 
-  // Initial greeting
-  const initialGreeting = "Hello! I'm Amie, your Social and Emotional Learning Assistant. How can I help you today?";
-  addMessage(initialGreeting, false);
-  speakWithDeepgram(initialGreeting);
+  showInitialGreeting() {
+    const initialGreeting = "Hello! I'm Amie, your Social and Emotional Learning Assistant. How can I help you today?";
+    this.addMessage(initialGreeting, false);
+    this.speakWithDeepgram(initialGreeting);
+  }
+}
+
+// Initialize the chat assistant when the DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+  const chatAssistant = new ChatAssistant();
+  chatAssistant.init();
 });
+
+export default ChatAssistant;
