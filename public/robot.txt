@@ -1,4 +1,10 @@
+# Allow all web crawlers
 User-agent: *
 Allow: /
 
+# Specify the sitemap location
 Sitemap: https://cordz-del.github.io/Amie-Chatbot-Frontend/sitemap.xml
+
+# Prevent crawling of specific paths if needed
+# Disallow: /api/
+# Disallow: /private/
