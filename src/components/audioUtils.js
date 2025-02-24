@@ -13,7 +13,6 @@ export class AudioRecorder {
     }
 
     try {
-      // Request microphone access with specific audio constraints
       const constraints = {
         audio: {
           channelCount: 1,
@@ -25,7 +24,6 @@ export class AudioRecorder {
 
       this.stream = await navigator.mediaDevices.getUserMedia(constraints);
       
-      // Configure MediaRecorder with options
       const options = {
         mimeType: this.getSupportedMimeType(),
         audioBitsPerSecond: 128000
@@ -35,7 +33,6 @@ export class AudioRecorder {
       this.audioChunks = [];
       this.isRecording = true;
 
-      // Set up event listeners
       this.mediaRecorder.addEventListener('dataavailable', (event) => {
         if (event.data && event.data.size > 0) {
           this.audioChunks.push(event.data);
@@ -50,9 +47,7 @@ export class AudioRecorder {
         this.cleanup();
       });
 
-      // Start recording with 10ms time slices for more frequent data availability
       this.mediaRecorder.start(10);
-      
       return true;
     } catch (error) {
       this.cleanup();
@@ -128,7 +123,7 @@ export class AudioRecorder {
       }
     }
 
-    return 'audio/webm'; // Fallback
+    return 'audio/webm';
   }
 
   getRecordingState() {
@@ -138,7 +133,6 @@ export class AudioRecorder {
     };
   }
 
-  // Convert audio blob to base64 string
   static async blobToBase64(blob) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -148,7 +142,6 @@ export class AudioRecorder {
     });
   }
 
-  // Get audio duration from blob
   static async getAudioDuration(blob) {
     return new Promise((resolve, reject) => {
       const audio = new Audio();
