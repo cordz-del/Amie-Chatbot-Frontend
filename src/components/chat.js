@@ -21,15 +21,12 @@ const Chat = () => {
 
   const sendMessage = async (message) => {
     try {
-      // Add user message to chat
       setMessages(prev => [...prev, { text: message, sender: 'user' }]);
       
-      // Send message to backend
       const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/chat`, {
         message: message
       });
       
-      // Add AI response to chat
       setMessages(prev => [...prev, { text: response.data.response, sender: 'ai' }]);
     } catch (error) {
       console.error('Error sending message:', error);
@@ -88,10 +85,8 @@ const Chat = () => {
       const formData = new FormData();
       formData.append('audio', audioBlob);
 
-      // Add "Transcribing..." message
       setMessages(prev => [...prev, { text: 'Transcribing...', sender: 'system' }]);
 
-      // Send audio for transcription
       const response = await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}/transcribe`,
         formData,
@@ -102,10 +97,8 @@ const Chat = () => {
         }
       );
 
-      // Remove "Transcribing..." message
       setMessages(prev => prev.filter(msg => msg.text !== 'Transcribing...'));
 
-      // If we got a transcription, send it as a message
       if (response.data.transcription) {
         await sendMessage(response.data.transcription);
       }
