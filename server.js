@@ -13,8 +13,19 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: process.env.NODE_ENV === 'production' 
+    ? 'https://your-production-domain.com' 
+    : 'http://localhost:5173', // Vite's default port
+  methods: ['GET', 'POST'],
+  credentials: true
+}));
 app.use(express.json());
+
+// Serve static files in production
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('dist')); // Vite builds to 'dist' by default
+}
 
 // Chat endpoint
 app.post('/api/chat', async (req, res) => {
@@ -46,6 +57,13 @@ app.post('/api/chat', async (req, res) => {
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'OK' });
 });
+
+// Handle React routing in production
+if (process.env.NODE_ENV === 'production') {
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+  });
+}
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
