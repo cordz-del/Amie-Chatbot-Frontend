@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   root: '.',
   build: {
-    outDir: 'docs', // Using 'docs' for GitHub Pages compatibility
+    outDir: 'docs',
     sourcemap: true,
   },
   server: {
@@ -16,6 +16,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': '/src'
-    }
+    },
+    extensions: ['.js', '.jsx'] // Add this line to handle both .js and .jsx files
   }
 });
