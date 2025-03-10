@@ -2,7 +2,7 @@
  * script.js - Consolidated functionality for:
  *   1) Login & Signup
  *   2) Mood selection (Amie-Skills)
- *   3) AI Assistant chat (index.html with chat)
+ *   3) AI Assistant chat (full-page chat)
  ************************************************************/
 
 // Adjust if your backend URL differs
@@ -14,7 +14,7 @@ const SHARED_MOOD_KEY = 'sharedMoodData';
 document.addEventListener('DOMContentLoaded', function () {
   /************************************************************
    * 1) LOGIN & SIGNUP FUNCTIONALITY
-   *    (Used on Log-in-Amie pages)
+   *    (Used on Login/Signup pages)
    ************************************************************/
   const loginForm = document.getElementById('loginForm');
   const signUpForm = document.getElementById('signUpForm');
@@ -226,13 +226,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  // If using auth logic on login page or skill page, run checkAuth
-  // (Uncomment if you want auto-redirect behavior)
+  // Uncomment if you want auto-redirect based on auth:
   // checkAuth();
 
   /************************************************************
    * 2) MOOD SELECTION (Amie-Skills)
-   *    (Used on the "Amie-Skills" page with .emotion-box)
    ************************************************************/
   const emotionBoxes = document.querySelectorAll('.emotion-box');
   const actionModal = document.getElementById('actionModal');
@@ -258,10 +256,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
       // After spin animation completes (1s)
       setTimeout(() => {
-        // 1) Identify the mood from the second class (e.g., "stressed", "sad", etc.)
+        // Identify the mood from the second class (e.g., "stressed", "sad", etc.)
         const moodName = elem.classList[1];
 
-        // 2) Save this mood to localStorage so that Mood-Record-Page can read it
+        // Save this mood to localStorage so that Mood-Record-Page can read it
         const newMoodEntry = {
           timestamp: new Date().toISOString(),
           mood: moodName,
@@ -271,13 +269,13 @@ document.addEventListener('DOMContentLoaded', function () {
         sharedData.push(newMoodEntry);
         localStorage.setItem(SHARED_MOOD_KEY, JSON.stringify(sharedData));
 
-        // 3) Replace box content with a check mark
+        // Replace box content with a check mark
         elem.innerHTML = `
           <div class="check-mark">&#10003;</div>
           <p>Your feeling has been logged.</p>
         `;
 
-        // 4) After a short delay, open the modal (if it exists)
+        // After a short delay, open the modal (if it exists)
         setTimeout(() => {
           if (actionModal) {
             actionModal.style.display = 'block';
@@ -298,7 +296,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   /************************************************************
    * 3) AI ASSISTANT CHAT
-   *    (Used on the new AI Assistant page with #chatWindow)
+   *    (Used on the full-page chat with #chatWindow)
    ************************************************************/
   const chatWindow = document.getElementById('chatWindow');
   const userInput = document.getElementById('userInput');
