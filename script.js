@@ -228,4 +228,114 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // If using auth logic on login page or skill page, run checkAuth
   // (Uncomment if you want auto-redirect behavior)
-  // 
+  // checkAuth();
+
+  /************************************************************
+   * 2) MOOD SELECTION (Amie-Skills)
+   *    (Used on the "Amie-Skills" page with .emotion-box)
+   ************************************************************/
+  const emotionBoxes = document.querySelectorAll('.emotion-box');
+  const actionModal = document.getElementById('actionModal');
+
+  if (emotionBoxes && emotionBoxes.length > 0) {
+    let moodSelected = false;
+
+    // Called when user clicks an emotion box
+    window.handleMoodClick = function (elem) {
+      if (moodSelected) return;
+      moodSelected = true;
+
+      // Disable all other emotion boxes
+      emotionBoxes.forEach((box) => {
+        if (box !== elem) {
+          box.classList.add('disabled');
+          box.style.pointerEvents = 'none';
+        }
+      });
+
+      // Apply spin animation (class .spin-animation in your CSS)
+      elem.classList.add('spin-animation');
+
+      // After spin animation completes (1s)
+      setTimeout(() => {
+        // 1) Identify the mood from the second class (e.g., "stressed", "sad", etc.)
+        const moodName = elem.classList[1];
+
+        // 2) Save this mood to localStorage so that Mood-Record-Page can read it
+        const newMoodEntry = {
+          timestamp: new Date().toISOString(),
+          mood: moodName,
+          notes: 'Logged from Amie-Skills',
+        };
+        let sharedData = JSON.parse(localStorage.getItem(SHARED_MOOD_KEY) || '[]');
+        sharedData.push(newMoodEntry);
+        localStorage.setItem(SHARED_MOOD_KEY, JSON.stringify(sharedData));
+
+        // 3) Replace box content with a check mark
+        elem.innerHTML = `
+          <div class="check-mark">&#10003;</div>
+          <p>Your feeling has been logged.</p>
+        `;
+
+        // 4) After a short delay, open the modal (if it exists)
+        setTimeout(() => {
+          if (actionModal) {
+            actionModal.style.display = 'block';
+          }
+        }, 500);
+      }, 1000);
+    };
+
+    // If the modal is present, handle Vent or Exercise
+    window.chooseAction = function (action) {
+      console.log(`User chose to ${action}`);
+      if (actionModal) {
+        actionModal.style.display = 'none';
+      }
+      // Additional logic for venting or exercises can go here
+    };
+  }
+
+  /************************************************************
+   * 3) AI ASSISTANT CHAT
+   *    (Used on the new AI Assistant page with #chatWindow)
+   ************************************************************/
+  const chatWindow = document.getElementById('chatWindow');
+  const userInput = document.getElementById('userInput');
+
+  // If chatWindow exists, we’re on the AI Assistant page
+  if (chatWindow) {
+    window.startConversation = function () {
+      // TODO: Add logic to initialize or connect to your conversation service
+      alert('Starting conversation...');
+    };
+
+    window.stopConversation = function () {
+      // TODO: Add logic to gracefully end the chat session
+      alert('Stopping conversation...');
+    };
+
+    window.resetConversation = function () {
+      // TODO: Clear chat history or reset the interface
+      chatWindow.innerHTML = '';
+      alert('Conversation reset.');
+    };
+
+    window.sendMessage = function () {
+      // Simple example of appending user message to chat window
+      const message = userInput.value.trim();
+      if (message) {
+        const userMsg = document.createElement('div');
+        userMsg.classList.add('chat-message', 'user');
+        userMsg.textContent = message;
+        chatWindow.appendChild(userMsg);
+
+        userInput.value = '';
+        // Scroll to bottom
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+
+        // TODO: Add logic to send the message to your AI backend and display AI response
+      }
+    };
+  }
+});
