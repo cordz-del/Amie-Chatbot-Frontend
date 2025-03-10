@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Amie - AI Assistant</title>
+  <!-- Link to your existing stylesheet for consistent header/footer styles -->
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico" />
+
+  <!-- Optional: Inline styles for chat-specific elements (feel free to move to style.css) -->
+  <style>
+    /* Main container for the AI Assistant interface */
+    .assistant-interface {
+      display: flex;
+      flex-direction: row;
+      gap: 2rem;
+      margin: 0 auto;
+      max-width: 1200px;
+      padding: 2rem 1rem;
+    }
+    /* Optional sidebar for an AI avatar or additional info */
+    .assistant-sidebar {
+      flex: 0 0 250px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      background-color: #f0f4f8;
+      border-radius: 12px;
+      padding: 2rem 1rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .assistant-sidebar img {
+      width: 120px;
+      height: auto;
+      border-radius: 50%;
+      margin-bottom: 1rem;
+    }
+    .assistant-sidebar h3 {
+      color: #333;
+      margin-bottom: 0.5rem;
+    }
+    /* Chat container */
+    .chat-container {
+      flex: 1;
+      background-color: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      padding: 2rem;
+    }
+    /* Chat header with buttons */
+    .chat-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+    }
+    .chat-header h2 {
+      font-size: 1.8rem;
+      color: #333;
+    }
+    .chat-btn {
+      padding: 0.7rem 1.2rem;
+      margin-left: 0.5rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .chat-btn.start {
+      background-color: #0056b3;
+      color: #fff;
+    }
+    .chat-btn.stop {
+      background-color: #ff5a5f;
+      color: #fff;
+    }
+    .chat-btn.reset {
+      background-color: #999999;
+      color: #fff;
+    }
+    .chat-btn:hover {
+      opacity: 0.9;
+    }
+    /* Chat window area */
+    .chat-window {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      background-color: #f8fafc;
+      margin-bottom: 1.5rem;
+    }
+    /* Example chat bubbles */
+    .chat-message {
+      max-width: 70%;
+      margin-bottom: 1rem;
+      padding: 1rem;
+      border-radius: 12px;
+      line-height: 1.4;
+    }
+    .chat-message.user {
+      background-color: #d8ecff;
+      align-self: flex-end;
+    }
+    .chat-message.assistant {
+      background-color: #edf2f7;
+      align-self: flex-start;
+    }
+    /* Chat input area */
+    .chat-input {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .chat-input input[type="text"] {
+      flex: 1;
+      padding: 0.8rem;
+      border-radius: 8px;
+      border: 1.5px solid #e2e8f0;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+    .chat-input input[type="text"]:focus {
+      border-color: #0056b3;
+      box-shadow: 0 0 0 3px rgba(0,86,179,0.1);
+    }
+    .chat-send {
+      background-color: #0056b3;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.8rem 1.2rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .chat-send:hover {
+      background-color: #003d82;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header (matching other pages exactly) -->
+  <header class="main-header">
+    <nav class="nav-container">
+      <div class="logo">
+        <h1>Amie</h1>
+        <p class="description">Emotional &amp; Mental Health Assistant</p>
+      </div>
+      <!-- Navigation links removed as per requirement -->
+    </nav>
+  </header>
+
+  <!-- Main content: AI Assistant interface -->
+  <main>
+    <section class="assistant-interface">
+      <!-- Sidebar / AI Avatar (Optional) -->
+      <div class="assistant-sidebar">
+        <!-- Replace with your own image -->
+        <img src="images/assistant-bot.png" alt="AI Assistant" />
+        <h3>Amie Bot</h3>
+        <p>Ready to assist you!</p>
+      </div>
+
+      <!-- Chat area -->
+      <div class="chat-container">
+        <div class="chat-header">
+          <h2>Chat</h2>
+          <div>
+            <button class="chat-btn start" onclick="startConversation()">Start Conversation</button>
+            <button class="chat-btn stop" onclick="stopConversation()">Stop Conversation</button>
+            <button class="chat-btn reset" onclick="resetConversation()">Reset</button>
+          </div>
+        </div>
+
+        <!-- Scrollable chat window with example messages -->
+        <div class="chat-window" id="chatWindow">
+          <!-- Example messages -->
+          <div class="chat-message assistant">
+            Hello! I'm Amie, your AI assistant. How can I help you today?
+          </div>
+          <div class="chat-message user">
+            Hi Amie! Can you help me with some tips on mindfulness?
+          </div>
+        </div>
+
+        <!-- Chat input area -->
+        <div class="chat-input">
+          <input type="text" id="userInput" placeholder="Type your message here..." />
+          <button class="chat-send" onclick="sendMessage()">Send</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer (matching other pages exactly) -->
+  <footer class="main-footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>About Amie</h3>
+        <p>Your trusted emotional and mental health companion, available 24/7.</p>
+      </div>
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="blog.html">Blog</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Legal</h3>
+        <ul>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="terms.html">Terms of Service</a></li>
+          <li><a href="support.html">Support</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Amie. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Placeholder scripts for button functionality -->
+  <script>
+    function startConversation() {
+      // TODO: Add logic to initialize or connect to your conversation service
+      alert("Starting conversation...");
+    }
+    function stopConversation() {
+      // TODO: Add logic to gracefully end the chat session
+      alert("Stopping conversation...");
+    }
+    function resetConversation() {
+      // TODO: Clear chat history or reset the interface
+      document.getElementById("chatWindow").innerHTML = "";
+      alert("Conversation reset.");
+    }
+    function sendMessage() {
+      // Simple example of appending user message to chat window
+      const userInput = document.getElementById("userInput");
+      const message = userInput.value.trim();
+      if (message) {
+        const chatWindow = document.getElementById("chatWindow");
+        const userMsg = document.createElement("div");
+        userMsg.classList.add("chat-message", "user");
+        userMsg.textContent = message;
+        chatWindow.appendChild(userMsg);
+        userInput.value = "";
+        // Scroll to bottom
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+        
+        // TODO: Add logic to send the message to your AI backend and display AI response
+      }
+    }
+  </script>
+</body>
+</html>
