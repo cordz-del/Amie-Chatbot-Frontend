@@ -1,5 +1,5 @@
 /* -----------------------------------------------------
-   style.css - Consolidated Styles for Amie Project
+   style.css - Consolidated & Updated Styles for Amie
    ----------------------------------------------------- */
 
 /* ========== 1) BASIC RESET & BODY STYLING ========== */
@@ -9,13 +9,24 @@
   box-sizing: border-box;
 }
 
+/* Body with soft radial gradients (no images) */
 body {
   font-family: Arial, sans-serif;
-  background-color: #fafafa;
   color: #333;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  /* Calming background with overlapping radial gradients */
+  background: radial-gradient(
+      circle at top right,
+      #e2f0ff 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at bottom left,
+      #f0f7ff 20%,
+      #ffffff 80%
+    );
 }
 
 /* ========== 2) HEADER STYLING (Shared) ========== */
@@ -65,18 +76,17 @@ main {
   flex: 1;
   max-width: 1200px;
   width: 100%;
-  margin: 7rem auto 0; /* space for fixed header */
+  margin: 7rem auto 0; /* space for the fixed header */
   padding: 0 2rem;
 }
 
-/* Optional container for side-by-side layouts (e.g., login page) */
+/* ========== 4) LOGIN & SIGNUP PAGE STYLES ========== */
 .login-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-/* ========== 4) LOGIN & SIGNUP PAGE STYLES ========== */
 .hero-box {
   flex: 1;
   max-width: 500px;
@@ -139,7 +149,6 @@ main {
   background-color: white;
 }
 
-/* Button group on login page */
 .button-group {
   display: flex;
   flex-direction: column;
@@ -435,48 +444,18 @@ main {
   cursor: not-allowed;
 }
 
-/* ========== 8) AI ASSISTANT PAGE (index.html) ========== */
-.assistant-interface {
-  display: flex;
-  flex-direction: row;
-  gap: 2rem;
-  margin: 0 auto;
-  max-width: 1200px;
-  padding: 2rem 1rem;
-}
+/* ========== 8) AI ASSISTANT PAGE: FULL-WIDTH CHAT ========== */
+/* Remove or ignore .assistant-interface / .assistant-sidebar; we’ll use a single chat-page. */
 
-.assistant-sidebar {
-  flex: 0 0 250px;
+/* Large container for the chat page, occupying full width */
+.chat-page {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  background-color: #f0f4f8;
-  border-radius: 12px;
-  padding: 2rem 1rem;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-}
-
-.assistant-sidebar img {
-  width: 120px;
-  height: auto;
-  border-radius: 50%;
-  margin-bottom: 1rem;
-}
-
-.assistant-sidebar h3 {
-  color: #333;
-  margin-bottom: 0.5rem;
-}
-
-.chat-container {
-  flex: 1;
-  background-color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.8);
   border-radius: 12px;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  display: flex;
-  flex-direction: column;
   padding: 2rem;
+  margin-bottom: 2rem; /* spacing above footer */
 }
 
 .chat-header {
@@ -526,27 +505,32 @@ main {
   overflow-y: auto;
   padding: 1rem;
   border: 1px solid #e2e8f0;
-  border-radius: 8px;
+  border-radius: 12px;
   background-color: #f8fafc;
   margin-bottom: 1.5rem;
+  min-height: 300px; /* ensures a decent starting height */
 }
 
+/* Rounded chat bubbles with gentle colors */
 .chat-message {
   max-width: 70%;
   margin-bottom: 1rem;
-  padding: 1rem;
-  border-radius: 12px;
-  line-height: 1.4;
-}
-
-.chat-message.user {
-  background-color: #d8ecff;
-  align-self: flex-end;
+  padding: 1rem 1.2rem;
+  border-radius: 20px;
+  line-height: 1.5;
+  font-size: 1rem;
 }
 
 .chat-message.assistant {
-  background-color: #edf2f7;
+  background-color: #e5ecf2; /* Soft gray-blue */
   align-self: flex-start;
+  color: #333;
+}
+
+.chat-message.user {
+  background-color: #cde2ff; /* Gentle sky blue */
+  align-self: flex-end;
+  color: #333;
 }
 
 .chat-input {
